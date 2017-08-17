@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Strings Manila Adminsitration</title>
+
+
+  <!--Scripts-->
+  <script>
+    window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+    require('../js/renderer.js');
+    require('../js/popper.min.js');
+    require('../../node_modules/bootstrap/dist/js/bootstrap.min.js');
+  </script>
+  <script src="../js/navbar.js"></script>
+
+  <!--Stylesheets-->
+  <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../stylesheets/navbar.css" rel="stylesheet">
+</head>
+
+<body class="bg-faded">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-light" style="-webkit-app-region: drag">
+      <ul id="navbar-buttons" class="navbar-nav mr-auto ml-auto">
+        <li id="manage-entities-button" class="nav-item">
+          <a class="nav-link active">Manage Entities</a>
+        </li>
+        <li id="confirm-payments-button" class="nav-item">
+          <a class="nav-link">Confirm Payments</a>
+        </li>
+        <li id="waitlists-button" class="nav-item">
+          <a class="nav-link">Waitlists</a>
+        </li>
+        <li id="replenish-stocks-button" class="nav-item">
+          <a class="nav-link">Replenish Stocks</a>
+        </li>
+        <li id="sales-report-button" class="nav-item">
+          <a class="nav-link">Sales Report</a>
+        </li>
+        <li id="orders-report-button" class="nav-item">
+          <a class="nav-link">Orders Report</a>
+        </li>
+      </ul>
+    </nav>
+
+<div id="current-tab" style="margin-top: 40px;">
+
+</div>
+</body>
+
+</html>

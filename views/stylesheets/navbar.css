@@ -1,0 +1,33 @@
+.navbar {
+    /*background: #24282c;*/
+    height : 40px;
+}
+
+.nav-item {
+    border-right  : 0.2px solid #dfe0e1;
+}
+
+.nav-item:first-child {
+    border-left : 0.2px solid #dfe0e1;
+}
+
+a.nav-link {
+    font-size   : 14px;
+    font-weight : 500;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.nav-item a.nav-link:hover {
+    transition: background 0.25s;
+}
+
+.nav-item a.nav-link.active {
+    background: #edeeee;
+    color: #007bff !important;
+    font-weight: normal;
+}
+
+.nav-item a.nav-link:hover {
+    background: #edeeee;
+}
