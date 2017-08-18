@@ -1,0 +1,11 @@
+#stalls {
+    flex-grow: 1;
+}
+
+#stalls .list-group .list-group-item {
+    border-radius: 0 !important;
+}
+
+#products {
+    flex-grow: 10;
+}

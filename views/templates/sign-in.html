@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+
+    <!--Scripts-->
+    <script src="../js/renderer.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../js/signin.js"></script>
+
+    <!--Stylesheets-->
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/navbar.css" rel="stylesheet">
+</head>
+<body class="h-100 d-flex justify-content-center align-items-center" style="-webkit-app-region: drag">
+<div class="container-fluid">
+    <h1 class="text-center mb-4">Strings Manila Administration</h1>
+
+    <div class="container col-4" style="-webkit-app-region: no-drag">
+        <div id="error-message" class="text-danger mb-2 text-center "></div>
+        <input id="username-field" type="email" class="form-control mb-2" aria-describedby="emailHelp"
+               placeholder="Username">
+        <input id="password-field" type="password" class="form-control mb-3" id="exampleInputPassword1" placeholder="Password">
+
+        <button id="sign-in-button" class="btn btn-outline-primary w-100">Sign In</button>
+    </div>
+
+</div>
+
+
+</body>
+</html>

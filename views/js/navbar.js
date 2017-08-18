@@ -50,4 +50,6 @@ $(() => {
             }
         }
     }
+
+    setActiveTab(navbarItems.manageEntities.button, navbarItems.manageEntities.template);
 });

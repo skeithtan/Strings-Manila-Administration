@@ -1,52 +1,51 @@
 <!DOCTYPE html>
-<html>
-
+<html class="h-100">
 <head>
-  <meta charset="UTF-8">
-  <title>Strings Manila Adminsitration</title>
+    <meta charset="UTF-8">
+    <title>Strings Manila Adminsitration</title>
 
+    <!--Scripts-->
+    <script src="../js/renderer.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../js/signin.js"></script>
+    <script src="../js/navbar.js"></script>
 
-  <!--Scripts-->
-  <script>
-    window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
-    require('../js/renderer.js');
-    require('../js/popper.min.js');
-    require('../../node_modules/bootstrap/dist/js/bootstrap.min.js');
-  </script>
-  <script src="../js/navbar.js"></script>
-
-  <!--Stylesheets-->
-  <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../stylesheets/navbar.css" rel="stylesheet">
+    <!--Stylesheets-->
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/navbar.css" rel="stylesheet">
 </head>
 
-<body class="bg-faded">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-light" style="-webkit-app-region: drag">
-      <ul id="navbar-buttons" class="navbar-nav mr-auto ml-auto">
+<body class="bg-faded h-100">
+
+<!--Navbar-->
+<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-light"
+     style="-webkit-app-region: drag">
+    <ul id="navbar-buttons" class="navbar-nav mr-auto ml-auto">
         <li id="manage-entities-button" class="nav-item">
-          <a class="nav-link active">Manage Entities</a>
+            <a class="nav-link active">Manage Entities</a>
         </li>
         <li id="confirm-payments-button" class="nav-item">
-          <a class="nav-link">Confirm Payments</a>
+            <a class="nav-link">Confirm Payments</a>
         </li>
         <li id="waitlists-button" class="nav-item">
-          <a class="nav-link">Waitlists</a>
+            <a class="nav-link">Waitlists</a>
         </li>
         <li id="replenish-stocks-button" class="nav-item">
-          <a class="nav-link">Replenish Stocks</a>
+            <a class="nav-link">Replenish Stocks</a>
         </li>
         <li id="sales-report-button" class="nav-item">
-          <a class="nav-link">Sales Report</a>
+            <a class="nav-link">Sales Report</a>
         </li>
         <li id="orders-report-button" class="nav-item">
-          <a class="nav-link">Orders Report</a>
+            <a class="nav-link">Orders Report</a>
         </li>
-      </ul>
-    </nav>
+    </ul>
+</nav>
 
-<div id="current-tab" style="margin-top: 40px;">
+<!--This is where we insert the tabs-->
+<div id="current-tab" style="margin-top: 40px;" class="h-100"></div>
 
-</div>
 </body>
 
 </html>
