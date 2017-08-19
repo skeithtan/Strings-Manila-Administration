@@ -1,8 +1,10 @@
-$(() => {
+'use strict';
 
-    const currentTab = $('#current-tab');
+$(function () {
 
-    const navbarItems = {
+    var currentTab = $('#current-tab');
+
+    var navbarItems = {
         manageEntities: {
             template: "../templates/entity-management.html",
             button: $('#manage-entities-button'),
@@ -35,28 +37,32 @@ $(() => {
         }
     };
 
-    for (const key in navbarItems) {
-        const navbarItem = navbarItems[key];
-        navbarItem.button.click(() => {
-            setActiveTab(navbarItem)
+    var _loop = function _loop(key) {
+        var navbarItem = navbarItems[key];
+        navbarItem.button.click(function () {
+            setActiveTab(navbarItem);
         });
+    };
+
+    for (var key in navbarItems) {
+        _loop(key);
     }
 
     function setActiveTab(navbarItem) {
-        const button = navbarItem.button;
-        const template = navbarItem.template;
-        const scripts = navbarItem.scripts;
+        var button = navbarItem.button;
+        var template = navbarItem.template;
+        var scripts = navbarItem.scripts;
 
         $(button.find('a')).addClass('active');
-        currentTab.load(template, () => {
-            scripts.forEach(script => {
+        currentTab.load(template, function () {
+            scripts.forEach(function (script) {
                 $.getScript(script);
             });
         });
 
-        for (const key in navbarItems) {
-            const navbarItem = navbarItems[key];
-            const navbarButton = navbarItem.button;
+        for (var key in navbarItems) {
+            var _navbarItem = navbarItems[key];
+            var navbarButton = _navbarItem.button;
             if (navbarButton !== button) {
                 $(navbarButton.find('a')).removeClass('active');
             }
@@ -67,9 +73,10 @@ $(() => {
 });
 
 //Set up network
-const Lokka = require('lokka').Lokka;
-const Transport = require('lokka-transport-http').Transport;
+var Lokka = require('lokka').Lokka;
+var Transport = require('lokka-transport-http').Transport;
 
-const client = new Lokka({
+var client = new Lokka({
     transport: new Transport('http://localhost:8000/graphiql/')
 });
+//# sourceMappingURL=navbar.js.map

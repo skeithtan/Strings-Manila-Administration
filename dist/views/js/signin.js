@@ -1,10 +1,12 @@
-let token = "";
-const serverURL = "http://localhost:8000/";
+"use strict";
 
-$(() => {
-    $("#sign-in-button").click(() => {
-        const username = $('#username-field').val();
-        const password = $('#password-field').val();
+var token = "";
+var serverURL = "http://localhost:8000/";
+
+$(function () {
+    $("#sign-in-button").click(function () {
+        var username = $('#username-field').val();
+        var password = $('#password-field').val();
 
         $.ajax({
             url: serverURL + "admin/sign-in/",
@@ -13,7 +15,7 @@ $(() => {
                 "username": username,
                 "password": password
             },
-            success: response => {
+            success: function success(response) {
                 if (response.token) {
                     token = response.token;
                     data.token = token;
@@ -25,11 +27,12 @@ $(() => {
                     console.log(response);
                 }
             },
-            error: response => {
+            error: function error(response) {
                 if (response.responseJSON.error) {
-                    $('#error-message').text(response.responseJSON.error)
+                    $('#error-message').text(response.responseJSON.error);
                 }
             }
         });
     });
 });
+//# sourceMappingURL=signin.js.map
