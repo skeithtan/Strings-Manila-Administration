@@ -18,24 +18,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-data.stalls = [];
-data.activeStallID = null;
+var stalls = [];
+var activeStallId = null;
 
 fetchStalls();
 
+$(function () {
+    $('#add-stall-button').click(function () {
+        var stallName = $('#stall-name-input').val();
+        $.ajax({
+            url: baseURL + 'stalls/',
+            type: 'POST',
+            async: true,
+            data: {
+                name: stallName
+            },
+            success: fetchStalls,
+            beforeSend: authorizeXHR
+        });
+    });
+});
+
 //Functions
+function authorizeXHR(xhr) {
+    xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
+}
+
 function fetchStalls() {
+    console.log("Fetching Stalls");
     client.query('\n    {\n        stalls {\n            id\n            name\n        }\n    }\n    ').then(function (result) {
-        data.stalls = result.stalls;
+        stalls = result.stalls;
         renderStallList();
     });
 }
 
-function addStall() {}
-
 //React
 function StallList() {
-
     var emptyState = _react2.default.createElement(
         'div',
         { className: 'container-fluid p-2 text-center bg-white h-100 d-flex flex-column justify-content-center align-items-center' },
@@ -56,8 +74,8 @@ function StallList() {
         )
     );
 
-    if (data.stalls.length > 0) {
-        var stallItems = data.stalls.map(function (stall) {
+    if (stalls.length > 0) {
+        var stallItems = stalls.map(function (stall) {
             return _react2.default.createElement(StallItem, { stall: stall,
                 key: stall.id });
         });
@@ -85,7 +103,7 @@ var StallItem = function (_React$Component) {
     _createClass(StallItem, [{
         key: 'handleClick',
         value: function handleClick(stallID) {
-            data.activeStallID = stallID;
+            activeStallId = stallID;
             renderStallList();
         }
     }, {
@@ -94,7 +112,7 @@ var StallItem = function (_React$Component) {
             var _this2 = this;
 
             var stall = this.props.stall;
-            var className = stall.id === data.activeStallID ? "list-group-item active" : "list-group-item";
+            var className = stall.id === activeStallId ? "list-group-item active" : "list-group-item";
             return _react2.default.createElement(
                 'li',
                 { className: className,

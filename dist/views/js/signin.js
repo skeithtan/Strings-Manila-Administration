@@ -18,9 +18,7 @@ $(function () {
             success: function success(response) {
                 if (response.token) {
                     token = response.token;
-                    data.token = token;
-                    persist(data);
-
+                    localStorage.token = token;
                     window.location = '../templates/index.html';
                 } else {
                     $('#error-message').text("An unknown error occured.");

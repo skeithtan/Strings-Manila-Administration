@@ -75,8 +75,9 @@ $(function () {
 //Set up network
 var Lokka = require('lokka').Lokka;
 var Transport = require('lokka-transport-http').Transport;
+var baseURL = "http://localhost:8000/";
 
 var client = new Lokka({
-    transport: new Transport('http://localhost:8000/graphiql/')
+    transport: new Transport(baseURL + 'graphiql/')
 });
 //# sourceMappingURL=navbar.js.map
