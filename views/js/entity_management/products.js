@@ -19,7 +19,7 @@ class Products extends React.Component {
         if (activeStall === null) {
             return Products.selectStallState()
         }
-
+        
         return (
             <div id="products"
                  className="bg-white d-flex flex-column">
@@ -135,8 +135,6 @@ class ProductList extends React.Component {
 }
 
 function ProductCard(props) {
-    console.log(props.product);
-
     return (
         <div className="card mb-3">
             <img className="card-img-top"
@@ -147,12 +145,8 @@ function ProductCard(props) {
                 <p className="card-text">{props.product.description}</p>
             </div>
             <ul className="list-group list-group-flush">
-                <li className="list-group-item">
-                    <b className="pl-0 pr-5">Price</b>₱{props.product.currentPrice}
-                </li>
-                <li className="list-group-item">
-                    <b className="pl-0 pr-3">Quantity</b>
-                    {props.product.quantity}
+                <li className="list-group-item border-top-0">
+                    <b className="pl-0 pr-5">₱{props.product.currentPrice}</b>
                 </li>
             </ul>
             <div className="card-footer d-flex border-top-0 pl-4 pr-4">

@@ -2,9 +2,6 @@ import React from 'react';
 import Stalls from './stalls';
 import Products from './products';
 
-fetchStalls();
-
-
 //Fetch data
 function fetchStalls(completionHandler) {
     client.query(`
@@ -44,11 +41,35 @@ class EntityManagement extends React.Component {
             products: null
         };
 
-        fetchStalls(result => {
-            this.setState({
-                stalls: result.stalls
-            })
-        });
+        refreshStalls = () => {
+            fetchStalls(result => {
+                this.setState({
+                    stalls: result.stalls
+                });
+
+                //Update activeStall too
+                const activeStall = this.state.activeStall;
+
+                if (activeStall !== null) {
+                    const products = activeStall.products;
+
+                    this.setState({
+                        activeStall: null  //In case it is deleted
+                    });
+
+                    result.stalls.forEach(stall => {
+                        if(stall.id === activeStall.id) {
+                            stall.products = products;
+                            this.setState({
+                                activeStall: stall
+                            })
+                        }
+                    })
+                }
+            });
+        };
+
+        refreshStalls();
 
         this.setActiveStall = this.setActiveStall.bind(this);
     }
@@ -60,14 +81,18 @@ class EntityManagement extends React.Component {
             activeStall: stall
         });
 
-        fetchProducts(stall.id, result => {
-            let activeStall = this.state.activeStall;
-            activeStall.products = result.stall.productSet;
+        refreshProducts = () => {
+            fetchProducts(stall.id, result => {
+                let activeStall = this.state.activeStall;
+                activeStall.products = result.stall.productSet;
 
-            this.setState({
-                activeStall: activeStall
-            })
-        });
+                this.setState({
+                    activeStall: activeStall
+                })
+            });
+        };
+
+        refreshProducts();
     }
 
     render() {

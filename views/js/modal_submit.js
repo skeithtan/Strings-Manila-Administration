@@ -1,3 +1,6 @@
+var refreshStalls;
+var refreshProducts;
+
 $(() => {
 
     //MARK: - Entity Management
@@ -6,6 +9,7 @@ $(() => {
         const stallName = stallNameInput.val();
         stallNameInput.val('');
 
+
         $.ajax({
             url: baseURL + 'stalls/',
             type: 'POST',
@@ -13,11 +17,12 @@ $(() => {
                 name: stallName
             },
             success: () => {
-                alertify.success('Stall added');
                 iziToast.success({
                     title: 'Added',
                     message: 'Successfully added stall.'
-                })
+                });
+
+                refreshStalls();
             },
             error: response => {
                 console.log(response);
@@ -47,7 +52,9 @@ $(() => {
                 iziToast.success({
                     title: 'Renamed',
                     message: 'Successfully renamed stall.'
-                })
+                });
+
+                refreshStalls();
             },
             error: response => {
                 console.log(response);
@@ -66,12 +73,13 @@ $(() => {
         $.ajax({
             url: baseURL + 'stalls/' + stallID + '/',
             method: 'DELETE',
-            success: response => {
-                alertify.success('Stall deleted');
+            success: () => {
                 iziToast.success({
                     title: 'Deleted',
                     message: 'Successfully deleted stall.'
-                })
+                });
+
+                refreshStalls();
             },
             error: response => {
                 console.log(response);
@@ -99,6 +107,7 @@ $(() => {
         };
 
         if (imageInput.length) {
+            console.log("Has image");
             const image = imageInput[0];
             const form = new FormData();
             form.append('image', image);
@@ -111,10 +120,13 @@ $(() => {
                 processData: false,
                 success: response => {
                     const link = response.data.link;
+                    console.log("response");
                     product.imageURL = link;
+                    console.log("Upload success");
                     submitAddProduct(product, stallID)
                 },
                 error: () => {
+                    console.log("Upload failed");
                     iziToast.warning({
                         title: 'Error',
                         message: 'Unable to upload photo. Using default photo instead.'

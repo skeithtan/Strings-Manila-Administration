@@ -26,8 +26,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-fetchStalls();
-
 //Fetch data
 function fetchStalls(completionHandler) {
     client.query('\n    {\n        stalls {\n            id\n            name\n        }\n    }\n    ').then(completionHandler);
@@ -53,11 +51,35 @@ var EntityManagement = function (_React$Component) {
             products: null
         };
 
-        fetchStalls(function (result) {
-            _this.setState({
-                stalls: result.stalls
+        refreshStalls = function refreshStalls() {
+            fetchStalls(function (result) {
+                _this.setState({
+                    stalls: result.stalls
+                });
+
+                //Update activeStall too
+                var activeStall = _this.state.activeStall;
+
+                if (activeStall !== null) {
+                    var products = activeStall.products;
+
+                    _this.setState({
+                        activeStall: null //In case it is deleted
+                    });
+
+                    result.stalls.forEach(function (stall) {
+                        if (stall.id === activeStall.id) {
+                            stall.products = products;
+                            _this.setState({
+                                activeStall: stall
+                            });
+                        }
+                    });
+                }
             });
-        });
+        };
+
+        refreshStalls();
 
         _this.setActiveStall = _this.setActiveStall.bind(_this);
         return _this;
@@ -74,14 +96,18 @@ var EntityManagement = function (_React$Component) {
                 activeStall: stall
             });
 
-            fetchProducts(stall.id, function (result) {
-                var activeStall = _this2.state.activeStall;
-                activeStall.products = result.stall.productSet;
+            refreshProducts = function refreshProducts() {
+                fetchProducts(stall.id, function (result) {
+                    var activeStall = _this2.state.activeStall;
+                    activeStall.products = result.stall.productSet;
 
-                _this2.setState({
-                    activeStall: activeStall
+                    _this2.setState({
+                        activeStall: activeStall
+                    });
                 });
-            });
+            };
+
+            refreshProducts();
         }
     }, {
         key: 'render',

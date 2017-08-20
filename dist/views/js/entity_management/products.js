@@ -209,8 +209,6 @@ var ProductList = function (_React$Component2) {
 }(_react2.default.Component);
 
 function ProductCard(props) {
-    console.log(props.product);
-
     return _react2.default.createElement(
         "div",
         { className: "card mb-3" },
@@ -236,24 +234,13 @@ function ProductCard(props) {
             { className: "list-group list-group-flush" },
             _react2.default.createElement(
                 "li",
-                { className: "list-group-item" },
+                { className: "list-group-item border-top-0" },
                 _react2.default.createElement(
                     "b",
                     { className: "pl-0 pr-5" },
-                    "Price"
-                ),
-                "\u20B1",
-                props.product.currentPrice
-            ),
-            _react2.default.createElement(
-                "li",
-                { className: "list-group-item" },
-                _react2.default.createElement(
-                    "b",
-                    { className: "pl-0 pr-3" },
-                    "Quantity"
-                ),
-                props.product.quantity
+                    "\u20B1",
+                    props.product.currentPrice
+                )
             )
         ),
         _react2.default.createElement(
