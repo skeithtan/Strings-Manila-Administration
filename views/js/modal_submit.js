@@ -119,10 +119,7 @@ $(() => {
                 contentType: false,
                 processData: false,
                 success: response => {
-                    const link = response.data.link;
-                    console.log("response");
-                    product.imageURL = link;
-                    console.log("Upload success");
+                    product.image = response.data.link;
                     submitAddProduct(product, stallID)
                 },
                 error: () => {
