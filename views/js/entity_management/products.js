@@ -89,7 +89,7 @@ class ProductList extends React.Component {
         )
     }
 
-    static emptyState() {
+    static emptyState(activeStall) {
         return (
             <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white">
                 <h3>There are no products on this stall.</h3>
@@ -98,7 +98,7 @@ class ProductList extends React.Component {
                         data-toggle="modal"
                         data-target="#add-product-modal"
                         onClick={() => {
-                            fillOutAddProductModal(props.activeStall)
+                            fillOutAddProductModal(activeStall)
                         }}>Add a product
                 </button>
             </div>
@@ -113,19 +113,54 @@ class ProductList extends React.Component {
         }
 
         if (products.length === 0) {
-            return ProductList.emptyState();
+            return ProductList.emptyState(this.props.activeStall);
         }
+
+        const productCards = products.map(product => {
+            return <ProductCard product={product}
+                                key={product.id}/>
+        });
 
         //TODO: Product cards
         return (
             <div id="product-list"
                  className="p-4 bg-light">
                 <div className="card-deck">
+                    {productCards}
                 </div>
             </div>
 
         )
     }
+}
+
+function ProductCard(props) {
+    console.log(props.product);
+
+    return (
+        <div className="card mb-3">
+            <img className="card-img-top"
+                 src={props.product.image}
+                 alt="Card image cap"/>
+            <div className="card-body">
+                <h4 className="card-title">{props.product.name}</h4>
+                <p className="card-text">{props.product.description}</p>
+            </div>
+            <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                    <b className="pl-0 pr-5">Price</b>₱{props.product.currentPrice}
+                </li>
+                <li className="list-group-item">
+                    <b className="pl-0 pr-3">Quantity</b>
+                    {props.product.quantity}
+                </li>
+            </ul>
+            <div className="card-footer d-flex border-top-0 pl-4 pr-4">
+                <button className="btn btn-outline-primary ml-auto w-50 mr-3">Modify</button>
+                <button className="btn btn-outline-danger mr-auto w-50">Delete</button>
+            </div>
+        </div>
+    );
 }
 
 export default Products;

@@ -142,15 +142,24 @@ var ProductList = function (_React$Component2) {
             }
 
             if (products.length === 0) {
-                return ProductList.emptyState();
+                return ProductList.emptyState(this.props.activeStall);
             }
+
+            var productCards = products.map(function (product) {
+                return _react2.default.createElement(ProductCard, { product: product,
+                    key: product.id });
+            });
 
             //TODO: Product cards
             return _react2.default.createElement(
                 "div",
                 { id: "product-list",
                     className: "p-4 bg-light" },
-                _react2.default.createElement("div", { className: "card-deck" })
+                _react2.default.createElement(
+                    "div",
+                    { className: "card-deck" },
+                    productCards
+                )
             );
         }
     }], [{
@@ -168,7 +177,7 @@ var ProductList = function (_React$Component2) {
         }
     }, {
         key: "emptyState",
-        value: function emptyState() {
+        value: function emptyState(activeStall) {
             return _react2.default.createElement(
                 "div",
                 { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white" },
@@ -188,7 +197,7 @@ var ProductList = function (_React$Component2) {
                         "data-toggle": "modal",
                         "data-target": "#add-product-modal",
                         onClick: function onClick() {
-                            fillOutAddProductModal(props.activeStall);
+                            fillOutAddProductModal(activeStall);
                         } },
                     "Add a product"
                 )
@@ -198,6 +207,71 @@ var ProductList = function (_React$Component2) {
 
     return ProductList;
 }(_react2.default.Component);
+
+function ProductCard(props) {
+    console.log(props.product);
+
+    return _react2.default.createElement(
+        "div",
+        { className: "card mb-3" },
+        _react2.default.createElement("img", { className: "card-img-top",
+            src: props.product.image,
+            alt: "Card image cap" }),
+        _react2.default.createElement(
+            "div",
+            { className: "card-body" },
+            _react2.default.createElement(
+                "h4",
+                { className: "card-title" },
+                props.product.name
+            ),
+            _react2.default.createElement(
+                "p",
+                { className: "card-text" },
+                props.product.description
+            )
+        ),
+        _react2.default.createElement(
+            "ul",
+            { className: "list-group list-group-flush" },
+            _react2.default.createElement(
+                "li",
+                { className: "list-group-item" },
+                _react2.default.createElement(
+                    "b",
+                    { className: "pl-0 pr-5" },
+                    "Price"
+                ),
+                "\u20B1",
+                props.product.currentPrice
+            ),
+            _react2.default.createElement(
+                "li",
+                { className: "list-group-item" },
+                _react2.default.createElement(
+                    "b",
+                    { className: "pl-0 pr-3" },
+                    "Quantity"
+                ),
+                props.product.quantity
+            )
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "card-footer d-flex border-top-0 pl-4 pr-4" },
+            _react2.default.createElement(
+                "button",
+                { className: "btn btn-outline-primary ml-auto w-50 mr-3" },
+                "Modify"
+            ),
+            _react2.default.createElement(
+                "button",
+                { className: "btn btn-outline-danger mr-auto w-50" },
+                "Delete"
+            )
+        )
+    );
+}
 
 exports.default = Products;
 //# sourceMappingURL=products.js.map

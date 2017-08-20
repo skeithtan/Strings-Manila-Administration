@@ -38,13 +38,12 @@ $(() => {
         stallNameInput.val('');
 
         $.ajax({
-            url: baseURL + 'stalls/' + stallID + '/',
+            url: `${baseURL}stalls/${stallID}/`,
             method: 'PUT',
             data: {
                 name: stallName
             },
-            success: response => {
-                console.log(response);
+            success: () => {
                 iziToast.success({
                     title: 'Renamed',
                     message: 'Successfully renamed stall.'
@@ -90,10 +89,9 @@ $(() => {
         const priceInput = $('#add-product-price-input');
         const descriptionInput = $('#add-product-description-input');
         const imageInput = $('#add-product-image-input')[0].files;
-        const stallID = $('#add-product-stall-id');
+        const stallID = $('#add-product-stall-id').val();
 
         let product = {
-            stall: stallID,
             name: nameInput.val(),
             price: priceInput.val(),
             description: descriptionInput.val(),
@@ -105,26 +103,31 @@ $(() => {
             const form = new FormData();
             form.append('image', image);
 
-            $.ajax({
+            $.post({
                 url: 'https://api.imgur.com/3/image',
-                type: 'POST',
                 async: true,
                 data: form,
+                contentType: false,
+                processData: false,
                 success: response => {
                     const link = response.data.link;
                     product.imageURL = link;
-                    submitAddProduct(product)
+                    submitAddProduct(product, stallID)
                 },
                 error: () => {
-                    alert("An error occurred uploading the photo.");
-                    submitAddProduct(product);
+                    iziToast.warning({
+                        title: 'Error',
+                        message: 'Unable to upload photo. Using default photo instead.'
+                    });
+                    submitAddProduct(product, stallID);
                 },
                 beforeSend: xhr => {
-                    xhr.setHeader('Authorization', 'Client-ID 715b55f24db9cd2')
+                    xhr.setRequestHeader('Authorization', 'Client-ID 715b55f24db9cd2')
                 }
             });
+
         } else {
-            submitAddProduct(product);
+            submitAddProduct(product, stallID);
         }
 
         nameInput.val('');
@@ -135,9 +138,26 @@ $(() => {
 
 });
 
-function submitAddProduct(product) {
-    //TODO
-    $.ajax({});
+function submitAddProduct(product, stallID) {
+    $.ajax({
+        url: `${baseURL}stalls/${stallID}/products/`,
+        method: 'POST',
+        data: product,
+        beforeSend: authorizeXHR,
+        success: () => {
+            iziToast.success({
+                title: 'Added',
+                message: 'Successfully added product'
+            })
+        },
+        error: response => {
+            console.log(response);
+            iziToast.error({
+                title: 'Error',
+                message: 'Unable to add product'
+            })
+        }
+    });
 }
 
 function authorizeXHR(xhr) {

@@ -27,6 +27,7 @@ function fetchProducts(stallID, completionHandler) {
           description
           image
           quantity
+          currentPrice
         }
       }
     }

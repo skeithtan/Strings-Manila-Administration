@@ -44,8 +44,7 @@ $(function () {
             data: {
                 name: stallName
             },
-            success: function success(response) {
-                console.log(response);
+            success: function success() {
                 iziToast.success({
                     title: 'Renamed',
                     message: 'Successfully renamed stall.'
@@ -91,10 +90,9 @@ $(function () {
         var priceInput = $('#add-product-price-input');
         var descriptionInput = $('#add-product-description-input');
         var imageInput = $('#add-product-image-input')[0].files;
-        var stallID = $('#add-product-stall-id');
+        var stallID = $('#add-product-stall-id').val();
 
         var product = {
-            stall: stallID,
             name: nameInput.val(),
             price: priceInput.val(),
             description: descriptionInput.val(),
@@ -106,26 +104,30 @@ $(function () {
             var form = new FormData();
             form.append('image', image);
 
-            $.ajax({
+            $.post({
                 url: 'https://api.imgur.com/3/image',
-                type: 'POST',
                 async: true,
                 data: form,
+                contentType: false,
+                processData: false,
                 success: function success(response) {
                     var link = response.data.link;
                     product.imageURL = link;
-                    submitAddProduct(product);
+                    submitAddProduct(product, stallID);
                 },
                 error: function error() {
-                    alert("An error occurred uploading the photo.");
-                    submitAddProduct(product);
+                    iziToast.warning({
+                        title: 'Error',
+                        message: 'Unable to upload photo. Using default photo instead.'
+                    });
+                    submitAddProduct(product, stallID);
                 },
                 beforeSend: function beforeSend(xhr) {
-                    xhr.setHeader('Authorization', 'Client-ID 715b55f24db9cd2');
+                    xhr.setRequestHeader('Authorization', 'Client-ID 715b55f24db9cd2');
                 }
             });
         } else {
-            submitAddProduct(product);
+            submitAddProduct(product, stallID);
         }
 
         nameInput.val('');
@@ -135,9 +137,26 @@ $(function () {
     });
 });
 
-function submitAddProduct(product) {
-    //TODO
-    $.ajax({});
+function submitAddProduct(product, stallID) {
+    $.ajax({
+        url: baseURL + 'stalls/' + stallID + '/products/',
+        method: 'POST',
+        data: product,
+        beforeSend: authorizeXHR,
+        success: function success() {
+            iziToast.success({
+                title: 'Added',
+                message: 'Successfully added product'
+            });
+        },
+        error: function error(response) {
+            console.log(response);
+            iziToast.error({
+                title: 'Error',
+                message: 'Unable to add product'
+            });
+        }
+    });
 }
 
 function authorizeXHR(xhr) {
