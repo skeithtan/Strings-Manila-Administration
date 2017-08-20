@@ -23,6 +23,8 @@
     "jquery": "3.2.1",
     "lokka": "^1.7.0",
     "lokka-transport-http": "^1.6.1",
-    "popper.js": "^1.12.2"
+    "popper.js": "^1.12.2",
+    "react": "latest",
+    "react-dom": "latest"
   }
 }

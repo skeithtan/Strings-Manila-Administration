@@ -1,76 +1,140 @@
-$(() => {
+import React from 'react';
+import ReactDOM from 'react-dom';
+import EntityManagement from './entity_management/entity_management';
 
-    const currentTab = $('#current-tab');
+function currentTab() {
+    return document.getElementById('current-tab');
+}
 
-    const navbarItems = {
-        manageEntities: {
-            template: "../templates/entity-management.html",
-            button: $('#manage-entities-button'),
-            scripts: ["../../dist/views/js/entity_management.js"]
-        },
-        confirmPayments: {
-            template: "../templates/confirm-payments.html",
-            button: $('#confirm-payments-button'),
-            scripts: []
-        },
-        waitlists: {
-            template: "",
-            button: $('#waitlists-button'),
-            scripts: []
-        },
-        replenishStocks: {
-            template: "",
-            button: $('#replenish-stocks-button'),
-            scripts: []
-        },
-        salesReport: {
-            template: "",
-            button: $('#sales-report-button'),
-            scripts: []
-        },
-        ordersReport: {
-            template: "",
-            button: $('#orders-report-button'),
-            scripts: []
+const navbarItems = [
+    {
+        name: "Manage Entities",
+        isActive: false,
+        loadTab: () => {
+            ReactDOM.render(
+                <EntityManagement/>,
+                currentTab()
+            )
         }
+    },
+    {
+        name: "Confirm Payments",
+        isActive: false,
+        loadTab: () => {
+
+        }
+    },
+    {
+        name: "Waitlists",
+        isActive: false,
+        loadTab: () => {
+
+        }
+    },
+    {
+        name: "Replenish Stocks",
+        isActive: false,
+        loadTab: () => {
+
+        }
+    },
+    {
+        name: "Sales Report",
+        isActive: false,
+        loadTab: () => {
+
+        }
+    },
+    {
+        name: "Orders Report",
+        isActive: false,
+        loadTab: () => {
+
+        }
+    }
+];
+
+class Navbar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            navbarItems: navbarItems
+        };
+
+        this.onNavlinkClick = this.onNavlinkClick.bind(this);
+    }
+
+    onNavlinkClick(navlink) {
+        //Clear first
+        ReactDOM.render(
+            <div></div>,
+            currentTab()
+        );
+
+        let navbarItems = this.state.navbarItems;
+
+        navbarItems.forEach((item, index) => {
+            if (item === navlink) {
+                navbarItems[index].isActive = true;
+                item.loadTab();
+            } else {
+                navbarItems[index].isActive = false;
+            }
+        });
+
+        this.setState({
+            navbarItems: navbarItems
+        });
+    }
+
+    render() {
+        const navbarItems = this.state.navbarItems.map((navbarItem, index) => {
+            return <Navlink navbarItem={navbarItem}
+                            key={index}
+                            onNavlinkClick={this.onNavlinkClick}/>
+        });
+
+        return (
+            <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-light">
+                <ul id="navbar-buttons"
+                    className="navbar-nav mr-auto ml-auto">
+                    {navbarItems}
+                </ul>
+            </nav>
+        );
+    }
+}
+
+class Navlink extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onNavlinkClick = this.onNavlinkClick.bind(this);
+    }
+
+    activeItem() {
+        return (
+            <li className="nav-item">
+                <a className="nav-link active">{this.props.navbarItem.name}</a>
+            </li>
+        );
+    }
+
+    onNavlinkClick() {
+        this.props.onNavlinkClick(this.props.navbarItem)
     };
 
-    for (const key in navbarItems) {
-        const navbarItem = navbarItems[key];
-        navbarItem.button.click(() => {
-            setActiveTab(navbarItem)
-        });
+    inactiveItem() {
+        return (
+            <li className="nav-item">
+                <a className="nav-link"
+                   onClick={this.onNavlinkClick}>{this.props.navbarItem.name}</a>
+            </li>
+        )
     }
 
-    function setActiveTab(navbarItem) {
-        const button = navbarItem.button;
-        const template = navbarItem.template;
-        const scripts = navbarItem.scripts;
-
-        $(button.find('a')).addClass('active');
-        currentTab.load(template, () => {
-            scripts.forEach(script => {
-                $.getScript(script);
-            });
-        });
-
-        for (const key in navbarItems) {
-            const navbarItem = navbarItems[key];
-            const navbarButton = navbarItem.button;
-            if (navbarButton !== button) {
-                $(navbarButton.find('a')).removeClass('active');
-            }
-        }
+    render() {
+        return this.props.navbarItem.isActive ? this.activeItem() : this.inactiveItem();
     }
+}
 
-    setActiveTab(navbarItems.manageEntities);
-});
-
-//Set up network
-const Lokka = require('lokka').Lokka;
-const Transport = require('lokka-transport-http').Transport;
-const baseURL = "http://localhost:8000/";
-
-const client = new Lokka({
-    transport: new Transport(baseURL + 'graphiql/')
-});
+export default Navbar;

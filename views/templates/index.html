@@ -2,50 +2,84 @@
 <html class="h-100">
 <head>
     <meta charset="UTF-8">
-    <title>Strings Manila Adminsitration</title>
+    <title>Strings Manila Administration</title>
 
     <!--Scripts-->
     <script src="../../dist/views/js/renderer.js"></script>
     <script src="../../dist/views/js/popper.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../../dist/views/js/signin.js"></script>
-    <script src="../../dist/views/js/navbar.js"></script>
 
     <!--Stylesheets-->
-    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../stylesheets/navbar.css" rel="stylesheet">
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="../stylesheets/navbar.css"
+          rel="stylesheet">
 </head>
 
 <body class="bg-faded h-100">
 
-<!--Navbar-->
-<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-light"
-     style="-webkit-app-region: drag">
-    <ul id="navbar-buttons" class="navbar-nav mr-auto ml-auto">
-        <li id="manage-entities-button" class="nav-item">
-            <a class="nav-link active">Manage Entities</a>
-        </li>
-        <li id="confirm-payments-button" class="nav-item">
-            <a class="nav-link">Confirm Payments</a>
-        </li>
-        <li id="waitlists-button" class="nav-item">
-            <a class="nav-link">Waitlists</a>
-        </li>
-        <li id="replenish-stocks-button" class="nav-item">
-            <a class="nav-link">Replenish Stocks</a>
-        </li>
-        <li id="sales-report-button" class="nav-item">
-            <a class="nav-link">Sales Report</a>
-        </li>
-        <li id="orders-report-button" class="nav-item">
-            <a class="nav-link">Orders Report</a>
-        </li>
-    </ul>
-</nav>
+<div id="app-container"
+     class="container-fluid p-0 m-0 h-100">
+</div>
 
-<!--This is where we insert the tabs-->
-<div id="current-tab" style="padding-top: 40px;" class="h-100"></div>
+<!--Modals-->
+
+<!--Add Stall Modal-->
+<div class="modal fade"
+     id="add-stall-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add stall</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label for="stall-name-input"
+                           class="col-sm-3 col-form-label">Stall Name</label>
+                    <div class="col-sm-9">
+                        <input id="stall-name-input"
+                               type="email"
+                               class="form-control"
+                               placeholder="Stall Name">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="add-stall-button"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal">Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--React Scripts-->
+<script>
+    const Lokka = require('lokka').Lokka;
+    const Transport = require('lokka-transport-http').Transport;
+    const baseURL = "http://localhost:8000/";
+
+    const client = new Lokka({
+        transport: new Transport(baseURL + 'graphiql/')
+    });
+
+    require('../../dist/views/js/index.js');
+</script>
 
 </body>
 
 </html>
+
