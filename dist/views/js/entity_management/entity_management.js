@@ -28,36 +28,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 fetchStalls();
 
-$(function () {
-    $('#add-stall-button').click(function () {
-        var stallNameInput = $('#stall-name-input');
-        var stallName = stallNameInput.val();
-        stallNameInput.val('');
-
-        $.ajax({
-            url: baseURL + 'stalls/',
-            type: 'POST',
-            async: true,
-            data: {
-                name: stallName
-            },
-            success: fetchStalls,
-            beforeSend: authorizeXHR
-        });
-    });
-});
-
-//Functions
-function authorizeXHR(xhr) {
-    xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
-}
-
+//Fetch data
 function fetchStalls(completionHandler) {
     client.query('\n    {\n        stalls {\n            id\n            name\n        }\n    }\n    ').then(completionHandler);
 }
 
 function fetchProducts(stallID, completionHandler) {
-    client.query('\n    {\n      stall(id:' + stallID + '){\n        productSet{\n          id\n          name\n          description\n          photo\n          quantity\n        }\n      }\n    }\n    ').then(completionHandler);
+    client.query('\n    {\n      stall(id:' + stallID + '){\n        productSet{\n          id\n          name\n          description\n          image\n          quantity\n        }\n      }\n    }\n    ').then(completionHandler);
 }
 
 //React
@@ -91,6 +68,7 @@ var EntityManagement = function (_React$Component) {
         value: function setActiveStall(stall) {
             var _this2 = this;
 
+            localStorage.activeStall = JSON.stringify(stall);
             stall.products = null;
 
             this.setState({
@@ -100,8 +78,6 @@ var EntityManagement = function (_React$Component) {
             fetchProducts(stall.id, function (result) {
                 var activeStall = _this2.state.activeStall;
                 activeStall.products = result.stall.productSet;
-
-                console.log(activeStall);
 
                 _this2.setState({
                     activeStall: activeStall

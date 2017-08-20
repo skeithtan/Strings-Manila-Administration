@@ -36,7 +36,10 @@ function ProductListHeader(props) {
              className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
             <h4 className="mr-auto mb-auto mt-auto">{props.activeStall.name}</h4>
             <div>
-                <button className="btn btn-sm btn-outline-primary mr-1">Add product</button>
+                <button className="btn btn-sm btn-outline-primary mr-1"
+                        data-toggle="modal"
+                        data-target="#add-product-modal">Add product
+                </button>
                 <button className="btn btn-sm btn-outline-primary mr-1">Rename stall</button>
                 <button className="btn btn-sm btn-outline-danger">Delete stall</button>
             </div>
@@ -62,7 +65,10 @@ class ProductList extends React.Component {
             <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white">
                 <h3>There are no products on this stall.</h3>
                 <p className="text-faded">Products added to this stall will show up here.</p>
-                <button className="btn btn-outline-primary">Add a product</button>
+                <button className="btn btn-outline-primary"
+                        data-toggle="modal"
+                        data-target="#add-product-modal">Add a product
+                </button>
             </div>
         )
     }

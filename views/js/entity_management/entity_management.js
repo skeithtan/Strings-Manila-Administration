@@ -5,30 +5,7 @@ import Products from './products';
 fetchStalls();
 
 
-$(() => {
-    $('#add-stall-button').click(() => {
-        const stallNameInput = $('#stall-name-input');
-        const stallName = stallNameInput.val();
-        stallNameInput.val('');
-
-        $.ajax({
-            url: baseURL + 'stalls/',
-            type: 'POST',
-            async: true,
-            data: {
-                name: stallName
-            },
-            success: fetchStalls,
-            beforeSend: authorizeXHR
-        });
-    })
-});
-
-//Functions
-function authorizeXHR(xhr) {
-    xhr.setRequestHeader("Authorization", "Token " + localStorage.token)
-}
-
+//Fetch data
 function fetchStalls(completionHandler) {
     client.query(`
     {
@@ -48,7 +25,7 @@ function fetchProducts(stallID, completionHandler) {
           id
           name
           description
-          photo
+          image
           quantity
         }
       }
@@ -76,6 +53,7 @@ class EntityManagement extends React.Component {
     }
 
     setActiveStall(stall) {
+        localStorage.activeStall = JSON.stringify(stall);
         stall.products = null;
 
         this.setState({
@@ -85,8 +63,6 @@ class EntityManagement extends React.Component {
         fetchProducts(stall.id, result => {
             let activeStall = this.state.activeStall;
             activeStall.products = result.stall.productSet;
-
-            console.log(activeStall);
 
             this.setState({
                 activeStall: activeStall

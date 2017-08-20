@@ -77,7 +77,9 @@ function ProductListHeader(props) {
             null,
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-sm btn-outline-primary mr-1" },
+                { className: "btn btn-sm btn-outline-primary mr-1",
+                    "data-toggle": "modal",
+                    "data-target": "#add-product-modal" },
                 "Add product"
             ),
             _react2.default.createElement(
@@ -155,7 +157,9 @@ var ProductList = function (_React$Component2) {
                 ),
                 _react2.default.createElement(
                     "button",
-                    { className: "btn btn-outline-primary" },
+                    { className: "btn btn-outline-primary",
+                        "data-toggle": "modal",
+                        "data-target": "#add-product-modal" },
                     "Add a product"
                 )
             );

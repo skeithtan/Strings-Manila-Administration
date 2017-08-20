@@ -8,6 +8,8 @@
     <script src="../../dist/views/js/renderer.js"></script>
     <script src="../../dist/views/js/popper.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../dist/views/js/form_verification.js"></script>
+    <script src="../../dist/views/js/modal_submit.js"></script>
 
     <!--Stylesheets-->
     <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -32,6 +34,7 @@
     <div class="modal-dialog"
          role="document">
         <div class="modal-content">
+            <!--Modal header-->
             <div class="modal-header">
                 <h5 class="modal-title">Add stall</h5>
                 <button type="button"
@@ -41,30 +44,114 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
 
+            <!--Modal body-->
+            <div class="modal-body">
                 <div class="form-group row">
-                    <label for="stall-name-input"
+                    <label for="add-stall-name-input"
                            class="col-sm-3 col-form-label">Stall Name</label>
                     <div class="col-sm-9">
-                        <input id="stall-name-input"
-                               type="email"
-                               class="form-control"
-                               placeholder="Stall Name">
+                        <input id="add-stall-name-input"
+                               class="form-control text-input"
+                               placeholder="Stall name">
                     </div>
                 </div>
-
             </div>
+
+            <!--Modal footer-->
             <div class="modal-footer">
                 <button id="add-stall-button"
                         type="button"
                         class="btn btn-primary"
-                        data-dismiss="modal">Add
+                        data-dismiss="modal"
+                        disabled>Add
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<!--Add Product Modal-->
+<div class="modal fade"
+     id="add-product-modal"
+     tabindex="-1"
+     role="dialog">
+
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+
+            <!--Modal Header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Add a product</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal Body-->
+            <div class="modal-body pb-3">
+                <div class="form-group row">
+                    <label for="add-product-name-input"
+                           class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input id="add-product-name-input"
+                               class="form-control text-input"
+                               placeholder="Product name">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="add-product-price-input"
+                           class="col-sm-3 col-form-label">Price</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-addon">₱</span>
+                            <input id="add-product-price-input"
+                                   class="form-control text-input"
+                                   placeholder="Price"
+                                   type="number"
+                                   min="0"
+                                   step="0.01">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="add-product-description-input"
+                           class="col-sm-3 col-form-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="add-product-description-input"
+                                  class="form-control text-input"
+                                  placeholder="Description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group-row">
+                    <label for="add-product-image-input"
+                           class="col-sm-3 col-form-label p-0">Image</label>
+                    <input id="add-product-image-input"
+                           type="file"
+                           class="form-control-file d-inline">
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="add-product-button"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        disabled>Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--React Scripts-->
 <script>
