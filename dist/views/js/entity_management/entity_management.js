@@ -114,7 +114,7 @@ var EntityManagement = function (_React$Component) {
                 _react2.default.createElement(_stalls2.default, { stalls: this.state.stalls,
                     activeStall: this.state.activeStall,
                     setActiveStall: this.setActiveStall }),
-                _react2.default.createElement(_products2.default, null)
+                _react2.default.createElement(_products2.default, { activeStall: this.state.activeStall })
             );
         }
     }]);

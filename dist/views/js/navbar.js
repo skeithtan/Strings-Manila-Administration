@@ -33,29 +33,27 @@ function currentTab() {
 var navbarItems = [{
     name: "Manage Entities",
     isActive: false,
-    loadTab: function loadTab() {
-        _reactDom2.default.render(_react2.default.createElement(_entity_management2.default, null), currentTab());
-    }
+    tab: _react2.default.createElement(_entity_management2.default, null)
 }, {
     name: "Confirm Payments",
     isActive: false,
-    loadTab: function loadTab() {}
+    tab: undefined //TODO
 }, {
     name: "Waitlists",
     isActive: false,
-    loadTab: function loadTab() {}
+    tab: undefined //TODO
 }, {
     name: "Replenish Stocks",
     isActive: false,
-    loadTab: function loadTab() {}
+    tab: undefined //TODO
 }, {
     name: "Sales Report",
     isActive: false,
-    loadTab: function loadTab() {}
+    tab: undefined //TODO
 }, {
     name: "Orders Report",
     isActive: false,
-    loadTab: function loadTab() {}
+    tab: undefined //TODO
 }];
 
 var Navbar = function (_React$Component) {
@@ -77,15 +75,12 @@ var Navbar = function (_React$Component) {
     _createClass(Navbar, [{
         key: 'onNavlinkClick',
         value: function onNavlinkClick(navlink) {
-            //Clear first
-            _reactDom2.default.render(_react2.default.createElement('div', null), currentTab());
-
             var navbarItems = this.state.navbarItems;
 
             navbarItems.forEach(function (item, index) {
                 if (item === navlink) {
                     navbarItems[index].isActive = true;
-                    item.loadTab();
+                    _reactDom2.default.render(item.tab, currentTab());
                 } else {
                     navbarItems[index].isActive = false;
                 }
@@ -94,6 +89,14 @@ var Navbar = function (_React$Component) {
             this.setState({
                 navbarItems: navbarItems
             });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            //This works like $(() => {}) in jQuery
+
+            var navbarItems = this.state.navbarItems;
+            this.onNavlinkClick(navbarItems[0]); //Preload first element on initial load
         }
     }, {
         key: 'render',

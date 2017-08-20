@@ -96,8 +96,8 @@ class EntityManagement extends React.Component {
                  className="container-fluid d-flex flex-row m-0 p-0 h-100 w-100">
                 <Stalls stalls={this.state.stalls}
                         activeStall={this.state.activeStall}
-                        setActiveStall={this.setActiveStall} />
-                <Products/>
+                        setActiveStall={this.setActiveStall}/>
+                <Products activeStall={this.state.activeStall}/>
             </div>
         );
     }

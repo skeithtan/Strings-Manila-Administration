@@ -10,48 +10,33 @@ const navbarItems = [
     {
         name: "Manage Entities",
         isActive: false,
-        loadTab: () => {
-            ReactDOM.render(
-                <EntityManagement/>,
-                currentTab()
-            )
-        }
+        tab: <EntityManagement/>
     },
     {
         name: "Confirm Payments",
         isActive: false,
-        loadTab: () => {
-
-        }
+        tab: undefined //TODO
     },
     {
         name: "Waitlists",
         isActive: false,
-        loadTab: () => {
-
-        }
+        tab: undefined //TODO
     },
     {
         name: "Replenish Stocks",
         isActive: false,
-        loadTab: () => {
-
-        }
+        tab: undefined //TODO
     },
     {
         name: "Sales Report",
         isActive: false,
-        loadTab: () => {
-
-        }
+        tab: undefined //TODO
     },
     {
         name: "Orders Report",
         isActive: false,
-        loadTab: () => {
-
-        }
-    }
+        tab: undefined //TODO
+    },
 ];
 
 class Navbar extends React.Component {
@@ -65,18 +50,12 @@ class Navbar extends React.Component {
     }
 
     onNavlinkClick(navlink) {
-        //Clear first
-        ReactDOM.render(
-            <div></div>,
-            currentTab()
-        );
-
         let navbarItems = this.state.navbarItems;
 
         navbarItems.forEach((item, index) => {
             if (item === navlink) {
                 navbarItems[index].isActive = true;
-                item.loadTab();
+                ReactDOM.render(item.tab, currentTab());
             } else {
                 navbarItems[index].isActive = false;
             }
@@ -85,6 +64,13 @@ class Navbar extends React.Component {
         this.setState({
             navbarItems: navbarItems
         });
+    }
+
+    componentDidMount() {
+        //This works like $(() => {}) in jQuery
+
+        let navbarItems = this.state.navbarItems;
+        this.onNavlinkClick(navbarItems[0]) //Preload first element on initial load
     }
 
     render() {
