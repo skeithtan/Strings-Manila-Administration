@@ -53,7 +53,6 @@ class EntityManagement extends React.Component {
     }
 
     setActiveStall(stall) {
-        localStorage.activeStall = JSON.stringify(stall);
         stall.products = null;
 
         this.setState({

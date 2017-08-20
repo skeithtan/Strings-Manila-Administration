@@ -30,6 +30,15 @@ class Products extends React.Component {
     }
 }
 
+function fillOutModifyStallModal(activeStall) {
+    $('#modify-stall-id').val(activeStall.id);
+    $('#modify-stall-name-input').val(activeStall.name);
+}
+
+function fillOutAddProductModal(activeStall) {
+    $('#add-product-stall-id').val(activeStall.id);
+}
+
 function ProductListHeader(props) {
     return (
         <div id="product-list-header"
@@ -38,9 +47,18 @@ function ProductListHeader(props) {
             <div>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"
-                        data-target="#add-product-modal">Add product
+                        data-target="#add-product-modal"
+                        onClick={() => {
+                            fillOutAddProductModal(props.activeStall)
+                        }}>Add product
                 </button>
-                <button className="btn btn-sm btn-outline-primary mr-1">Rename stall</button>
+                <button className="btn btn-sm btn-outline-primary mr-1"
+                        data-toggle="modal"
+                        data-target="#modify-stall-modal"
+                        onClick={() => {
+                            fillOutModifyStallModal(props.activeStall)
+                        }}>Rename stall
+                </button>
                 <button className="btn btn-sm btn-outline-danger">Delete stall</button>
             </div>
         </div>
@@ -67,7 +85,10 @@ class ProductList extends React.Component {
                 <p className="text-faded">Products added to this stall will show up here.</p>
                 <button className="btn btn-outline-primary"
                         data-toggle="modal"
-                        data-target="#add-product-modal">Add a product
+                        data-target="#add-product-modal"
+                        onClick={() => {
+                            fillOutAddProductModal(props.activeStall)
+                        }}>Add a product
                 </button>
             </div>
         )

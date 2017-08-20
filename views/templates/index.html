@@ -71,6 +71,52 @@
     </div>
 </div>
 
+<!--Modify Stall Modal-->
+<div class="modal fade"
+     id="modify-stall-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Modify stall</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <input type="hidden" id="modify-stall-id">
+                <div class="form-group row">
+                    <label for="modify-stall-name-input"
+                           class="col-sm-3 col-form-label">Stall Name</label>
+                    <div class="col-sm-9">
+                        <input id="modify-stall-name-input"
+                               class="form-control text-input"
+                               placeholder="Stall name">
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="modify-stall-button"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        disabled>Modify
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Add Product Modal-->
 <div class="modal fade"
      id="add-product-modal"
@@ -94,6 +140,9 @@
 
             <!--Modal Body-->
             <div class="modal-body pb-3">
+
+                <input type="hidden" id="add-product-stall-id">
+
                 <div class="form-group row">
                     <label for="add-product-name-input"
                            class="col-sm-3 col-form-label">Name</label>

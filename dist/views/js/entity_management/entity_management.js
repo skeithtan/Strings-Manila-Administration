@@ -68,7 +68,6 @@ var EntityManagement = function (_React$Component) {
         value: function setActiveStall(stall) {
             var _this2 = this;
 
-            localStorage.activeStall = JSON.stringify(stall);
             stall.products = null;
 
             this.setState({

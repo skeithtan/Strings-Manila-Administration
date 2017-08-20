@@ -30,10 +30,10 @@ $(() => {
         const priceInput = $('#add-product-price-input');
         const descriptionInput = $('#add-product-description-input');
         const imageInput = $('#add-product-image-input')[0].files;
-        const activeStall = JSON.parse(localStorage.activeStall);
+        const stallID = $('#add-product-stall-id');
 
         let product = {
-            stall: activeStall.id,
+            stall: stallID,
             name: nameInput.val(),
             price: priceInput.val(),
             description: descriptionInput.val(),

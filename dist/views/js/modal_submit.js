@@ -32,10 +32,10 @@ $(function () {
         var priceInput = $('#add-product-price-input');
         var descriptionInput = $('#add-product-description-input');
         var imageInput = $('#add-product-image-input')[0].files;
-        var activeStall = JSON.parse(localStorage.activeStall);
+        var stallID = $('#add-product-stall-id');
 
         var product = {
-            stall: activeStall.id,
+            stall: stallID,
             name: nameInput.val(),
             price: priceInput.val(),
             description: descriptionInput.val(),
