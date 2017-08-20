@@ -19,7 +19,7 @@ class Products extends React.Component {
         if (activeStall === null) {
             return Products.selectStallState()
         }
-        
+
         return (
             <div id="products"
                  className="bg-white d-flex flex-column">

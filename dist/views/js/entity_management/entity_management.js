@@ -61,6 +61,7 @@ var EntityManagement = function (_React$Component) {
                 var activeStall = _this.state.activeStall;
 
                 if (activeStall !== null) {
+                    //Get the product because the stalls don't come with them
                     var products = activeStall.products;
 
                     _this.setState({
@@ -69,9 +70,10 @@ var EntityManagement = function (_React$Component) {
 
                     result.stalls.forEach(function (stall) {
                         if (stall.id === activeStall.id) {
+                            //Add the product to the new stall
                             stall.products = products;
                             _this.setState({
-                                activeStall: stall
+                                activeStall: stall //Make it active
                             });
                         }
                     });

@@ -51,6 +51,7 @@ class EntityManagement extends React.Component {
                 const activeStall = this.state.activeStall;
 
                 if (activeStall !== null) {
+                    //Get the product because the stalls don't come with them
                     const products = activeStall.products;
 
                     this.setState({
@@ -59,9 +60,10 @@ class EntityManagement extends React.Component {
 
                     result.stalls.forEach(stall => {
                         if(stall.id === activeStall.id) {
+                            //Add the product to the new stall
                             stall.products = products;
                             this.setState({
-                                activeStall: stall
+                                activeStall: stall //Make it active
                             })
                         }
                     })
