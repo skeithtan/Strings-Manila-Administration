@@ -7,7 +7,7 @@ class Products extends React.Component {
 
     static selectStallState() {
         return (
-            <div className="container text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center">
+            <div className="container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center">
                 <h4>Select a stall from the left to see its products</h4>
             </div>
         )
@@ -21,7 +21,8 @@ class Products extends React.Component {
         }
 
         return (
-            <div className="container-fluid p-0 h-100">
+            <div id="products"
+                 className="bg-white d-flex flex-column">
                 <ProductListHeader activeStall={activeStall}/>
                 <ProductList activeStall={activeStall}/>
             </div>
@@ -52,7 +53,7 @@ class ProductList extends React.Component {
 
     static loadingState() {
         return (
-            <div className="container d-flex flex-column justify-content-center align-items-center">
+            <div className="container d-flex flex-column justify-content-center align-items-center h-100">
                 <h3>Loading...</h3>
             </div>
         )
@@ -60,7 +61,7 @@ class ProductList extends React.Component {
 
     static emptyState() {
         return (
-            <div className="container d-flex flex-column justify-content-center align-items-center">
+            <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white">
                 <h3>There are no products on this stall.</h3>
                 <p className="text-faded">Products added to this stall will show up here.</p>
                 <button className="btn btn-outline-primary">Add a product</button>
@@ -81,8 +82,12 @@ class ProductList extends React.Component {
 
         //TODO: Product cards
         return (
-            <div className="card-deck">
+            <div id="product-list"
+                 className="p-4 bg-light">
+                <div className="card-deck">
+                </div>
             </div>
+
         )
     }
 }

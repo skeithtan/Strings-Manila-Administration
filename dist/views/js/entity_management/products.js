@@ -38,7 +38,8 @@ var Products = function (_React$Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "container-fluid p-0 h-100" },
+                { id: "products",
+                    className: "bg-white d-flex flex-column" },
                 _react2.default.createElement(ProductListHeader, { activeStall: activeStall }),
                 _react2.default.createElement(ProductList, { activeStall: activeStall })
             );
@@ -48,7 +49,7 @@ var Products = function (_React$Component) {
         value: function selectStallState() {
             return _react2.default.createElement(
                 "div",
-                { className: "container text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center" },
+                { className: "container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center" },
                 _react2.default.createElement(
                     "h4",
                     null,
@@ -116,14 +117,19 @@ var ProductList = function (_React$Component2) {
             }
 
             //TODO: Product cards
-            return _react2.default.createElement("div", { className: "card-deck" });
+            return _react2.default.createElement(
+                "div",
+                { id: "product-list",
+                    className: "p-4 bg-light" },
+                _react2.default.createElement("div", { className: "card-deck" })
+            );
         }
     }], [{
         key: "loadingState",
         value: function loadingState() {
             return _react2.default.createElement(
                 "div",
-                { className: "container d-flex flex-column justify-content-center align-items-center" },
+                { className: "container d-flex flex-column justify-content-center align-items-center h-100" },
                 _react2.default.createElement(
                     "h3",
                     null,
@@ -136,7 +142,7 @@ var ProductList = function (_React$Component2) {
         value: function emptyState() {
             return _react2.default.createElement(
                 "div",
-                { className: "container d-flex flex-column justify-content-center align-items-center" },
+                { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white" },
                 _react2.default.createElement(
                     "h3",
                     null,

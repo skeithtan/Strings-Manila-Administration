@@ -71,6 +71,8 @@ class EntityManagement extends React.Component {
                 stalls: result.stalls
             })
         });
+
+        this.setActiveStall = this.setActiveStall.bind(this);
     }
 
     setActiveStall(stall) {
@@ -82,7 +84,9 @@ class EntityManagement extends React.Component {
 
         fetchProducts(stall.id, result => {
             let activeStall = this.state.activeStall;
-            activeStall.products = result.stall.products;
+            activeStall.products = result.stall.productSet;
+
+            console.log(activeStall);
 
             this.setState({
                 activeStall: activeStall

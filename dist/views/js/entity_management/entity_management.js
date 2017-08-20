@@ -81,6 +81,8 @@ var EntityManagement = function (_React$Component) {
                 stalls: result.stalls
             });
         });
+
+        _this.setActiveStall = _this.setActiveStall.bind(_this);
         return _this;
     }
 
@@ -97,7 +99,9 @@ var EntityManagement = function (_React$Component) {
 
             fetchProducts(stall.id, function (result) {
                 var activeStall = _this2.state.activeStall;
-                activeStall.products = result.stall.products;
+                activeStall.products = result.stall.productSet;
+
+                console.log(activeStall);
 
                 _this2.setState({
                     activeStall: activeStall
