@@ -38,10 +38,19 @@ function fillOutRenameStallModal(activeStall) {
 
 function fillOutDeleteStallModal(activeStall) {
     $('#delete-stall-id').val(activeStall.id);
+    $('b.delete-stall-name').html(activeStall.name);
 }
 
 function fillOutAddProductModal(activeStall) {
     $('#add-product-stall-id').val(activeStall.id);
+}
+
+function fillOutModifyProductModal(product) {
+
+}
+
+function fillOutDeleteProductModal(product) {
+
 }
 
 function ProductListHeader(props) {
@@ -150,8 +159,20 @@ function ProductCard(props) {
                 </li>
             </ul>
             <div className="card-footer d-flex border-top-0 pl-4 pr-4">
-                <button className="btn btn-outline-primary ml-auto w-50 mr-3">Modify</button>
-                <button className="btn btn-outline-danger mr-auto w-50">Delete</button>
+                <button className="btn btn-outline-primary ml-auto w-50 mr-3"
+                        data-toggle="modal"
+                        data-target="#modify-product-modal"
+                        onClick={() => {
+                            fillOutModifyProductModal(props.product);
+                        }}>Modify
+                </button>
+                <button className="btn btn-outline-danger mr-auto w-50"
+                        data-toggle="modal"
+                        data-target=""
+                        onClick={() => {
+                            fillOutDeleteProductModal(props.product);
+                        }}>Delete
+                </button>
             </div>
         </div>
     );
