@@ -77,12 +77,12 @@ function ProductListHeader(props) {
             null,
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-sm btn-outline-primary" },
+                { className: "btn btn-sm btn-outline-primary mr-1" },
                 "Add product"
             ),
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-sm btn-outline-primary" },
+                { className: "btn btn-sm btn-outline-primary mr-1" },
                 "Rename stall"
             ),
             _react2.default.createElement(

@@ -27,8 +27,6 @@ class Products extends React.Component {
                 <ProductList activeStall={activeStall}/>
             </div>
         )
-
-
     }
 }
 
@@ -38,8 +36,8 @@ function ProductListHeader(props) {
              className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
             <h4 className="mr-auto mb-auto mt-auto">{props.activeStall.name}</h4>
             <div>
-                <button className="btn btn-sm btn-outline-primary">Add product</button>
-                <button className="btn btn-sm btn-outline-primary">Rename stall</button>
+                <button className="btn btn-sm btn-outline-primary mr-1">Add product</button>
+                <button className="btn btn-sm btn-outline-primary mr-1">Rename stall</button>
                 <button className="btn btn-sm btn-outline-danger">Delete stall</button>
             </div>
         </div>
