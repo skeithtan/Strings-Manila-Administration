@@ -1,11 +1,16 @@
 $(() => {
 
-    validateInputs({
+    addValidation({
         inputs: $('#add-stall-modal').find('.text-input'),
         button: $('#add-stall-button')
     });
 
-    validateInputs({
+    addValidation({
+        inputs: $('#modify-stall-modal').find('.text-input'),
+        button: $('#modify-stall-button')
+    });
+
+    addValidation({
         inputs: $('#add-product-modal').find('.text-input'),
         button: $('#add-product-button')
     });
@@ -15,7 +20,7 @@ $(() => {
 /*
     This disables the submit button until all inputs are filled
  */
-function validateInputs(object) {
+function addValidation(object) {
     const inputs = object.inputs;
     const button = object.button;
 

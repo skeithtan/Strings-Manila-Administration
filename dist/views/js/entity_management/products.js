@@ -62,9 +62,14 @@ var Products = function (_React$Component) {
     return Products;
 }(_react2.default.Component);
 
-function fillOutModifyStallModal(activeStall) {
-    $('#modify-stall-id').val(activeStall.id);
-    $('#modify-stall-name-input').val(activeStall.name);
+function fillOutRenameStallModal(activeStall) {
+    $('#rename-stall-id').val(activeStall.id);
+    $('#rename-stall-name-input').val(activeStall.name);
+    $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
+}
+
+function fillOutDeleteStallModal(activeStall) {
+    $('#delete-stall-id').val(activeStall.id);
 }
 
 function fillOutAddProductModal(activeStall) {
@@ -98,15 +103,20 @@ function ProductListHeader(props) {
                 "button",
                 { className: "btn btn-sm btn-outline-primary mr-1",
                     "data-toggle": "modal",
-                    "data-target": "#modify-stall-modal",
+                    "data-target": "#rename-stall-modal",
                     onClick: function onClick() {
-                        fillOutModifyStallModal(props.activeStall);
+                        fillOutRenameStallModal(props.activeStall);
                     } },
                 "Rename stall"
             ),
             _react2.default.createElement(
                 "button",
-                { className: "btn btn-sm btn-outline-danger" },
+                { className: "btn btn-sm btn-outline-danger",
+                    "data-toggle": "modal",
+                    "data-target": "#delete-stall-modal",
+                    onClick: function onClick() {
+                        fillOutDeleteStallModal(props.activeStall);
+                    } },
                 "Delete stall"
             )
         )

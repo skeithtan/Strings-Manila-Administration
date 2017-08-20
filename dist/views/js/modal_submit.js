@@ -6,16 +6,16 @@ $(function () {
     $('#add-stall-button').click(function () {
         var stallNameInput = $('#add-stall-name-input');
         var stallName = stallNameInput.val();
+        stallNameInput.val('');
 
         $.ajax({
             url: baseURL + 'stalls/',
             type: 'POST',
-            async: true,
             data: {
                 name: stallName
             },
-            success: function success(response) {
-                console.log(response);
+            success: function success() {
+                console.log("Success");
                 //TODO
             },
             error: function error(response) {
@@ -23,8 +23,44 @@ $(function () {
             },
             beforeSend: authorizeXHR
         });
+    });
 
+    $('#rename-stall-button').click(function () {
+        var stallNameInput = $('#rename-stall-name-input');
+        var stallName = stallNameInput.val();
+        var stallID = $('#rename-stall-id').val();
         stallNameInput.val('');
+
+        $.ajax({
+            url: baseURL + 'stalls/' + stallID + '/',
+            method: 'PUT',
+            data: {
+                name: stallName
+            },
+            success: function success(response) {
+                console.log(response);
+            },
+            error: function error(response) {
+                console.log(response);
+            },
+            beforeSend: authorizeXHR
+        });
+    });
+
+    $('#delete-stall-button').click(function () {
+        var stallID = $('#delete-stall-id').val();
+
+        $.ajax({
+            url: baseURL + 'stalls/' + stallID + '/',
+            method: 'DELETE',
+            success: function success(response) {
+                console.log(response);
+            },
+            error: function error(response) {
+                console.log(response);
+            },
+            beforeSend: authorizeXHR
+        });
     });
 
     $('#add-product-button').click(function () {

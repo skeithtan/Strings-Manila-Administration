@@ -4,25 +4,62 @@ $(() => {
     $('#add-stall-button').click(() => {
         const stallNameInput = $('#add-stall-name-input');
         const stallName = stallNameInput.val();
+        stallNameInput.val('');
 
         $.ajax({
             url: baseURL + 'stalls/',
             type: 'POST',
-            async: true,
             data: {
                 name: stallName
             },
-            success: (response) => {
-                console.log(response)
+            success: () => {
+                console.log("Success");
                 //TODO
             },
             error: response => {
-                console.log(response)
+                console.log(response);
             },
             beforeSend: authorizeXHR
         });
 
+    });
+
+    $('#rename-stall-button').click(() => {
+        const stallNameInput = $('#rename-stall-name-input');
+        const stallName = stallNameInput.val();
+        const stallID = $('#rename-stall-id').val();
         stallNameInput.val('');
+
+        $.ajax({
+            url: baseURL + 'stalls/' + stallID + '/',
+            method: 'PUT',
+            data: {
+                name: stallName
+            },
+            success: response => {
+                console.log(response)
+            },
+            error: response => {
+                console.log(response);
+            },
+            beforeSend: authorizeXHR
+        });
+    });
+
+    $('#delete-stall-button').click(() => {
+        const stallID = $('#delete-stall-id').val();
+
+        $.ajax({
+            url: baseURL + 'stalls/' + stallID + '/',
+            method: 'DELETE',
+            success: response => {
+                console.log(response);
+            },
+            error: response => {
+                console.log(response);
+            },
+            beforeSend: authorizeXHR
+        })
     });
 
     $('#add-product-button').click(() => {
@@ -77,9 +114,7 @@ $(() => {
 
 function submitAddProduct(product) {
     //TODO
-    $.ajax({
-
-    });
+    $.ajax({});
 }
 
 function authorizeXHR(xhr) {
