@@ -8,8 +8,8 @@ $(function () {
     });
 
     addValidation({
-        inputs: $('#modify-stall-modal').find('.text-input'),
-        button: $('#modify-stall-button')
+        inputs: $('#rename-stall-modal').find('.text-input'),
+        button: $('#rename-stall-button')
     });
 
     addValidation({

@@ -242,6 +242,90 @@
     </div>
 </div>
 
+<!--Modify Product Modal-->
+<div class="modal fade"
+     id="modify-product-modal"
+     tabindex="-1"
+     role="dialog">
+
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+
+            <!--Modal Header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Add a product</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal Body-->
+            <div class="modal-body pb-3">
+
+                <input type="hidden" id="modify-product-id">
+
+                <div class="form-group row">
+                    <label for="add-product-name-input"
+                           class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input id="modify-product-name-input"
+                               class="form-control text-input"
+                               placeholder="Product name">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="modify-product-price-input"
+                           class="col-sm-3 col-form-label">Price</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-addon">₱</span>
+                            <input id="modify-product-price-input"
+                                   class="form-control text-input"
+                                   placeholder="Price"
+                                   type="number"
+                                   min="0"
+                                   step="0.01">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="modify-product-description-input"
+                           class="col-sm-3 col-form-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="modify-product-description-input"
+                                  class="form-control text-input"
+                                  placeholder="Description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group-row">
+                    <label for="modify-product-image-input"
+                           class="col-sm-3 col-form-label p-0">Image</label>
+                    <input id="modify-product-image-input"
+                           type="file"
+                           class="form-control-file d-inline">
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="modify-product-button"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        disabled>Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--React Scripts-->
 <script>
