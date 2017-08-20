@@ -15,11 +15,18 @@ $(function () {
                 name: stallName
             },
             success: function success() {
-                console.log("Success");
-                //TODO
+                alertify.success('Stall added');
+                iziToast.success({
+                    title: 'Added',
+                    message: 'Successfully added stall.'
+                });
             },
             error: function error(response) {
                 console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to add stall.'
+                });
             },
             beforeSend: authorizeXHR
         });
@@ -39,9 +46,17 @@ $(function () {
             },
             success: function success(response) {
                 console.log(response);
+                iziToast.success({
+                    title: 'Renamed',
+                    message: 'Successfully renamed stall.'
+                });
             },
             error: function error(response) {
                 console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to rename stall.'
+                });
             },
             beforeSend: authorizeXHR
         });
@@ -54,10 +69,18 @@ $(function () {
             url: baseURL + 'stalls/' + stallID + '/',
             method: 'DELETE',
             success: function success(response) {
-                console.log(response);
+                alertify.success('Stall deleted');
+                iziToast.success({
+                    title: 'Deleted',
+                    message: 'Successfully deleted stall.'
+                });
             },
             error: function error(response) {
                 console.log(response);
+                iziToast.success({
+                    title: 'Added',
+                    message: 'Could not delete stall.'
+                });
             },
             beforeSend: authorizeXHR
         });
