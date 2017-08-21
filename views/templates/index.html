@@ -96,7 +96,8 @@
 
             <!--Modal body-->
             <div class="modal-body">
-                <input type="hidden" id="rename-stall-id">
+                <input type="hidden"
+                       id="rename-stall-id">
                 <div class="form-group row">
                     <label for="rename-stall-name-input"
                            class="col-sm-3 col-form-label">Name</label>
@@ -131,7 +132,8 @@
         <div class="modal-content border-danger">
             <!--Modal header-->
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Are you sure you want to delete <b class="delete-stall-name">this stall</b>?</h5>
+                <h5 class="modal-title">Are you sure you want to delete <b class="delete-stall-name">this stall</b>?
+                </h5>
                 <button type="button"
                         class="close text-white"
                         data-dismiss="modal"
@@ -142,7 +144,8 @@
 
             <!--Modal body-->
             <div class="modal-body">
-                <input type="hidden" id="delete-stall-id">
+                <input type="hidden"
+                       id="delete-stall-id">
                 <p>The products that belong to this stall will also be deleted. This cannot be undone.</p>
             </div>
 
@@ -182,7 +185,8 @@
             <!--Modal Body-->
             <div class="modal-body pb-3">
 
-                <input type="hidden" id="add-product-stall-id">
+                <input type="hidden"
+                       id="add-product-stall-id">
 
                 <div class="form-group row">
                     <label for="add-product-name-input"
@@ -226,6 +230,11 @@
                     <input id="add-product-image-input"
                            type="file"
                            class="form-control-file d-inline">
+                    <div class="col-sm-9 ml-auto mr-2 mt-2">
+                        <small class="form-text text-muted">When no new image is supplied, a default image will be
+                            used.
+                        </small>
+                    </div>
                 </div>
             </div>
 
@@ -266,7 +275,8 @@
             <!--Modal Body-->
             <div class="modal-body pb-3">
 
-                <input type="hidden" id="modify-product-id">
+                <input type="hidden"
+                       id="modify-product-id">
 
                 <div class="form-group row">
                     <label for="add-product-name-input"
@@ -310,6 +320,11 @@
                     <input id="modify-product-image-input"
                            type="file"
                            class="form-control-file d-inline">
+                    <div class="col-sm-9 ml-auto mr-2 mt-2">
+                        <small class="form-text text-muted">When no new image is supplied, the image will not be
+                            replaced.
+                        </small>
+                    </div>
                 </div>
             </div>
 

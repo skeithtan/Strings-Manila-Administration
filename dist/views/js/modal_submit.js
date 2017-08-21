@@ -3,6 +3,14 @@
 var refreshStalls;
 var refreshProducts;
 
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 $(function () {
 
     //MARK: - Entity Management
@@ -60,6 +68,7 @@ $(function () {
                 console.log(response);
                 iziToast.error({
                     title: 'Error',
+                    id: 'uploading-image-toast',
                     message: 'Unable to rename stall.'
                 });
             },
@@ -96,7 +105,7 @@ $(function () {
         var nameInput = $('#add-product-name-input');
         var priceInput = $('#add-product-price-input');
         var descriptionInput = $('#add-product-description-input');
-        var imageInput = $('#add-product-image-input')[0].files;
+        var imageInput = $('#add-product-image-input');
         var stallID = $('#add-product-stall-id').val();
 
         var product = {
@@ -106,11 +115,19 @@ $(function () {
             image_link: undefined
         };
 
-        if (imageInput.length) {
+        if (imageInput[0].files.length) {
             console.log("Has image");
-            var image = imageInput[0];
+            var image = imageInput[0].files[0];
             var form = new FormData();
             form.append('image', image);
+
+            var uploadToastID = guid();
+
+            iziToast.info({
+                title: 'Uploading image...',
+                id: uploadToastID,
+                timeout: false
+            });
 
             $.post({
                 url: 'https://api.imgur.com/3/image',
@@ -120,10 +137,16 @@ $(function () {
                 processData: false,
                 success: function success(response) {
                     product.image = response.data.link;
+                    iziToast.hide({}, document.getElementById(uploadToastID));
+                    iziToast.success({
+                        title: 'Uploaded',
+                        message: 'Image has been uploaded.'
+                    });
                     submitAddProduct(product, stallID);
                 },
-                error: function error() {
-                    console.log("Upload failed");
+                error: function error(response) {
+                    console.log(response);
+                    iziToast.hide({}, document.getElementById(uploadToastID));
                     iziToast.warning({
                         title: 'Error',
                         message: 'Unable to upload photo. Using default photo instead.'
