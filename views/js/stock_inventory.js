@@ -22,7 +22,6 @@ class StockInventory extends React.Component {
         super(props);
         this.state = {
             products: null,
-            filteredProducts: null,
             lessThan: null,
             greaterThan: null,
         };
@@ -30,7 +29,7 @@ class StockInventory extends React.Component {
         this.refreshState = this.refreshState.bind(this);
         this.onLessThanInput = this.onLessThanInput.bind(this);
         this.onGreaterThanInput = this.onGreaterThanInput.bind(this);
-        this.filterProducts = this.filterProducts.bind(this);
+        this.getFilteredProducts = this.getFilteredProducts.bind(this);
 
         refreshStockInventory = this.refreshState;
         this.refreshState();
@@ -77,36 +76,28 @@ class StockInventory extends React.Component {
         const lessThan = event.target.value;
         this.setState({
             lessThan: event.target.value === "" ? null : lessThan
-        }, this.filterProducts);
+        });
     }
 
     onGreaterThanInput(event) {
         const greaterThan = event.target.value;
         this.setState({
             greaterThan: event.target.value === "" ? null : greaterThan
-        }, this.filterProducts);
+        });
     }
 
-    filterProducts() {
+    getFilteredProducts() {
         const lessThan = this.state.lessThan;
         const greaterThan = this.state.greaterThan;
 
         let filteredProducts = this.state.products; //No filter yet
 
         if (lessThan === null && greaterThan === null) {
-            this.setState({
-                filteredProducts: filteredProducts
-            });
-
-            return;
+            return filteredProducts;
         }
 
         if (filteredProducts === null) {
-            this.setState({
-                filteredProducts: null
-            });
-
-            return;
+            return filteredProducts;
         }
 
         if (lessThan !== null) {
@@ -121,9 +112,7 @@ class StockInventory extends React.Component {
             })
         }
 
-        this.setState({
-            filteredProducts: filteredProducts
-        })
+        return filteredProducts;
     }
 
     render() {
@@ -135,11 +124,7 @@ class StockInventory extends React.Component {
             return StockInventory.noProducts();
         }
 
-        let products = this.state.products;
-
-        if (this.state.filteredProducts !== null) {
-            products = this.state.filteredProducts;
-        }
+        const filteredProducts = this.getFilteredProducts();
 
         return (
             <div id="stock-inventory"
@@ -147,7 +132,7 @@ class StockInventory extends React.Component {
                 <StockInventoryHead refreshState={this.refreshState}
                                     onLessThanInput={this.onLessThanInput}
                                     onGreaterThanInput={this.onGreaterThanInput}/>
-                <StockTable products={products}/>
+                <StockTable products={filteredProducts}/>
             </div>
         )
     }

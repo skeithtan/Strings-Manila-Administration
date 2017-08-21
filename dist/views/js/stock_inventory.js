@@ -35,7 +35,6 @@ var StockInventory = function (_React$Component) {
 
         _this.state = {
             products: null,
-            filteredProducts: null,
             lessThan: null,
             greaterThan: null
         };
@@ -43,7 +42,7 @@ var StockInventory = function (_React$Component) {
         _this.refreshState = _this.refreshState.bind(_this);
         _this.onLessThanInput = _this.onLessThanInput.bind(_this);
         _this.onGreaterThanInput = _this.onGreaterThanInput.bind(_this);
-        _this.filterProducts = _this.filterProducts.bind(_this);
+        _this.getFilteredProducts = _this.getFilteredProducts.bind(_this);
 
         refreshStockInventory = _this.refreshState;
         _this.refreshState();
@@ -77,7 +76,7 @@ var StockInventory = function (_React$Component) {
             var lessThan = event.target.value;
             this.setState({
                 lessThan: event.target.value === "" ? null : lessThan
-            }, this.filterProducts);
+            });
         }
     }, {
         key: "onGreaterThanInput",
@@ -85,30 +84,22 @@ var StockInventory = function (_React$Component) {
             var greaterThan = event.target.value;
             this.setState({
                 greaterThan: event.target.value === "" ? null : greaterThan
-            }, this.filterProducts);
+            });
         }
     }, {
-        key: "filterProducts",
-        value: function filterProducts() {
+        key: "getFilteredProducts",
+        value: function getFilteredProducts() {
             var lessThan = this.state.lessThan;
             var greaterThan = this.state.greaterThan;
 
             var filteredProducts = this.state.products; //No filter yet
 
             if (lessThan === null && greaterThan === null) {
-                this.setState({
-                    filteredProducts: filteredProducts
-                });
-
-                return;
+                return filteredProducts;
             }
 
             if (filteredProducts === null) {
-                this.setState({
-                    filteredProducts: null
-                });
-
-                return;
+                return filteredProducts;
             }
 
             if (lessThan !== null) {
@@ -123,9 +114,7 @@ var StockInventory = function (_React$Component) {
                 });
             }
 
-            this.setState({
-                filteredProducts: filteredProducts
-            });
+            return filteredProducts;
         }
     }, {
         key: "render",
@@ -138,11 +127,7 @@ var StockInventory = function (_React$Component) {
                 return StockInventory.noProducts();
             }
 
-            var products = this.state.products;
-
-            if (this.state.filteredProducts !== null) {
-                products = this.state.filteredProducts;
-            }
+            var filteredProducts = this.getFilteredProducts();
 
             return _react2.default.createElement(
                 "div",
@@ -151,7 +136,7 @@ var StockInventory = function (_React$Component) {
                 _react2.default.createElement(StockInventoryHead, { refreshState: this.refreshState,
                     onLessThanInput: this.onLessThanInput,
                     onGreaterThanInput: this.onGreaterThanInput }),
-                _react2.default.createElement(StockTable, { products: products })
+                _react2.default.createElement(StockTable, { products: filteredProducts })
             );
         }
     }], [{
