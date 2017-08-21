@@ -34,18 +34,100 @@ var StockInventory = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (StockInventory.__proto__ || Object.getPrototypeOf(StockInventory)).call(this, props));
 
         _this.state = {
-            products: null
+            products: null,
+            filteredProducts: null,
+            lessThan: null,
+            greaterThan: null
         };
 
-        fetchStocks(function (result) {
-            _this.setState({
-                products: result.products
-            });
-        });
+        _this.refreshState = _this.refreshState.bind(_this);
+        _this.onLessThanInput = _this.onLessThanInput.bind(_this);
+        _this.onGreaterThanInput = _this.onGreaterThanInput.bind(_this);
+        _this.filterProducts = _this.filterProducts.bind(_this);
+
+        refreshStockInventory = _this.refreshState;
+        _this.refreshState();
         return _this;
     }
 
     _createClass(StockInventory, [{
+        key: "refreshState",
+        value: function refreshState(completion) {
+            var _this2 = this;
+
+            fetchStocks(function (result) {
+
+                // Lowest first
+                var products = result.products.sort(function (a, b) {
+                    return a.quantity > b.quantity;
+                });
+
+                _this2.setState({
+                    products: products
+                });
+
+                if (completion !== undefined) {
+                    completion();
+                }
+            });
+        }
+    }, {
+        key: "onLessThanInput",
+        value: function onLessThanInput(event) {
+            var lessThan = event.target.value;
+            this.setState({
+                lessThan: event.target.value === "" ? null : lessThan
+            }, this.filterProducts);
+        }
+    }, {
+        key: "onGreaterThanInput",
+        value: function onGreaterThanInput(event) {
+            var greaterThan = event.target.value;
+            this.setState({
+                greaterThan: event.target.value === "" ? null : greaterThan
+            }, this.filterProducts);
+        }
+    }, {
+        key: "filterProducts",
+        value: function filterProducts() {
+            var lessThan = this.state.lessThan;
+            var greaterThan = this.state.greaterThan;
+
+            var filteredProducts = this.state.products; //No filter yet
+
+            if (lessThan === null && greaterThan === null) {
+                this.setState({
+                    filteredProducts: filteredProducts
+                });
+
+                return;
+            }
+
+            if (filteredProducts === null) {
+                this.setState({
+                    filteredProducts: null
+                });
+
+                return;
+            }
+
+            if (lessThan !== null) {
+                filteredProducts = filteredProducts.filter(function (product) {
+                    return product.quantity < lessThan;
+                });
+            }
+
+            if (greaterThan !== null) {
+                filteredProducts = filteredProducts.filter(function (product) {
+                    return product.quantity > greaterThan;
+                });
+            }
+
+            this.setState({
+                filteredProducts: filteredProducts
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             if (this.state.products === null) {
@@ -56,12 +138,20 @@ var StockInventory = function (_React$Component) {
                 return StockInventory.noProducts();
             }
 
+            var products = this.state.products;
+
+            if (this.state.filteredProducts !== null) {
+                products = this.state.filteredProducts;
+            }
+
             return _react2.default.createElement(
                 "div",
                 { id: "stock-inventory",
                     className: "container-fluid m-0 p-0 h-100 w-100" },
-                _react2.default.createElement(StockInventoryHead, null),
-                _react2.default.createElement(StockTable, { products: this.state.products })
+                _react2.default.createElement(StockInventoryHead, { refreshState: this.refreshState,
+                    onLessThanInput: this.onLessThanInput,
+                    onGreaterThanInput: this.onGreaterThanInput }),
+                _react2.default.createElement(StockTable, { products: products })
             );
         }
     }], [{
@@ -87,11 +177,15 @@ var StockInventory = function (_React$Component) {
         value: function loadingState() {
             return _react2.default.createElement(
                 "div",
-                { className: "container d-flex flex-column justify-content-center align-items-center h-100" },
+                null,
                 _react2.default.createElement(
-                    "h3",
-                    null,
-                    "Loading..."
+                    "div",
+                    { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        "Loading..."
+                    )
                 )
             );
         }
@@ -106,10 +200,21 @@ var StockInventoryHead = function (_React$Component2) {
     function StockInventoryHead(props) {
         _classCallCheck(this, StockInventoryHead);
 
-        return _possibleConstructorReturn(this, (StockInventoryHead.__proto__ || Object.getPrototypeOf(StockInventoryHead)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (StockInventoryHead.__proto__ || Object.getPrototypeOf(StockInventoryHead)).call(this, props));
+
+        _this3.refreshData = _this3.refreshData.bind(_this3);
+        return _this3;
     }
 
     _createClass(StockInventoryHead, [{
+        key: "refreshData",
+        value: function refreshData() {
+            this.props.refreshState(iziToast.success({
+                "title": "Refresh",
+                "message": "Data is up to date."
+            }));
+        }
+    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -129,7 +234,8 @@ var StockInventoryHead = function (_React$Component2) {
                         null,
                         _react2.default.createElement(
                             "button",
-                            { className: "btn btn-sm btn-outline-primary" },
+                            { className: "btn btn-sm btn-outline-primary",
+                                onClick: this.refreshData },
                             "Refresh data"
                         )
                     )
@@ -152,13 +258,15 @@ var StockInventoryHead = function (_React$Component2) {
                             _react2.default.createElement(
                                 "div",
                                 { className: "input-group-addon" },
-                                "Less than"
+                                "Greater than"
                             ),
                             _react2.default.createElement("input", { className: "form-control",
-                                id: "less-than-filter",
+                                id: "greater-than-filter",
                                 type: "number",
                                 min: "0",
-                                placeholder: "No filter" })
+                                placeholder: "No filter",
+                                onChange: this.props.onGreaterThanInput
+                            })
                         )
                     ),
                     _react2.default.createElement(
@@ -170,14 +278,14 @@ var StockInventoryHead = function (_React$Component2) {
                             _react2.default.createElement(
                                 "div",
                                 { className: "input-group-addon" },
-                                "Greater than"
+                                "Less than"
                             ),
                             _react2.default.createElement("input", { className: "form-control",
-                                id: "greater-than-filter",
+                                id: "less-than-filter",
                                 type: "number",
                                 min: "0",
-                                placeholder: "No filter"
-                            })
+                                placeholder: "No filter",
+                                onChange: this.props.onLessThanInput })
                         )
                     )
                 )
@@ -248,6 +356,20 @@ var StockTable = function (_React$Component3) {
     return StockTable;
 }(_react2.default.Component);
 
+function fillOutRestockModal(product) {
+    $('#restock-product-id').val(product.id);
+    $('#restock-modal-product-name').html(product.name);
+    $('#restock-modal-product-quantity').html(product.quantity);
+
+    if (product.quantity === 0) {
+        $('#restock-button-group').hide();
+        $('#restock-dummy-button-group').show();
+    } else {
+        $('#restock-button-group').show();
+        $('#restock-dummy-button-group').hide();
+    }
+}
+
 var StockRow = function (_React$Component4) {
     _inherits(StockRow, _React$Component4);
 
@@ -260,9 +382,16 @@ var StockRow = function (_React$Component4) {
     _createClass(StockRow, [{
         key: "render",
         value: function render() {
+            var _this6 = this;
+
             return _react2.default.createElement(
                 "tr",
-                { className: StockRow.rowClass(this.props.product.quantity) },
+                { className: StockRow.rowClass(this.props.product.quantity),
+                    "data-toggle": "modal",
+                    "data-target": "#restock-modal",
+                    onClick: function onClick() {
+                        fillOutRestockModal(_this6.props.product);
+                    } },
                 _react2.default.createElement(
                     "td",
                     null,
@@ -276,7 +405,11 @@ var StockRow = function (_React$Component4) {
                 _react2.default.createElement(
                     "td",
                     null,
-                    this.props.product.quantity
+                    _react2.default.createElement(
+                        "b",
+                        null,
+                        this.props.product.quantity
+                    )
                 )
             );
         }

@@ -3,12 +3,7 @@
 var refreshStalls;
 var refreshProducts;
 
-function randomString() {
-    // Random string with very little collision possibility
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-    });
-}
+var refreshStockInventory;
 
 $(function () {
 
@@ -31,6 +26,9 @@ $(function () {
         $('#add-product-description-input').val('');
         $('#add-product-image-input').val('');
     });
+
+    //Restock
+    $('#restock-button').click(onRestockButtonClick);
 });
 
 //MARK: - Stalls
@@ -292,8 +290,47 @@ function onDeleteProductButtonClick() {
     });
 }
 
+//MARK: - Stock Inventory
+function onRestockButtonClick() {
+    var productID = $('#restock-product-id').val();
+    var quantity = $('#restock-quantity').val();
+    var isAdd = $('#restock-add').is(':checked');
+
+    $.ajax({
+        url: baseURL + 'products/' + productID + '/restock/',
+        method: 'POST',
+        data: {
+            quantity: quantity,
+            add: isAdd
+        },
+        beforeSend: authorizeXHR,
+        success: function success() {
+            iziToast.success({
+                title: 'Restocked',
+                message: 'Successfully restocked product'
+            });
+            refreshStockInventory();
+        },
+        error: function error(response) {
+            console.log(response);
+            iziToast.error({
+                title: 'Error',
+                message: 'Unable to restock product'
+            });
+        }
+    });
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
+}
+
+//MARK: - Random String Generator
+function randomString() {
+    // Random string with very little collision possibility
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+    });
 }
 //# sourceMappingURL=modal_submit.js.map

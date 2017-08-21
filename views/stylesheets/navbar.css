@@ -81,6 +81,11 @@ a.nav-link {
     min-height : 100%;
 }
 
+#product-list .card img.card-img-top {
+    height     : 350px;
+    object-fit : cover;
+}
+
 #product-list .card-deck {
     margin-right : 0;
     margin-left  : 0;

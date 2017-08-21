@@ -1,12 +1,8 @@
 var refreshStalls;
 var refreshProducts;
 
-function randomString() {
-    // Random string with very little collision possibility
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
-}
+var refreshStockInventory;
+
 
 $(() => {
 
@@ -30,6 +26,8 @@ $(() => {
         $('#add-product-image-input').val('');
     });
 
+    //Restock
+    $('#restock-button').click(onRestockButtonClick);
 });
 
 //MARK: - Stalls
@@ -294,7 +292,47 @@ function onDeleteProductButtonClick() {
     })
 }
 
+
+//MARK: - Stock Inventory
+function onRestockButtonClick() {
+    const productID = $('#restock-product-id').val();
+    const quantity = $('#restock-quantity').val();
+    const isAdd = $('#restock-add').is(':checked');
+
+    $.ajax({
+        url: `${baseURL}products/${productID}/restock/`,
+        method: 'POST',
+        data: {
+            quantity: quantity,
+            add: isAdd
+        },
+        beforeSend: authorizeXHR,
+        success: () => {
+            iziToast.success({
+                title: 'Restocked',
+                message: 'Successfully restocked product'
+            });
+            refreshStockInventory();
+        },
+        error: response => {
+            console.log(response);
+            iziToast.error({
+                title: 'Error',
+                message: 'Unable to restock product'
+            });
+        }
+    })
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token)
+}
+
+//MARK: - Random String Generator
+function randomString() {
+    // Random string with very little collision possibility
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    )
 }

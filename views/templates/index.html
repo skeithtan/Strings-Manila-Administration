@@ -387,20 +387,84 @@
      role="dialog">
     <div class="modal-dialog"
          role="document">
-        <!--Modal header-->
-        <div class="modal-header">
-            <h5 class="modal-title">Restock</h5>
-            <button type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                <span>&times;</span>
-            </button>
-        </div>
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Restock</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
 
-        <!--Modal body-->
-        <div class="modal-body">
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="form-group-row">
+                    <table class="table table-bordered mb-4">
+                        <tbody>
+                        <tr>
+                            <th>Product Name</th>
+                            <td id="restock-modal-product-name">Name goes here</td>
+                        </tr>
+                        <tr>
+                            <th>Current quantity</th>
+                            <td id="restock-modal-product-quantity">213123123</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
+                    <input type="hidden"
+                           id="restock-product-id">
+
+                    <div class="form-group row">
+                        <label for="restock-quantity"
+                               class="col-4 col-form-label">Restock Quantity</label>
+                        <div class="col-7 row">
+                            <input id="restock-quantity"
+                                   class="form-control text-input col-7"
+                                   type="number"
+                                   min="0"
+                                   placeholder="Quantity">
+                            <div class="btn-group col-4"
+                                 data-toggle="buttons"
+                                 id="restock-button-group">
+                                <label class="btn btn-outline-primary active">
+                                    <input type="radio"
+                                           name="options"
+                                           id="restock-add"
+                                           autocomplete="off"
+                                           checked> Add
+                                </label>
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio"
+                                           name="options"
+                                           id="restock-subtract"
+                                           autocomplete="off"> Subtract
+                                </label>
+                            </div>
+                            <div class="btn-group col-4"
+                                 id="restock-dummy-button-group">
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary active" disabled>Add</button>
+                                    <button type="button" class="btn btn-outline-primary" disabled>Subtract</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="restock-button"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal">Restock
+                </button>
+            </div>
         </div>
     </div>
 
