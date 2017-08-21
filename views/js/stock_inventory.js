@@ -54,10 +54,10 @@ class StockInventory extends React.Component {
     }
 
     static noProducts() {
-        render(
+        return (
             <div className="container d-flex flex-column justify-content-center align-items-center h-100">
                 <h3>There are no products yet.</h3>
-                <p className="text-faded">When products are added, the stock count can be seen here.</p>
+                <p className="text-faded">When products are added, the inventory can be seen here.</p>
             </div>
         )
     }

@@ -142,7 +142,7 @@ var StockInventory = function (_React$Component) {
     }], [{
         key: "noProducts",
         value: function noProducts() {
-            render(_react2.default.createElement(
+            return _react2.default.createElement(
                 "div",
                 { className: "container d-flex flex-column justify-content-center align-items-center h-100" },
                 _react2.default.createElement(
@@ -153,9 +153,9 @@ var StockInventory = function (_React$Component) {
                 _react2.default.createElement(
                     "p",
                     { className: "text-faded" },
-                    "When products are added, the stock count can be seen here."
+                    "When products are added, the inventory can be seen here."
                 )
-            ));
+            );
         }
     }, {
         key: "loadingState",
