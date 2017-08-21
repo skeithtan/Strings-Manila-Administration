@@ -147,7 +147,7 @@ var StockInventory = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { id: "stock-inventory",
-                    className: "container-fluid m-0 p-0 h-100 w-100" },
+                    className: "container-fluid m-0 p-0 h-100 w-100 d-flex flex-column" },
                 _react2.default.createElement(StockInventoryHead, { refreshState: this.refreshState,
                     onLessThanInput: this.onLessThanInput,
                     onGreaterThanInput: this.onGreaterThanInput }),
@@ -227,7 +227,7 @@ var StockInventoryHead = function (_React$Component2) {
                     _react2.default.createElement(
                         "h4",
                         { className: "mr-3" },
-                        "Stock Inventory"
+                        "Inventory"
                     ),
                     _react2.default.createElement(
                         "div",
@@ -314,6 +314,10 @@ var StockTable = function (_React$Component3) {
                     key: index });
             });
 
+            if (rows.length === 0) {
+                return StockTable.emptyState();
+            }
+
             return _react2.default.createElement(
                 "div",
                 { id: "stocks-table" },
@@ -348,6 +352,24 @@ var StockTable = function (_React$Component3) {
                         null,
                         rows
                     )
+                )
+            );
+        }
+    }], [{
+        key: "emptyState",
+        value: function emptyState() {
+            return _react2.default.createElement(
+                "div",
+                { className: "container-fluid d-flex flex-column align-items-center justify-content-center bg-light h-100" },
+                _react2.default.createElement(
+                    "h3",
+                    null,
+                    "No results"
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "text-faded" },
+                    "Change your filter to try again"
                 )
             );
         }

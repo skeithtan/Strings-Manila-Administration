@@ -39,7 +39,7 @@ var navbarItems = [{
     isActive: false,
     tab: _react2.default.createElement(_entity_management2.default, null)
 }, {
-    name: "Stock Inventory",
+    name: "Inventory",
     isActive: false,
     tab: _react2.default.createElement(_stock_inventory2.default, null)
 }, {

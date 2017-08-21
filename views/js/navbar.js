@@ -14,7 +14,7 @@ const navbarItems = [
         tab: <EntityManagement/>
     },
     {
-        name: "Stock Inventory",
+        name: "Inventory",
         isActive: false,
         tab: <StockInventory/>
     },

@@ -21,6 +21,11 @@ $(function () {
         inputs: $('#modify-product-modal').find('.text-input'),
         button: $('#modify-product-button')
     });
+
+    addValidation({
+        inputs: $('#restock-modal').find('.text-input'),
+        button: $('#restock-button')
+    });
 });
 
 /*

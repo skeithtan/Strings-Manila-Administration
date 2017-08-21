@@ -143,7 +143,7 @@ class StockInventory extends React.Component {
 
         return (
             <div id="stock-inventory"
-                 className="container-fluid m-0 p-0 h-100 w-100">
+                 className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
                 <StockInventoryHead refreshState={this.refreshState}
                                     onLessThanInput={this.onLessThanInput}
                                     onGreaterThanInput={this.onGreaterThanInput}/>
@@ -173,7 +173,7 @@ class StockInventoryHead extends React.Component {
             <div id="stock-inventory-head"
                  className="container-fluid d-flex flex-row bg-light">
                 <div className="mr-auto pt-5 row pl-3">
-                    <h4 className="mr-3">Stock Inventory</h4>
+                    <h4 className="mr-3">Inventory</h4>
                     <div>
                         <button className="btn btn-sm btn-outline-primary"
                                 onClick={this.refreshData}>Refresh data
@@ -217,12 +217,25 @@ class StockTable extends React.Component {
         super(props);
     }
 
+    static emptyState() {
+        return (
+            <div className="container-fluid d-flex flex-column align-items-center justify-content-center bg-light h-100">
+                <h3>No results</h3>
+                <p className="text-faded">Change your filter to try again</p>
+            </div>
+        )
+    }
+
     render() {
 
         const rows = this.props.products.map((product, index) => {
             return <StockRow product={product}
                              key={index}/>
         });
+
+        if (rows.length === 0) {
+            return StockTable.emptyState();
+        }
 
         return (
             <div id="stocks-table">
