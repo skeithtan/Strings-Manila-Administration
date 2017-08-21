@@ -16,6 +16,11 @@ $(function () {
         inputs: $('#add-product-modal').find('.text-input'),
         button: $('#add-product-button')
     });
+
+    addValidation({
+        inputs: $('#modify-product-modal').find('.text-input'),
+        button: $('#modify-product-button')
+    });
 });
 
 /*

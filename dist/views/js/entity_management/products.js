@@ -77,7 +77,12 @@ function fillOutAddProductModal(activeStall) {
     $('#add-product-stall-id').val(activeStall.id);
 }
 
-function fillOutModifyProductModal(product) {}
+function fillOutModifyProductModal(product) {
+    $('#modify-product-name-input').val(product.name);
+    $('#modify-product-price-input').val(product.currentPrice);
+    $('#modify-product-description-input').val(product.description);
+    $('#modify-product-button').attr('disabled', false); //Form is already filled out, do not disable submit button
+}
 
 function fillOutDeleteProductModal(product) {}
 

@@ -12,10 +12,7 @@ $(() => {
 
     //MARK: - Entity Management
     $('#add-stall-button').click(() => {
-        const stallNameInput = $('#add-stall-name-input');
-        const stallName = stallNameInput.val();
-        stallNameInput.val('');
-
+        const stallName = $('#add-stall-name-input').val();
 
         $.ajax({
             url: baseURL + 'stalls/',
@@ -41,6 +38,9 @@ $(() => {
             beforeSend: authorizeXHR
         });
 
+    });
+    $('#add-stall-modal').on('hidden.bs.modal', () => {
+        $('#add-stall-name-input').val('');
     });
 
     $('#rename-stall-button').click(() => {
@@ -100,73 +100,81 @@ $(() => {
         })
     });
 
-    $('#add-product-button').click(() => {
-        const nameInput = $('#add-product-name-input');
-        const priceInput = $('#add-product-price-input');
-        const descriptionInput = $('#add-product-description-input');
-        const imageInput = $('#add-product-image-input');
-        const stallID = $('#add-product-stall-id').val();
-
-        let product = {
-            name: nameInput.val(),
-            price: priceInput.val(),
-            description: descriptionInput.val(),
-            image_link: undefined
-        };
-
-        if (imageInput[0].files.length) {
-            const image = imageInput[0].files[0];
-            const form = new FormData();
-            form.append('image', image);
-
-            const uploadToastID = randomString();
-
-            iziToast.info({
-                title: 'Uploading image...',
-                id: uploadToastID,
-                timeout: false
-            });
-
-            $.post({
-                url: 'https://api.imgur.com/3/image',
-                async: true,
-                data: form,
-                contentType: false,
-                processData: false,
-                success: response => {
-                    product.image = response.data.link;
-                    iziToast.hide({}, document.getElementById(uploadToastID));
-                    iziToast.success({
-                        title: 'Uploaded',
-                        message: 'Image has been uploaded.'
-                    });
-                    submitAddProduct(product, stallID)
-                },
-                error: response => {
-                    console.log(response);
-                    iziToast.hide({}, document.getElementById(uploadToastID));
-                    iziToast.warning({
-                        title: 'Error',
-                        message: 'Unable to upload photo. Using default photo instead.'
-                    });
-                    submitAddProduct(product, stallID);
-                },
-                beforeSend: xhr => {
-                    xhr.setRequestHeader('Authorization', 'Client-ID 715b55f24db9cd2')
-                }
-            });
-
-        } else {
-            submitAddProduct(product, stallID);
-        }
-
-        nameInput.val('');
-        priceInput.val('');
-        descriptionInput.val('');
-        imageInput.val('');
+    $('#add-product-button').click(onAddProductButtonClick);
+    $('#add-product-modal').on('hidden.bs.modal', () => {
+        $('#add-product-name-input').val('');
+        $('#add-product-price-input').val('');
+        $('#add-product-description-input').val('');
+        $('#add-product-image-input').val('');
     });
 
+    $('#modify-product-button').click();
+
 });
+
+function onModifyProductButtonClick() {
+}
+
+function onAddProductButtonClick() {
+    const nameInput = $('#add-product-name-input');
+    const priceInput = $('#add-product-price-input');
+    const descriptionInput = $('#add-product-description-input');
+    const imageInput = $('#add-product-image-input');
+    const stallID = $('#add-product-stall-id').val();
+
+    let product = {
+        name: nameInput.val(),
+        price: priceInput.val(),
+        description: descriptionInput.val(),
+        image_link: undefined
+    };
+
+    if (imageInput[0].files.length) {
+        const image = imageInput[0].files[0];
+        const form = new FormData();
+        form.append('image', image);
+
+        const uploadToastID = randomString();
+
+        iziToast.info({
+            title: 'Uploading image...',
+            id: uploadToastID,
+            timeout: false
+        });
+
+        $.post({
+            url: 'https://api.imgur.com/3/image',
+            async: true,
+            data: form,
+            contentType: false,
+            processData: false,
+            success: response => {
+                product.image = response.data.link;
+                iziToast.hide({}, document.getElementById(uploadToastID));
+                iziToast.success({
+                    title: 'Uploaded',
+                    message: 'Image has been uploaded.'
+                });
+                submitAddProduct(product, stallID)
+            },
+            error: response => {
+                console.log(response);
+                iziToast.hide({}, document.getElementById(uploadToastID));
+                iziToast.warning({
+                    title: 'Error',
+                    message: 'Unable to upload photo. Using default photo instead.'
+                });
+                submitAddProduct(product, stallID);
+            },
+            beforeSend: xhr => {
+                xhr.setRequestHeader('Authorization', 'Client-ID 715b55f24db9cd2')
+            }
+        });
+
+    } else {
+        submitAddProduct(product, stallID);
+    }
+}
 
 function submitAddProduct(product, stallID) {
     $.ajax({
