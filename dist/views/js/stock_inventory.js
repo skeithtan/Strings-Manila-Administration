@@ -140,7 +140,7 @@ var StockInventoryHead = function (_React$Component2) {
                         className: "row ml-auto mt-auto mb-2" },
                     _react2.default.createElement(
                         "div",
-                        { className: "col-auto mt-auto" },
+                        { className: "mt-auto mr-2" },
                         _react2.default.createElement(
                             "div",
                             { className: "input-group mb-2 mb-sm-0" },
@@ -156,12 +156,14 @@ var StockInventoryHead = function (_React$Component2) {
                             ),
                             _react2.default.createElement("input", { className: "form-control",
                                 id: "less-than-filter",
+                                type: "number",
+                                min: "0",
                                 placeholder: "No filter" })
                         )
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "col-auto mt-auto" },
+                        { className: "mt-auto mr-4" },
                         _react2.default.createElement(
                             "div",
                             { className: "input-group mb-2 mb-sm-0" },
@@ -172,7 +174,10 @@ var StockInventoryHead = function (_React$Component2) {
                             ),
                             _react2.default.createElement("input", { className: "form-control",
                                 id: "greater-than-filter",
-                                placeholder: "No filter" })
+                                type: "number",
+                                min: "0",
+                                placeholder: "No filter"
+                            })
                         )
                     )
                 )
@@ -206,7 +211,7 @@ var StockTable = function (_React$Component3) {
                 { id: "stocks-table" },
                 _react2.default.createElement(
                     "table",
-                    { className: "table" },
+                    { className: "table table-hover" },
                     _react2.default.createElement(
                         "thead",
                         { className: "bg-light" },
@@ -228,12 +233,12 @@ var StockTable = function (_React$Component3) {
                                 null,
                                 "Quantity"
                             )
-                        ),
-                        _react2.default.createElement(
-                            "tbody",
-                            null,
-                            rows
                         )
+                    ),
+                    _react2.default.createElement(
+                        "tbody",
+                        null,
+                        rows
                     )
                 )
             );

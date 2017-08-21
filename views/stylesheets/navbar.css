@@ -119,3 +119,8 @@ a.nav-link {
     overflow : scroll !important;
     height   : calc(100vh - 180px);
 }
+
+#stock-inventory #less-than-filter,
+#stock-inventory #greater-than-filter {
+    width : 100px;
+}

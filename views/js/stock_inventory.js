@@ -84,21 +84,26 @@ class StockInventoryHead extends React.Component {
                 </div>
                 <div id="stock-filter"
                      className="row ml-auto mt-auto mb-2">
-                    <div className="col-auto mt-auto">
+                    <div className="mt-auto mr-2">
                         <div className="input-group mb-2 mb-sm-0">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">Quantity filters</small>
                             <div className="input-group-addon">Less than</div>
                             <input className="form-control"
                                    id="less-than-filter"
+                                   type="number"
+                                   min="0"
                                    placeholder="No filter"/>
                         </div>
                     </div>
-                    <div className="col-auto mt-auto">
+                    <div className="mt-auto mr-4">
                         <div className="input-group mb-2 mb-sm-0">
                             <div className="input-group-addon">Greater than</div>
                             <input className="form-control"
                                    id="greater-than-filter"
-                                   placeholder="No filter"/>
+                                   type="number"
+                                   min="0"
+                                   placeholder="No filter"
+                            />
                         </div>
                     </div>
                 </div>
@@ -121,17 +126,18 @@ class StockTable extends React.Component {
 
         return (
             <div id="stocks-table">
-                <table className="table">
+                <table className="table table-hover">
                     <thead className="bg-light">
                     <tr>
                         <th>Product Name</th>
                         <th>Stall</th>
                         <th>Quantity</th>
                     </tr>
+                    </thead>
                     <tbody>
                     {rows}
                     </tbody>
-                    </thead>
+
                 </table>
             </div>
         );
