@@ -78,13 +78,17 @@ function fillOutAddProductModal(activeStall) {
 }
 
 function fillOutModifyProductModal(product) {
+    $('#modify-product-id').val(product.id);
     $('#modify-product-name-input').val(product.name);
     $('#modify-product-price-input').val(product.currentPrice);
     $('#modify-product-description-input').val(product.description);
     $('#modify-product-button').attr('disabled', false); //Form is already filled out, do not disable submit button
 }
 
-function fillOutDeleteProductModal(product) {}
+function fillOutDeleteProductModal(product) {
+    $('#delete-product-id').val(product.id);
+    $('b.delete-product-name').html(product.name);
+}
 
 function ProductListHeader(props) {
     return _react2.default.createElement(
@@ -93,7 +97,7 @@ function ProductListHeader(props) {
             className: "container-fluid d-flex flex-row p-3 pt-5 bg-light" },
         _react2.default.createElement(
             "h4",
-            { className: "mr-auto mb-auto mt-auto" },
+            { id: "active-stall-name", className: "mr-auto mb-auto" },
             props.activeStall.name
         ),
         _react2.default.createElement(
@@ -270,7 +274,7 @@ function ProductCard(props) {
                 "button",
                 { className: "btn btn-outline-danger mr-auto w-50",
                     "data-toggle": "modal",
-                    "data-target": "",
+                    "data-target": "#delete-product-modal",
                     onClick: function onClick() {
                         fillOutDeleteProductModal(props.product);
                     } },

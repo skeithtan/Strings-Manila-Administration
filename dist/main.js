@@ -1,13 +1,18 @@
-const electron = require('electron');
+'use strict';
 
-let {app, BrowserWindow, ipcMain} = electron;
+var electron = require('electron');
 
-const path = require('path');
-const url = require('url');
+var app = electron.app,
+    BrowserWindow = electron.BrowserWindow,
+    ipcMain = electron.ipcMain;
+
+
+var path = require('path');
+var url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+var mainWindow = void 0;
 
 function createWindow() {
     // Create the browser window.
@@ -63,12 +68,13 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-let data = {};
+var data = {};
 
-ipcMain.on('receive-data', (event, arg) => {
+ipcMain.on('receive-data', function (event, arg) {
     data = arg;
 });
 
-ipcMain.on('retrieve-data', (event, arg) => {
+ipcMain.on('retrieve-data', function (event, arg) {
     event.sender.send('retrieve-data', data);
 });
+//# sourceMappingURL=main.js.map

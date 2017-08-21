@@ -32,7 +32,7 @@ function fetchStalls(completionHandler) {
 }
 
 function fetchProducts(stallID, completionHandler) {
-    client.query('\n    {\n      stall(id:' + stallID + '){\n        productSet{\n          id\n          name\n          description\n          image\n          quantity\n          currentPrice\n        }\n      }\n    }\n    ').then(completionHandler);
+    client.query('\n    {\n      stall(id:' + stallID + '){\n        activeProducts {\n          id\n          name\n          description\n          image\n          quantity\n          currentPrice\n        }\n      }\n    }\n    ').then(completionHandler);
 }
 
 //React
@@ -101,7 +101,7 @@ var EntityManagement = function (_React$Component) {
             refreshProducts = function refreshProducts() {
                 fetchProducts(stall.id, function (result) {
                     var activeStall = _this2.state.activeStall;
-                    activeStall.products = result.stall.productSet;
+                    activeStall.products = result.stall.activeProducts;
 
                     _this2.setState({
                         activeStall: activeStall

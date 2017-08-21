@@ -341,6 +341,45 @@
     </div>
 </div>
 
+<!--Delete Product Modal-->
+<div class="modal fade"
+     id="delete-product-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content border-danger">
+            <!--Modal header-->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Are you sure you want to delete <b class="delete-product-name">this product</b>?
+                </h5>
+                <button type="button"
+                        class="close text-white"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <input type="hidden"
+                       id="delete-product-id">
+                <p>This cannot be undone.</p>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="delete-product-button"
+                        type="button"
+                        class="btn btn-outline-danger"
+                        data-dismiss="modal">Confirm Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--React Scripts-->
 <script>

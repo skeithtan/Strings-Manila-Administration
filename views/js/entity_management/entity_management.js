@@ -18,7 +18,7 @@ function fetchProducts(stallID, completionHandler) {
     client.query(`
     {
       stall(id:${stallID}){
-        productSet{
+        activeProducts {
           id
           name
           description
@@ -86,7 +86,7 @@ class EntityManagement extends React.Component {
         refreshProducts = () => {
             fetchProducts(stall.id, result => {
                 let activeStall = this.state.activeStall;
-                activeStall.products = result.stall.productSet;
+                activeStall.products = result.stall.activeProducts;
 
                 this.setState({
                     activeStall: activeStall

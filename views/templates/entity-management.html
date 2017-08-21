@@ -1,106 +1,185 @@
-<link rel="stylesheet"
-      href="../stylesheets/entity-management.css">
-
-<div id="app-frame"
+<script src="../js/stock_inventory.js"></script>
+<div id="stock-inventory"
      class="container-fluid m-0 p-0 h-100 w-100">
 
-    <div id="entity-management-frame"
-         class="container-fluid d-flex flex-row m-0 p-0 h-100 w-100">
-        <div id="stalls"
-             class="bg-light d-flex flex-column">
-            <div id="stall-list-header"
-                 class="container-fluid d-flex flex-row p-3 pt-5 bg-light">
-                <h4 class="mb-0 mr-auto">Stalls</h4>
-                <div>
-                    <!--Visual errors when outside div-->
-                    <button type="button"
-                            class="btn btn-sm btn-outline-primary"
-                            data-toggle="modal"
-                            data-target="#add-stall-modal">Add
-                    </button>
-                </div>
+    <div id="stock-inventory-head"
+         class="container-fluid d-flex flex-row bg-light">
+        <div class="mr-auto pt-5 row pl-3">
+            <h4 class="mr-3">Stock Inventory</h4>
+            <div>
+                <button class="btn btn-sm btn-outline-primary">Refresh data</button>
             </div>
-
-            <!--Stall List-->
-            <ul id="stall-list"
-                class="list-group bg-faded">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item active">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-
-            <!--Empty State-->
-            <div class="container-fluid p-2 text-center bg-white h-100 d-flex flex-column justify-content-center align-items-center">
-                <h5>There are no stalls yet.</h5>
-                <p class="text-muted">Stalls added will show up here.</p>
-                <button class="btn btn-outline-primary">Add a stall</button>
-            </div>
-
-
         </div>
-        <div id="products"
-             class="bg-white d-flex flex-column">
-
-            <!--Product list header-->
-            <div id="product-list-header"
-                 class="container-fluid d-flex flex-row p-3 pt-5 bg-light">
-                <h4 class="mr-auto mb-auto mt-auto">Bon Apple</h4>
-                <div>
-                    <button class="btn btn-sm btn-outline-primary">Add product</button>
-                    <button class="btn btn-sm btn-outline-primary">Rename stall</button>
-                    <button class="btn btn-sm btn-outline-danger">Delete stall</button>
+        <div id="stock-filter"
+             class="row ml-auto mt-auto mb-2">
+            <div class="col-auto mt-auto">
+                <div class="input-group mb-2 mb-sm-0">
+                    <small class="text-muted mt-auto mb-2 mr-3 d-block">Quantity filters</small>
+                    <div class="input-group-addon">Less than</div>
+                    <input class="form-control"
+                           id="less-than-filter"
+                           placeholder="No filter">
                 </div>
             </div>
-
-            <!--Product List-->
-            <div id="product-list"
-                 class="p-4 bg-light">
-                <div class="card-deck">
-
-                    <!--Product card-->
-                    <div class="card mb-3">
-                        <img class="card-img-top"
-                             src="https://cbp.s3.amazonaws.com/img/0/0/4/8/4/5/tn050016-the-national-trouble-will-find-me-2x12-vinyl-g-3.png"
-                             alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title">Card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's content.</p>
-                        </div>
-
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item "><b class="pl-0 pr-5">Price</b>₱200.00</li>
-                            <li class="list-group-item"><b class="pl-0 pr-3">Quantity</b> 19</li>
-                        </ul>
-                        <div class="card-footer d-flex border-top-0 pl-4 pr-4">
-                            <a href="#"
-                               id="edit-product-button"
-                               class="btn btn-outline-primary ml-auto w-50 mr-3">Modify</a>
-                            <a href="#"
-                               id="delete-product-button"
-                               class="btn btn-outline-danger mr-auto w-50">Delete</a>
-                        </div>
-                    </div>
-
+            <div class="col-auto mt-auto">
+                <div class="input-group mb-2 mb-sm-0">
+                    <div class="input-group-addon">Greater than</div>
+                    <input class="form-control"
+                           id="greater-than-filter"
+                           placeholder="No filter">
                 </div>
-                <!--Empty State-->
-
             </div>
-
         </div>
+
+    </div>
+
+    <div id="stocks-table">
+        <table class="table">
+            <thead class="bg-light">
+            <tr>
+                <th>Product Name</th>
+                <th>Stall</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr><tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr><tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr><tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+
+
+
+            </tbody>
+        </table>
     </div>
 </div>
 

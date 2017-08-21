@@ -18,6 +18,10 @@ var _entity_management = require('./entity_management/entity_management');
 
 var _entity_management2 = _interopRequireDefault(_entity_management);
 
+var _stock_inventory = require('./stock_inventory');
+
+var _stock_inventory2 = _interopRequireDefault(_stock_inventory);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31,19 +35,19 @@ function currentTab() {
 }
 
 var navbarItems = [{
-    name: "Manage Entities",
+    name: "Manage Products",
     isActive: false,
     tab: _react2.default.createElement(_entity_management2.default, null)
 }, {
-    name: "Confirm Payments",
+    name: "Stock Inventory",
     isActive: false,
-    tab: undefined //TODO
+    tab: _react2.default.createElement(_stock_inventory2.default, null)
 }, {
     name: "Waitlists",
     isActive: false,
     tab: undefined //TODO
 }, {
-    name: "Replenish Stocks",
+    name: "Confirm Payments",
     isActive: false,
     tab: undefined //TODO
 }, {

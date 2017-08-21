@@ -1,7 +1,7 @@
 .navbar {
     /*background: #24282c;*/
-    height : 40px;
-    -webkit-app-region: drag
+    height             : 40px;
+    -webkit-app-region : drag
 }
 
 .nav-item {
@@ -39,7 +39,8 @@ a.nav-link {
 }
 
 #current-tab {
-    padding-top: 40px;
+    padding-top : 40px;
+    overflow    : hidden;
 }
 
 /* Entity Management */
@@ -75,9 +76,9 @@ a.nav-link {
 }
 
 #product-list .card-deck .card {
-    max-width : 350px;
-    min-width : 260px;
-    min-height: 100%;
+    max-width  : 350px;
+    min-width  : 260px;
+    min-height : 100%;
 }
 
 #product-list .card-deck {
@@ -85,5 +86,36 @@ a.nav-link {
     margin-left  : 0;
 }
 
-/* End Entity Management */
+#active-stall-name {
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+    max-width     : 60%;
+    overflow      : hidden;
+}
 
+/* End Entity Management */
+#stock-inventory-head {
+    border-bottom : 1px solid rgba(0, 0, 0, .125);
+    min-height    : 90px;
+    max-height    : 90px;
+}
+
+#stock-inventory table th:first-child,
+#stock-inventory table td:first-child {
+    padding-left : 30px;
+}
+
+#stock-inventory table th,
+#stock-inventory table td {
+    width : 33.33vw;
+}
+
+#stock-inventory table thead,
+#stock-inventory table tbody {
+    display : block
+}
+
+#stock-inventory table tbody {
+    overflow : scroll !important;
+    height   : calc(100vh - 180px);
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import EntityManagement from './entity_management/entity_management';
+import StockInventory from './stock_inventory';
 
 function currentTab() {
     return document.getElementById('current-tab');
@@ -8,14 +9,14 @@ function currentTab() {
 
 const navbarItems = [
     {
-        name: "Manage Entities",
+        name: "Manage Products",
         isActive: false,
         tab: <EntityManagement/>
     },
     {
-        name: "Confirm Payments",
+        name: "Stock Inventory",
         isActive: false,
-        tab: undefined //TODO
+        tab: <StockInventory/>
     },
     {
         name: "Waitlists",
@@ -23,7 +24,7 @@ const navbarItems = [
         tab: undefined //TODO
     },
     {
-        name: "Replenish Stocks",
+        name: "Confirm Payments",
         isActive: false,
         tab: undefined //TODO
     },

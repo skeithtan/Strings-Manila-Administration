@@ -46,6 +46,7 @@ function fillOutAddProductModal(activeStall) {
 }
 
 function fillOutModifyProductModal(product) {
+    $('#modify-product-id').val(product.id);
     $('#modify-product-name-input').val(product.name);
     $('#modify-product-price-input').val(product.currentPrice);
     $('#modify-product-description-input').val(product.description);
@@ -53,14 +54,15 @@ function fillOutModifyProductModal(product) {
 }
 
 function fillOutDeleteProductModal(product) {
-
+    $('#delete-product-id').val(product.id);
+    $('b.delete-product-name').html(product.name);
 }
 
 function ProductListHeader(props) {
     return (
         <div id="product-list-header"
              className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
-            <h4 className="mr-auto mb-auto mt-auto">{props.activeStall.name}</h4>
+            <h4 id="active-stall-name" className="mr-auto mb-auto">{props.activeStall.name}</h4>
             <div>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"
@@ -171,7 +173,7 @@ function ProductCard(props) {
                 </button>
                 <button className="btn btn-outline-danger mr-auto w-50"
                         data-toggle="modal"
-                        data-target=""
+                        data-target="#delete-product-modal"
                         onClick={() => {
                             fillOutDeleteProductModal(props.product);
                         }}>Delete
