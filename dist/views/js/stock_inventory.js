@@ -195,8 +195,10 @@ var StockInventoryHead = function (_React$Component2) {
         key: "refreshData",
         value: function refreshData() {
             this.props.refreshState(iziToast.success({
-                "title": "Refresh",
-                "message": "Data is up to date."
+                title: "Refreshed",
+                message: "Data is up to date.",
+                timeout: 1500,
+                progressBar: false
             }));
         }
     }, {
@@ -234,7 +236,7 @@ var StockInventoryHead = function (_React$Component2) {
                         { className: "mt-auto mr-2" },
                         _react2.default.createElement(
                             "div",
-                            { className: "input-group mb-2 mb-sm-0" },
+                            { className: "mb-2 mb-sm-0" },
                             _react2.default.createElement(
                                 "small",
                                 { className: "text-muted mt-auto mb-2 mr-3 d-block" },
@@ -242,16 +244,19 @@ var StockInventoryHead = function (_React$Component2) {
                             ),
                             _react2.default.createElement(
                                 "div",
-                                { className: "input-group-addon" },
-                                "Greater than"
-                            ),
-                            _react2.default.createElement("input", { className: "form-control",
-                                id: "greater-than-filter",
-                                type: "number",
-                                min: "0",
-                                placeholder: "No filter",
-                                onChange: this.props.onGreaterThanInput
-                            })
+                                { className: "input-group" },
+                                _react2.default.createElement(
+                                    "div",
+                                    { className: "input-group-addon" },
+                                    "Greater than"
+                                ),
+                                _react2.default.createElement("input", { type: "number",
+                                    min: "0",
+                                    className: "form-control",
+                                    id: "greater-than-filter",
+                                    placeholder: "No filter",
+                                    onChange: this.props.onGreaterThanInput })
+                            )
                         )
                     ),
                     _react2.default.createElement(

@@ -147,8 +147,10 @@ class StockInventoryHead extends React.Component {
     refreshData() {
         this.props.refreshState(
             iziToast.success({
-                "title": "Refresh",
-                "message": "Data is up to date."
+                title: "Refreshed",
+                message: "Data is up to date.",
+                timeout: 1500,
+                progressBar: false
             })
         )
     }
@@ -168,16 +170,17 @@ class StockInventoryHead extends React.Component {
                 <div id="stock-filter"
                      className="row ml-auto mt-auto mb-2">
                     <div className="mt-auto mr-2">
-                        <div className="input-group mb-2 mb-sm-0">
+                        <div className="mb-2 mb-sm-0">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">Quantity filters</small>
-                            <div className="input-group-addon">Greater than</div>
-                            <input className="form-control"
-                                   id="greater-than-filter"
-                                   type="number"
-                                   min="0"
-                                   placeholder="No filter"
-                                   onChange={this.props.onGreaterThanInput}
-                            />
+                            <div className="input-group">
+                                <div className="input-group-addon">Greater than</div>
+                                <input type="number"
+                                       min="0"
+                                       className="form-control"
+                                       id="greater-than-filter"
+                                       placeholder="No filter"
+                                       onChange={this.props.onGreaterThanInput}/>
+                            </div>
                         </div>
                     </div>
                     <div className="mt-auto mr-4">
