@@ -20,7 +20,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Fetch data
 function fetchStocks(completionHandler) {
-    client.query("\n    {\n        products {\n            id\n            name\n            quantity\n            stall {\n                name\n            }\n        }\n    }\n    ").then(completionHandler);
+    client.query("\n    {\n      tiers {\n        id\n        name\n        quantity\n        isSingular\n        productDescription{\n          name\n          stall {\n            name\n          }\n        }\n      }\n    }\n    ").then(completionHandler);
 }
 
 //React
@@ -34,7 +34,7 @@ var StockInventory = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (StockInventory.__proto__ || Object.getPrototypeOf(StockInventory)).call(this, props));
 
         _this.state = {
-            products: null,
+            tiers: null,
             lessThan: null,
             greaterThan: null
         };
@@ -42,7 +42,7 @@ var StockInventory = function (_React$Component) {
         _this.refreshState = _this.refreshState.bind(_this);
         _this.onLessThanInput = _this.onLessThanInput.bind(_this);
         _this.onGreaterThanInput = _this.onGreaterThanInput.bind(_this);
-        _this.getFilteredProducts = _this.getFilteredProducts.bind(_this);
+        _this.getFilteredTiers = _this.getFilteredTiers.bind(_this);
 
         refreshStockInventory = _this.refreshState;
         _this.refreshState();
@@ -57,12 +57,12 @@ var StockInventory = function (_React$Component) {
             fetchStocks(function (result) {
 
                 // Lowest first
-                var products = result.products.sort(function (a, b) {
+                var tiers = result.tiers.sort(function (a, b) {
                     return a.quantity > b.quantity;
                 });
 
                 _this2.setState({
-                    products: products
+                    tiers: tiers
                 });
 
                 if (completion !== undefined) {
@@ -87,47 +87,47 @@ var StockInventory = function (_React$Component) {
             });
         }
     }, {
-        key: "getFilteredProducts",
-        value: function getFilteredProducts() {
+        key: "getFilteredTiers",
+        value: function getFilteredTiers() {
             var lessThan = this.state.lessThan;
             var greaterThan = this.state.greaterThan;
 
-            var filteredProducts = this.state.products; //No filter yet
+            var filteredTiers = this.state.tiers; //No filter yet
 
             if (lessThan === null && greaterThan === null) {
-                return filteredProducts;
+                return filteredTiers;
             }
 
-            if (filteredProducts === null) {
-                return filteredProducts;
+            if (filteredTiers === null) {
+                return filteredTiers;
             }
 
             if (lessThan !== null) {
-                filteredProducts = filteredProducts.filter(function (product) {
-                    return product.quantity < lessThan;
+                filteredTiers = filteredTiers.filter(function (tier) {
+                    return tier.quantity < lessThan;
                 });
             }
 
             if (greaterThan !== null) {
-                filteredProducts = filteredProducts.filter(function (product) {
-                    return product.quantity > greaterThan;
+                filteredTiers = filteredTiers.filter(function (tier) {
+                    return tier.quantity > greaterThan;
                 });
             }
 
-            return filteredProducts;
+            return filteredTiers;
         }
     }, {
         key: "render",
         value: function render() {
-            if (this.state.products === null) {
+            if (this.state.tiers === null) {
                 return StockInventory.loadingState();
             }
 
-            if (this.state.products.length === 0) {
+            if (this.state.tiers.length === 0) {
                 return StockInventory.noProducts();
             }
 
-            var filteredProducts = this.getFilteredProducts();
+            var filteredTiers = this.getFilteredTiers();
 
             return _react2.default.createElement(
                 "div",
@@ -136,7 +136,7 @@ var StockInventory = function (_React$Component) {
                 _react2.default.createElement(StockInventoryHead, { refreshState: this.refreshState,
                     onLessThanInput: this.onLessThanInput,
                     onGreaterThanInput: this.onGreaterThanInput }),
-                _react2.default.createElement(StockTable, { products: filteredProducts })
+                _react2.default.createElement(StockTable, { tiers: filteredTiers })
             );
         }
     }], [{
@@ -299,9 +299,9 @@ var StockTable = function (_React$Component3) {
         key: "render",
         value: function render() {
 
-            var rows = this.props.products.map(function (product, index) {
-                return _react2.default.createElement(StockRow, { product: product,
-                    key: index });
+            var rows = this.props.tiers.map(function (tier) {
+                return _react2.default.createElement(StockRow, { tier: tier,
+                    key: tier.id });
             });
 
             if (rows.length === 0) {
@@ -324,6 +324,11 @@ var StockTable = function (_React$Component3) {
                                 "th",
                                 null,
                                 "Product Name"
+                            ),
+                            _react2.default.createElement(
+                                "th",
+                                null,
+                                "Tier"
                             ),
                             _react2.default.createElement(
                                 "th",
@@ -368,20 +373,6 @@ var StockTable = function (_React$Component3) {
     return StockTable;
 }(_react2.default.Component);
 
-function fillOutRestockModal(product) {
-    $('#restock-product-id').val(product.id);
-    $('#restock-modal-product-name').html(product.name);
-    $('#restock-modal-product-quantity').html(product.quantity);
-
-    if (product.quantity === 0) {
-        $('#restock-button-group').hide();
-        $('#restock-dummy-button-group').show();
-    } else {
-        $('#restock-button-group').show();
-        $('#restock-dummy-button-group').hide();
-    }
-}
-
 var StockRow = function (_React$Component4) {
     _inherits(StockRow, _React$Component4);
 
@@ -394,25 +385,36 @@ var StockRow = function (_React$Component4) {
     _createClass(StockRow, [{
         key: "render",
         value: function render() {
-            var _this6 = this;
+
+            var tier = this.props.tier;
+            var isSingular = tier.isSingular;
 
             return _react2.default.createElement(
                 "tr",
-                { className: StockRow.rowClass(this.props.product.quantity),
+                { className: StockRow.rowClass(tier.quantity),
                     "data-toggle": "modal",
                     "data-target": "#restock-modal",
                     onClick: function onClick() {
-                        fillOutRestockModal(_this6.props.product);
+                        fillOutRestockModal(tier);
                     } },
                 _react2.default.createElement(
                     "td",
                     null,
-                    this.props.product.name
+                    tier.productDescription.name
+                ),
+                _react2.default.createElement(
+                    "td",
+                    { className: isSingular ? "text-muted" : "" },
+                    isSingular ? _react2.default.createElement(
+                        "small",
+                        null,
+                        "N/A"
+                    ) : tier.name
                 ),
                 _react2.default.createElement(
                     "td",
                     null,
-                    this.props.product.stall.name
+                    tier.productDescription.stall.name
                 ),
                 _react2.default.createElement(
                     "td",
@@ -420,7 +422,7 @@ var StockRow = function (_React$Component4) {
                     _react2.default.createElement(
                         "b",
                         null,
-                        this.props.product.quantity
+                        tier.quantity
                     )
                 )
             );

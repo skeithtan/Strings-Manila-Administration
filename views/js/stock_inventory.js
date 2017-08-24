@@ -4,14 +4,18 @@ import React from 'react';
 function fetchStocks(completionHandler) {
     client.query(`
     {
-        products {
-            id
+      tiers {
+        id
+        name
+        quantity
+        isSingular
+        productDescription{
+          name
+          stall {
             name
-            quantity
-            stall {
-                name
-            }
+          }
         }
+      }
     }
     `).then(completionHandler);
 }
@@ -21,7 +25,7 @@ class StockInventory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: null,
+            tiers: null,
             lessThan: null,
             greaterThan: null,
         };
@@ -29,7 +33,7 @@ class StockInventory extends React.Component {
         this.refreshState = this.refreshState.bind(this);
         this.onLessThanInput = this.onLessThanInput.bind(this);
         this.onGreaterThanInput = this.onGreaterThanInput.bind(this);
-        this.getFilteredProducts = this.getFilteredProducts.bind(this);
+        this.getFilteredTiers = this.getFilteredTiers.bind(this);
 
         refreshStockInventory = this.refreshState;
         this.refreshState();
@@ -39,12 +43,12 @@ class StockInventory extends React.Component {
         fetchStocks(result => {
 
             // Lowest first
-            const products = result.products.sort((a, b) => {
+            const tiers = result.tiers.sort((a, b) => {
                 return a.quantity > b.quantity
             });
 
             this.setState({
-                products: products
+                tiers: tiers
             });
 
             if (completion !== undefined) {
@@ -86,45 +90,45 @@ class StockInventory extends React.Component {
         });
     }
 
-    getFilteredProducts() {
+    getFilteredTiers() {
         const lessThan = this.state.lessThan;
         const greaterThan = this.state.greaterThan;
 
-        let filteredProducts = this.state.products; //No filter yet
+        let filteredTiers = this.state.tiers; //No filter yet
 
         if (lessThan === null && greaterThan === null) {
-            return filteredProducts;
+            return filteredTiers;
         }
 
-        if (filteredProducts === null) {
-            return filteredProducts;
+        if (filteredTiers === null) {
+            return filteredTiers;
         }
 
         if (lessThan !== null) {
-            filteredProducts = filteredProducts.filter(product => {
-                return product.quantity < lessThan
+            filteredTiers = filteredTiers.filter(tier => {
+                return tier.quantity < lessThan
             })
         }
 
         if (greaterThan !== null) {
-            filteredProducts = filteredProducts.filter(product => {
-                return product.quantity > greaterThan
+            filteredTiers = filteredTiers.filter(tier => {
+                return tier.quantity > greaterThan
             })
         }
 
-        return filteredProducts;
+        return filteredTiers;
     }
 
     render() {
-        if (this.state.products === null) {
+        if (this.state.tiers === null) {
             return StockInventory.loadingState();
         }
 
-        if (this.state.products.length === 0) {
+        if (this.state.tiers.length === 0) {
             return StockInventory.noProducts();
         }
 
-        const filteredProducts = this.getFilteredProducts();
+        const filteredTiers = this.getFilteredTiers();
 
         return (
             <div id="stock-inventory"
@@ -132,7 +136,7 @@ class StockInventory extends React.Component {
                 <StockInventoryHead refreshState={this.refreshState}
                                     onLessThanInput={this.onLessThanInput}
                                     onGreaterThanInput={this.onGreaterThanInput}/>
-                <StockTable products={filteredProducts}/>
+                <StockTable tiers={filteredTiers}/>
             </div>
         )
     }
@@ -216,9 +220,9 @@ class StockTable extends React.Component {
 
     render() {
 
-        const rows = this.props.products.map((product, index) => {
-            return <StockRow product={product}
-                             key={index}/>
+        const rows = this.props.tiers.map(tier => {
+            return <StockRow tier={tier}
+                             key={tier.id}/>;
         });
 
         if (rows.length === 0) {
@@ -231,6 +235,7 @@ class StockTable extends React.Component {
                     <thead className="bg-light">
                     <tr>
                         <th>Product Name</th>
+                        <th>Tier</th>
                         <th>Stall</th>
                         <th>Quantity</th>
                     </tr>
@@ -245,19 +250,6 @@ class StockTable extends React.Component {
     }
 }
 
-function fillOutRestockModal(product) {
-    $('#restock-product-id').val(product.id);
-    $('#restock-modal-product-name').html(product.name);
-    $('#restock-modal-product-quantity').html(product.quantity);
-
-    if (product.quantity === 0) {
-        $('#restock-button-group').hide();
-        $('#restock-dummy-button-group').show();
-    } else {
-        $('#restock-button-group').show();
-        $('#restock-dummy-button-group').hide();
-    }
-}
 
 class StockRow extends React.Component {
     constructor(props) {
@@ -277,16 +269,21 @@ class StockRow extends React.Component {
     }
 
     render() {
+
+        const tier = this.props.tier;
+        const isSingular = tier.isSingular;
+
         return (
-            <tr className={StockRow.rowClass(this.props.product.quantity)}
+            <tr className={StockRow.rowClass(tier.quantity)}
                 data-toggle="modal"
                 data-target="#restock-modal"
                 onClick={() => {
-                    fillOutRestockModal(this.props.product)
+                    fillOutRestockModal(tier)
                 }}>
-                <td>{this.props.product.name}</td>
-                <td>{this.props.product.stall.name}</td>
-                <td><b>{this.props.product.quantity}</b></td>
+                <td>{tier.productDescription.name}</td>
+                <td className={isSingular ? "text-muted" : ""}>{isSingular ? <small>N/A</small> : tier.name}</td>
+                <td>{tier.productDescription.stall.name}</td>
+                <td><b>{tier.quantity}</b></td>
             </tr>
         );
     }

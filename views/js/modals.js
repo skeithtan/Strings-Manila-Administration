@@ -519,12 +519,12 @@ function fillOutDeleteProductModal(product) {
 
 //MARK: - Stock Inventory
 function onRestockButtonClick() {
-    const productID = $('#restock-product-id').val();
+    const tierID = $('#restock-tier-id').val();
     const quantity = $('#restock-quantity').val();
     const isAdd = $('#restock-add').is(':checked');
 
     $.ajax({
-        url: `${baseURL}products/${productID}/restock/`,
+        url: `${baseURL}product-tiers/${tierID}/restock/`,
         method: 'POST',
         data: {
             quantity: quantity,
@@ -546,6 +546,28 @@ function onRestockButtonClick() {
             });
         }
     })
+}
+
+//Fill Out
+function fillOutRestockModal(tier) {
+    $('#restock-tier-id').val(tier.id);
+    $('#restock-modal-product-name').html(tier.productDescription.name);
+    $('#restock-modal-product-quantity').html(tier.quantity);
+
+    if(tier.isSingular) {
+        $("#restock-modal-tier-row").hide();
+    } else {
+        $("#restock-modal-tier-row").show();
+        $("#restock-modal-tier-name").html(tier.name);
+    }
+
+    if (tier.quantity === 0) {
+        $('#restock-button-group').hide();
+        $('#restock-dummy-button-group').show();
+    } else {
+        $('#restock-button-group').show();
+        $('#restock-dummy-button-group').hide();
+    }
 }
 
 //MARK: - XHR Authorization
