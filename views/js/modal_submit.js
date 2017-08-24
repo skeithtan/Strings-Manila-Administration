@@ -5,7 +5,6 @@ var refreshStockInventory;
 
 
 $(() => {
-
     //MARK: - Entity Management
     //Stalls
     $('#add-stall-button').click(onAddStallButtonClick);
@@ -16,7 +15,8 @@ $(() => {
     });
 
     //Products
-    $('#add-product-button').click(onAddProductButtonClick);
+    setUpAddProductModal();
+    $('#add-singular-product-button').click(onAddSingularProductButtonClick);     //FIXME: this
     $('#modify-product-button').click(onModifyProductButtonClick);
     $('#delete-product-button').click(onDeleteProductButtonClick);
     $('#add-product-modal').on('hidden.bs.modal', () => {
@@ -24,7 +24,8 @@ $(() => {
         $('#add-product-price-input').val('');
         $('#add-product-description-input').val('');
         $('#add-product-image-input').val('');
-    });
+    }); //FIXME: this
+
 
     //Restock
     $('#restock-button').click(onRestockButtonClick);
@@ -117,6 +118,51 @@ function onDeleteStallButtonClick() {
 
 
 //MARK: - Products
+function setUpAddProductModal() {
+    $('#add-tiered-product-card').hide();
+
+    $('#add-singular-product-tab').click(() => {
+        $('#add-tiered-product-card').hide();
+        $('#add-singular-product-card').show();
+    });
+
+    $('#add-tiered-product-tab').click(() => {
+        $('#add-singular-product-card').hide();
+        $('#add-tiered-product-card').show();
+    });
+
+    $('#add-tier-button').click(() => {
+        const clone = $('#tier-row-clone').clone();
+        clone.removeAttr('id');
+        clone.appendTo($('#tiers-set'));
+
+        $('#add-tiered-product-button').attr('disabled', true);
+
+        const deleteButton = $(clone.find('.tier-row-remove')[0]);
+        deleteButton.click(() => {
+            clone.remove();
+            recalculateValidator();
+        });
+
+        recalculateValidator();
+    });
+
+    function recalculateValidator() {
+        const inputs = $('#add-tiered-product-card').find('.text-input');
+
+        //Remove old validator
+        inputs.each((index, item) => {
+            $(item).off('input');
+        });
+
+        addValidation({
+            inputs: inputs,
+            button: $('#add-tiered-product-button')
+        });
+    }
+
+}
+
 function displayUploadingToast() {
     const id = randomString();
     iziToast.info({
@@ -213,14 +259,18 @@ function uploadImage(data) {
 
 }
 
-function onAddProductButtonClick() {
+function onAddSingularProductButtonClick() {
+    const name = $('#add-product-name-input').val();
     const imageInput = $('#add-product-image-input')[0].files;
     const stallID = $('#add-product-stall-id').val();
 
     let product = {
-        name: $('#add-product-name-input').val(),
-        price: $('#add-product-price-input').val(),
+        name: name,
         description: $('#add-product-description-input').val(),
+        tiers: [{
+            name: name,
+            price: $('#add-product-price-input').val(),
+        }]
     };
 
     if (imageInput.length) {

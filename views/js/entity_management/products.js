@@ -83,7 +83,7 @@ function ProductListHeader(props) {
                         data-target="#delete-stall-modal"
                         onClick={() => {
                             fillOutDeleteStallModal(props.activeStall)
-                        }}>Delete stall
+                        }}>Discontinue stall
                 </button>
             </div>
         </div>
@@ -158,11 +158,6 @@ function ProductCard(props) {
                 <h4 className="card-title">{props.product.name}</h4>
                 <p className="card-text">{props.product.description}</p>
             </div>
-            <ul className="list-group list-group-flush">
-                <li className="list-group-item border-top-0">
-                    <b className="pl-0 pr-5">₱{props.product.currentPrice}</b>
-                </li>
-            </ul>
             <div className="card-footer d-flex border-top-0 pl-4 pr-4">
                 <button className="btn btn-outline-primary ml-auto w-50 mr-3"
                         data-toggle="modal"
@@ -176,7 +171,7 @@ function ProductCard(props) {
                         data-target="#delete-product-modal"
                         onClick={() => {
                             fillOutDeleteProductModal(props.product);
-                        }}>Delete
+                        }}>Discontinue
                 </button>
             </div>
         </div>

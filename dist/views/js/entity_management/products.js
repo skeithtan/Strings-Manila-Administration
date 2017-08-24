@@ -131,7 +131,7 @@ function ProductListHeader(props) {
                     onClick: function onClick() {
                         fillOutDeleteStallModal(props.activeStall);
                     } },
-                "Delete stall"
+                "Discontinue stall"
             )
         )
     );
@@ -244,20 +244,6 @@ function ProductCard(props) {
             )
         ),
         _react2.default.createElement(
-            "ul",
-            { className: "list-group list-group-flush" },
-            _react2.default.createElement(
-                "li",
-                { className: "list-group-item border-top-0" },
-                _react2.default.createElement(
-                    "b",
-                    { className: "pl-0 pr-5" },
-                    "\u20B1",
-                    props.product.currentPrice
-                )
-            )
-        ),
-        _react2.default.createElement(
             "div",
             { className: "card-footer d-flex border-top-0 pl-4 pr-4" },
             _react2.default.createElement(
@@ -278,7 +264,7 @@ function ProductCard(props) {
                     onClick: function onClick() {
                         fillOutDeleteProductModal(props.product);
                     } },
-                "Delete"
+                "Discontinue"
             )
         )
     );

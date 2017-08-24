@@ -115,7 +115,8 @@ var Navbar = function (_React$Component) {
 
             return _react2.default.createElement(
                 'nav',
-                { className: 'navbar navbar-light navbar-expand-lg fixed-top bg-light' },
+                { id: 'main-navigation',
+                    className: 'navbar navbar-light navbar-expand-lg fixed-top bg-light' },
                 _react2.default.createElement(
                     'ul',
                     { id: 'navbar-buttons',

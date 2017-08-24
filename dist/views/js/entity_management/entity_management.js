@@ -32,7 +32,7 @@ function fetchStalls(completionHandler) {
 }
 
 function fetchProducts(stallID, completionHandler) {
-    client.query('\n    {\n      stall(id:' + stallID + '){\n        activeProducts {\n          id\n          name\n          description\n          image\n          quantity\n          currentPrice\n        }\n      }\n    }\n    ').then(completionHandler);
+    client.query('\n    {\n      stall(id:' + stallID + '){\n        activeProducts {\n          id\n          name\n          description\n          image\n          tiers {\n            name\n            currentPrice\n          }\n        }\n      }\n    }\n    ').then(completionHandler);
 }
 
 //React

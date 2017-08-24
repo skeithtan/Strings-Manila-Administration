@@ -82,7 +82,8 @@ class Navbar extends React.Component {
         });
 
         return (
-            <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-light">
+            <nav id="main-navigation"
+                 className="navbar navbar-light navbar-expand-lg fixed-top bg-light">
                 <ul id="navbar-buttons"
                     className="navbar-nav mr-auto ml-auto">
                     {navbarItems}

@@ -23,8 +23,10 @@ function fetchProducts(stallID, completionHandler) {
           name
           description
           image
-          quantity
-          currentPrice
+          tiers {
+            name
+            currentPrice
+          }
         }
       }
     }

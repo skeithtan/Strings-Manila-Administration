@@ -13,8 +13,13 @@ $(function () {
     });
 
     addValidation({
-        inputs: $('#add-product-modal').find('.text-input'),
-        button: $('#add-product-button')
+        inputs: $('#add-singular-product-card').find('.text-input'),
+        button: $('#add-singular-product-button')
+    });
+
+    addValidation({
+        inputs: $('#add-tiered-product-card').find('.text-input'),
+        button: $('#add-tiered-product-button')
     });
 
     addValidation({
@@ -35,7 +40,7 @@ function addValidation(object) {
     var inputs = object.inputs;
     var button = object.button;
 
-    inputs.on('input', function () {
+    function validateInputs() {
         var disable = false;
 
         inputs.each(function (index, item) {
@@ -46,6 +51,10 @@ function addValidation(object) {
         });
 
         button.attr('disabled', disable);
-    });
+    }
+
+    inputs.on('input', validateInputs);
+
+    validateInputs();
 }
 //# sourceMappingURL=form_verification.js.map

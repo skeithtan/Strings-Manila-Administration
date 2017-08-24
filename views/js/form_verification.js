@@ -11,8 +11,13 @@ $(() => {
     });
 
     addValidation({
-        inputs: $('#add-product-modal').find('.text-input'),
-        button: $('#add-product-button')
+        inputs: $('#add-singular-product-card').find('.text-input'),
+        button: $('#add-singular-product-button')
+    });
+
+    addValidation({
+        inputs: $('#add-tiered-product-card').find('.text-input'),
+        button: $('#add-tiered-product-button')
     });
 
     addValidation({
@@ -34,7 +39,7 @@ function addValidation(object) {
     const inputs = object.inputs;
     const button = object.button;
 
-    inputs.on('input', () => {
+    function validateInputs() {
         let disable = false;
 
         inputs.each((index, item) => {
@@ -45,5 +50,9 @@ function addValidation(object) {
         });
 
         button.attr('disabled', disable);
-    });
+    }
+
+    inputs.on('input', validateInputs);
+
+    validateInputs();
 }
