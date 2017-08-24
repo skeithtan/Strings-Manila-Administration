@@ -22,7 +22,7 @@ class Products extends React.Component {
 
         return (
             <div id="products"
-                 className="bg-white d-flex flex-column">
+                 className="bg-white">
                 <ProductListHeader activeStall={activeStall}/>
                 <ProductList activeStall={activeStall}/>
             </div>

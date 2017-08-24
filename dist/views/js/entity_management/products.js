@@ -39,7 +39,7 @@ var Products = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { id: "products",
-                    className: "bg-white d-flex flex-column" },
+                    className: "bg-white" },
                 _react2.default.createElement(ProductListHeader, { activeStall: activeStall }),
                 _react2.default.createElement(ProductList, { activeStall: activeStall })
             );
