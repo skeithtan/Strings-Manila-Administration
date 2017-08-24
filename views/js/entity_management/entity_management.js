@@ -24,6 +24,7 @@ function fetchProducts(stallID, completionHandler) {
           description
           image
           tiers {
+            id
             name
             currentPrice
           }

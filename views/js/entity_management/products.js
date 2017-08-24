@@ -22,40 +22,12 @@ class Products extends React.Component {
 
         return (
             <div id="products"
-                 className="bg-white">
+                 className="bg-white d-flex flex-column">
                 <ProductListHeader activeStall={activeStall}/>
                 <ProductList activeStall={activeStall}/>
             </div>
         )
     }
-}
-
-function fillOutRenameStallModal(activeStall) {
-    $('#rename-stall-id').val(activeStall.id);
-    $('#rename-stall-name-input').val(activeStall.name);
-    $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
-}
-
-function fillOutDeleteStallModal(activeStall) {
-    $('#delete-stall-id').val(activeStall.id);
-    $('b.delete-stall-name').html(activeStall.name);
-}
-
-function fillOutAddProductModal(activeStall) {
-    $('#add-product-stall-id').val(activeStall.id);
-}
-
-function fillOutModifyProductModal(product) {
-    $('#modify-product-id').val(product.id);
-    $('#modify-product-name-input').val(product.name);
-    $('#modify-product-price-input').val(product.currentPrice);
-    $('#modify-product-description-input').val(product.description);
-    $('#modify-product-button').attr('disabled', false) //Form is already filled out, do not disable submit button
-}
-
-function fillOutDeleteProductModal(product) {
-    $('#delete-product-id').val(product.id);
-    $('b.delete-product-name').html(product.name);
 }
 
 function ProductListHeader(props) {

@@ -23,8 +23,8 @@ $(function () {
     });
 
     addValidation({
-        inputs: $('#modify-product-modal').find('.text-input'),
-        button: $('#modify-product-button')
+        inputs: $('#modify-singular-product-body').find('.text-input'),
+        button: $('#modify-singular-product-button')
     });
 
     addValidation({

@@ -92,7 +92,8 @@
     flex-grow : 1;
 }
 
-#tier-row-clone {
+#tier-row-clone,
+#modify-tier-row-clone {
     display : none !important;
 }
 
