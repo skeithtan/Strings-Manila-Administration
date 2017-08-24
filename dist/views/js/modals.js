@@ -204,7 +204,6 @@ function submitAddProduct(product, stallID, image) {
             url: baseURL + 'stalls/' + stallID + '/products/',
             method: 'POST',
             data: JSON.stringify(product),
-            dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             beforeSend: authorizeXHR,
             success: function success() {
@@ -246,7 +245,8 @@ function submitModifyProduct(product, productID, image) {
         $.ajax({
             url: baseURL + 'products/' + productID + '/',
             method: 'PATCH',
-            data: product,
+            data: JSON.stringify(product),
+            contentType: 'application/json; charset=utf-8',
             beforeSend: authorizeXHR,
             success: function success() {
                 iziToast.success({
@@ -256,7 +256,7 @@ function submitModifyProduct(product, productID, image) {
                 refreshProducts();
             },
             error: function error(response) {
-                console.log(response);
+                console.log(response.responseText);
                 iziToast.error({
                     title: 'Error',
                     message: 'Unable to modify product'
@@ -475,6 +475,8 @@ function fillOutTieredProductModal(product) {
 
     $('#modify-tiered-product-name-input').val(product.name);
     $('#modify-tiered-product-description-input').val(product.description);
+
+    $('#modify-tiers-set').html('');
 
     product.tiers.forEach(function (tier) {
         var clone = $('#modify-tier-row-clone').clone();
