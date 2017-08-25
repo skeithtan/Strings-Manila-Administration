@@ -20,7 +20,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Fetch data
 function fetchStocks(completionHandler) {
-    client.query("\n    {\n      tiers {\n        id\n        name\n        quantity\n        isSingular\n        productDescription{\n          name\n          stall {\n            name\n          }\n        }\n      }\n    }\n    ").then(completionHandler);
+    client.query("\n    {\n      tiers {\n        id\n        name\n        quantity\n        productDescription {\n          isSingular\n          name\n          stall {\n            name\n          }\n        }\n      }\n    }\n    ").then(completionHandler);
 }
 
 //React
@@ -298,7 +298,6 @@ var StockTable = function (_React$Component3) {
     _createClass(StockTable, [{
         key: "render",
         value: function render() {
-
             var rows = this.props.tiers.map(function (tier) {
                 return _react2.default.createElement(StockRow, { tier: tier,
                     key: tier.id });
@@ -385,9 +384,8 @@ var StockRow = function (_React$Component4) {
     _createClass(StockRow, [{
         key: "render",
         value: function render() {
-
             var tier = this.props.tier;
-            var isSingular = tier.isSingular;
+            var isSingular = tier.productDescription.isSingular;
 
             return _react2.default.createElement(
                 "tr",

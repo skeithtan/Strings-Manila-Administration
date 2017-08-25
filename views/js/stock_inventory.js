@@ -8,8 +8,8 @@ function fetchStocks(completionHandler) {
         id
         name
         quantity
-        isSingular
-        productDescription{
+        productDescription {
+          isSingular
           name
           stall {
             name
@@ -219,7 +219,6 @@ class StockTable extends React.Component {
     }
 
     render() {
-
         const rows = this.props.tiers.map(tier => {
             return <StockRow tier={tier}
                              key={tier.id}/>;
@@ -269,9 +268,8 @@ class StockRow extends React.Component {
     }
 
     render() {
-
         const tier = this.props.tier;
-        const isSingular = tier.isSingular;
+        const isSingular = tier.productDescription.isSingular;
 
         return (
             <tr className={StockRow.rowClass(tier.quantity)}

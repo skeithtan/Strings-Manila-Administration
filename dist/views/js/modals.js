@@ -110,8 +110,8 @@ function onDeleteStallButtonClick() {
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
-                title: 'Deleted',
-                message: 'Successfully deleted stall.'
+                title: 'Discontinued',
+                message: 'Stall is now discontinued.'
             });
             refreshStalls();
         },
@@ -119,7 +119,7 @@ function onDeleteStallButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not delete stall.'
+                message: 'Could not discontinue stall.'
             });
         }
     });
@@ -426,8 +426,8 @@ function onDeleteProductButtonClick() {
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
-                title: 'Deleted',
-                message: 'Successfully deleted product.'
+                title: 'Discontinued',
+                message: 'Product is now discontinued.'
             });
             refreshProducts();
         },
@@ -435,7 +435,7 @@ function onDeleteProductButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not delete product.'
+                message: 'Could not discontinue product.'
             });
         }
     });
