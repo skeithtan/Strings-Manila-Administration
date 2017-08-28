@@ -42,10 +42,11 @@ class StockInventory extends React.Component {
     refreshState(completion) {
         fetchStocks(result => {
 
-            // Lowest first
-            const tiers = result.tiers.sort((a, b) => {
-                return a.quantity > b.quantity
-            });
+            function ascending(tierA, tierB) {
+                return tierA.quantity > tierB.quantity // Lowest first
+            }
+
+            const tiers = result.tiers.sort(ascending);
 
             this.setState({
                 tiers: tiers

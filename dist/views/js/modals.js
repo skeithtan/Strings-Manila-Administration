@@ -36,6 +36,20 @@ $(function () {
             $(tierRow).remove();
         });
     });
+    $('#modify-product-modal').on('hidden.bs.modal', function () {
+        var modal = $('#add-product-modal');
+        modal.find('input').each(function (index, input) {
+            $(input).val('');
+        });
+
+        modal.find('textarea').each(function (index, textarea) {
+            $(textarea).val('');
+        });
+
+        modal.find('.extra-tier-row').each(function (index, tierRow) {
+            $(tierRow).remove();
+        });
+    });
 
     //Restock
     $('#restock-button').click(onRestockButtonClick);

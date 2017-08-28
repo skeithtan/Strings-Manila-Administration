@@ -56,10 +56,11 @@ var StockInventory = function (_React$Component) {
 
             fetchStocks(function (result) {
 
-                // Lowest first
-                var tiers = result.tiers.sort(function (a, b) {
-                    return a.quantity > b.quantity;
-                });
+                function ascending(tierA, tierB) {
+                    return tierA.quantity > tierB.quantity; // Lowest first
+                }
+
+                var tiers = result.tiers.sort(ascending);
 
                 _this2.setState({
                     tiers: tiers
