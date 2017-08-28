@@ -149,7 +149,7 @@ function fillOutRenameStallModal(activeStall) {
 
 function fillOutDeleteStallModal(activeStall) {
     $('#delete-stall-id').val(activeStall.id);
-    $('b.delete-stall-name').html(activeStall.name);
+    $('span.delete-stall-name').html(activeStall.name);
 }
 
 
@@ -526,7 +526,7 @@ function fillOutAddProductModal(activeStall) {
 
 function fillOutDeleteProductModal(product) {
     $('#delete-product-id').val(product.id);
-    $('b.delete-product-name').html(product.name);
+    $('span.delete-product-name').html(product.name);
 }
 
 
