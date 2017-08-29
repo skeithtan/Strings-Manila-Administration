@@ -57,7 +57,7 @@ var StockInventory = function (_React$Component) {
             fetchStocks(function (result) {
 
                 function ascending(tierA, tierB) {
-                    return tierA.quantity > tierB.quantity; // Lowest first
+                    return tierA.quantity - tierB.quantity; // Lowest first
                 }
 
                 var tiers = result.tiers.sort(ascending);
@@ -163,15 +163,11 @@ var StockInventory = function (_React$Component) {
         value: function loadingState() {
             return _react2.default.createElement(
                 "div",
-                null,
+                { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100" },
                 _react2.default.createElement(
-                    "div",
-                    { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100" },
-                    _react2.default.createElement(
-                        "h3",
-                        null,
-                        "Loading..."
-                    )
+                    "h3",
+                    null,
+                    "Loading..."
                 )
             );
         }

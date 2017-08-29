@@ -563,7 +563,7 @@ function fillOutRestockModal(tier) {
     $('#restock-modal-product-name').html(tier.productDescription.name);
     $('#restock-modal-product-quantity').html(tier.quantity);
 
-    if (tier.isSingular) {
+    if (tier.productDescription.isSingular) {
         $("#restock-modal-tier-row").hide();
     } else {
         $("#restock-modal-tier-row").show();
@@ -573,6 +573,7 @@ function fillOutRestockModal(tier) {
     if (tier.quantity === 0) {
         $('#restock-button-group').hide();
         $('#restock-dummy-button-group').show();
+        $('#restock-add').parent().button('toggle'); //Enable add
     } else {
         $('#restock-button-group').show();
         $('#restock-dummy-button-group').hide();

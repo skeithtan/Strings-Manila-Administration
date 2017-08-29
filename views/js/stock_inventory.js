@@ -43,7 +43,7 @@ class StockInventory extends React.Component {
         fetchStocks(result => {
 
             function ascending(tierA, tierB) {
-                return tierA.quantity > tierB.quantity // Lowest first
+                return tierA.quantity - tierB.quantity // Lowest first
             }
 
             const tiers = result.tiers.sort(ascending);
@@ -69,10 +69,8 @@ class StockInventory extends React.Component {
 
     static loadingState() {
         return (
-            <div>
-                <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100">
-                    <h3>Loading...</h3>
-                </div>
+            <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100">
+                <h3>Loading...</h3>
             </div>
         );
     }
