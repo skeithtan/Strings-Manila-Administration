@@ -85,6 +85,9 @@ var Orders = function (_React$Component) {
 
         _this.onDateChange = _this.onDateChange.bind(_this);
         _this.refreshState = _this.refreshState.bind(_this);
+        _this.filteredOrders = _this.filteredOrders.bind(_this);
+        _this.onStatusFilterChange = _this.onStatusFilterChange.bind(_this);
+        _this.onRefreshButtonClick = _this.onRefreshButtonClick.bind(_this);
 
         _this.refreshState();
         return _this;
@@ -104,6 +107,13 @@ var Orders = function (_React$Component) {
 
             this.state.dates = dates;
             this.refreshState();
+        }
+    }, {
+        key: 'onStatusFilterChange',
+        value: function onStatusFilterChange(status) {
+            this.setState({
+                statusFilter: status
+            });
         }
     }, {
         key: 'refreshState',
@@ -149,34 +159,47 @@ var Orders = function (_React$Component) {
             });
         }
     }, {
+        key: 'filteredOrders',
+        value: function filteredOrders() {
+            var statusFilter = this.state.statusFilter;
+            if (statusFilter === null) {
+                return this.state.orders;
+            }
+
+            return this.state.orders.filter(function (order) {
+                return order.status === statusFilter;
+            });
+        }
+    }, {
+        key: 'onRefreshButtonClick',
+        value: function onRefreshButtonClick() {
+            var toastID = (0, _random2.default)();
+
+            iziToast.info({
+                title: "Fetching updates...",
+                progressBar: false,
+                timeout: false,
+                id: toastID
+            });
+
+            this.refreshState(toastID);
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
-
-            //TODO: Filter
-            var filteredOrders = this.state.orders;
-
-            var refreshData = function refreshData() {
-                var toastID = (0, _random2.default)();
-
-                iziToast.info({
-                    title: "Fetching updates...",
-                    progressBar: false,
-                    timeout: false,
-                    id: toastID
-                });
-
-                _this3.refreshState(toastID);
-            };
+            var filteredOrders = this.filteredOrders();
 
             return _react2.default.createElement(
                 'div',
                 { id: 'orders',
                     className: 'container-fluid m-0 p-0 h-100 w-100 d-flex flex-column' },
                 _react2.default.createElement(OrderHead, { dates: this.state.dates,
+                    refreshData: this.onRefreshButtonClick,
                     onDateChange: this.onDateChange,
-                    refreshData: refreshData }),
-                _react2.default.createElement(OrderTable, { orders: filteredOrders })
+                    onStatusFilterChange: this.onStatusFilterChange
+                }),
+                _react2.default.createElement(OrderTable, { orders: filteredOrders,
+                    hasFilter: this.state.statusFilter !== null })
             );
         }
     }]);
@@ -190,13 +213,33 @@ var OrderHead = function (_React$Component2) {
     function OrderHead(props) {
         _classCallCheck(this, OrderHead);
 
-        return _possibleConstructorReturn(this, (OrderHead.__proto__ || Object.getPrototypeOf(OrderHead)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (OrderHead.__proto__ || Object.getPrototypeOf(OrderHead)).call(this, props));
+
+        _this3.onDateChange = _this3.onDateChange.bind(_this3);
+        return _this3;
     }
 
     _createClass(OrderHead, [{
+        key: 'onDateChange',
+        value: function onDateChange(event, isStartDate) {
+            var value = event.target.value;
+
+            if (isStartDate) {
+                this.props.onDateChange({
+                    startDate: value,
+                    endDate: endDate
+                });
+            } else {
+                this.props.onDateChange({
+                    startDate: startDate,
+                    endDate: value
+                });
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this5 = this;
+            var _this4 = this;
 
             function formatDate(date) {
                 return date.format('YYYY-MM-DD');
@@ -204,22 +247,6 @@ var OrderHead = function (_React$Component2) {
 
             var startDate = formatDate(this.props.dates.startDate);
             var endDate = formatDate(this.props.dates.endDate);
-
-            var onDateChange = function onDateChange(event, isStartDate) {
-                var value = event.target.value;
-
-                if (isStartDate) {
-                    _this5.props.onDateChange({
-                        startDate: value,
-                        endDate: endDate
-                    });
-                } else {
-                    _this5.props.onDateChange({
-                        startDate: startDate,
-                        endDate: value
-                    });
-                }
-            };
 
             return _react2.default.createElement(
                 'div',
@@ -265,42 +292,60 @@ var OrderHead = function (_React$Component2) {
                                 'data-toggle': 'buttons' },
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary active' },
+                                { className: 'btn btn-outline-secondary active',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange(null);
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     autoComplete: 'off' }),
                                 'All'
                             ),
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary' },
+                                { className: 'btn btn-outline-secondary',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange('U');
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     autoComplete: 'off' }),
                                 'Unpaid'
                             ),
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary' },
+                                { className: 'btn btn-outline-secondary',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange('V');
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     autoComplete: 'off' }),
                                 'Verifying Payment'
                             ),
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary' },
+                                { className: 'btn btn-outline-secondary',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange('P');
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     autoComplete: 'off' }),
                                 'Processing'
                             ),
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary' },
+                                { className: 'btn btn-outline-secondary',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange('S');
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     autoComplete: 'off' }),
                                 'Shipped'
                             ),
                             _react2.default.createElement(
                                 'label',
-                                { className: 'btn btn-outline-secondary' },
+                                { className: 'btn btn-outline-secondary',
+                                    onClick: function onClick() {
+                                        return _this4.props.onStatusFilterChange('C');
+                                    } },
                                 _react2.default.createElement('input', { type: 'radio',
                                     name: 'options',
                                     autoComplete: 'off' }),
@@ -327,7 +372,7 @@ var OrderHead = function (_React$Component2) {
                                     placeholder: 'Start Date',
                                     value: startDate,
                                     onChange: function onChange(event) {
-                                        return onDateChange(event, true);
+                                        return _this4.onDateChange(event, true);
                                     } })
                             )
                         ),
@@ -350,7 +395,7 @@ var OrderHead = function (_React$Component2) {
                                         placeholder: 'End Date',
                                         value: endDate,
                                         onChange: function onChange(event) {
-                                            return onDateChange(event, false);
+                                            return _this4.onDateChange(event, false);
                                         } })
                                 )
                             )
@@ -370,10 +415,10 @@ var OrderTable = function (_React$Component3) {
     function OrderTable(props) {
         _classCallCheck(this, OrderTable);
 
-        var _this6 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
 
-        _this6.rows = _this6.rows.bind(_this6);
-        return _this6;
+        _this5.rows = _this5.rows.bind(_this5);
+        return _this5;
     }
 
     _createClass(OrderTable, [{
@@ -436,7 +481,8 @@ var OrderTable = function (_React$Component3) {
                         this.rows()
                     )
                 ),
-                _react2.default.createElement(OrderTableFooter, { orders: this.props.orders })
+                _react2.default.createElement(OrderTableFooter, { orders: this.props.orders,
+                    hasFilter: this.props.hasFilter })
             );
         }
     }], [{
@@ -481,12 +527,12 @@ var OrderRow = function (_React$Component4) {
     function OrderRow(props) {
         _classCallCheck(this, OrderRow);
 
-        var _this7 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+        var _this6 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
 
-        _this7.date = _this7.date.bind(_this7);
-        _this7.status = _this7.status.bind(_this7);
-        _this7.rowClass = _this7.rowClass.bind(_this7);
-        return _this7;
+        _this6.date = _this6.date.bind(_this6);
+        _this6.status = _this6.status.bind(_this6);
+        _this6.rowClass = _this6.rowClass.bind(_this6);
+        return _this6;
     }
 
     _createClass(OrderRow, [{
@@ -570,11 +616,12 @@ var OrderTableFooter = function (_React$Component5) {
     function OrderTableFooter(props) {
         _classCallCheck(this, OrderTableFooter);
 
-        var _this8 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
 
-        _this8.totalItems = _this8.totalItems.bind(_this8);
-        _this8.totalForStatus = _this8.totalForStatus.bind(_this8);
-        return _this8;
+        _this7.statistics = _this7.statistics.bind(_this7);
+        _this7.totalItems = _this7.totalItems.bind(_this7);
+        _this7.totalForStatus = _this7.totalForStatus.bind(_this7);
+        return _this7;
     }
 
     _createClass(OrderTableFooter, [{
@@ -590,13 +637,26 @@ var OrderTableFooter = function (_React$Component5) {
             }).length;
         }
     }, {
+        key: 'statistics',
+        value: function statistics() {
+            var totalItems = this.totalItems();
+
+            console.log(this.props.hasFilter);
+
+            if (this.props.hasFilter) {
+                return totalItems + ' Items';
+            } else {
+                var totalUnpaid = this.totalForStatus('U');
+                var totalProcessing = this.totalForStatus('P');
+                var totalShipped = this.totalForStatus('S');
+                var totalCancelled = this.totalForStatus('C');
+
+                return totalItems + ' Items | ' + totalUnpaid + ' Unpaid | ' + totalProcessing + ' Processing | ' + totalShipped + ' Shipped | ' + totalCancelled + ' Cancelled';
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var totalItems = this.totalItems();
-            var totalUnpaid = this.totalForStatus('U');
-            var totalProcessing = this.totalForStatus('P');
-            var totalShipped = this.totalForStatus('S');
-            var totalCancelled = this.totalForStatus('C');
 
             return _react2.default.createElement(
                 'div',
@@ -604,7 +664,7 @@ var OrderTableFooter = function (_React$Component5) {
                 _react2.default.createElement(
                     'small',
                     { className: 'mb-0' },
-                    totalItems + ' Items | ' + totalUnpaid + ' Unpaid | ' + totalProcessing + ' Processing | ' + totalShipped + ' Shipped | ' + totalCancelled + ' Cancelled'
+                    this.statistics()
                 )
             );
         }

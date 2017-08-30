@@ -49,6 +49,9 @@ class Orders extends React.Component {
 
         this.onDateChange = this.onDateChange.bind(this);
         this.refreshState = this.refreshState.bind(this);
+        this.filteredOrders = this.filteredOrders.bind(this);
+        this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
+        this.onRefreshButtonClick = this.onRefreshButtonClick.bind(this);
 
         this.refreshState();
     }
@@ -65,6 +68,12 @@ class Orders extends React.Component {
 
         this.state.dates = dates;
         this.refreshState();
+    }
+
+    onStatusFilterChange(status) {
+        this.setState({
+            statusFilter: status
+        })
     }
 
     refreshState(toastID = false) {
@@ -105,31 +114,42 @@ class Orders extends React.Component {
         })
     }
 
+    filteredOrders() {
+        const statusFilter = this.state.statusFilter;
+        if (statusFilter === null) {
+            return this.state.orders;
+        }
+
+        return this.state.orders.filter(order => order.status === statusFilter);
+    }
+
+    onRefreshButtonClick() {
+        const toastID = randomString();
+
+        iziToast.info({
+            title: "Fetching updates...",
+            progressBar: false,
+            timeout: false,
+            id: toastID
+        });
+
+        this.refreshState(toastID);
+    }
+
 
     render() {
-        //TODO: Filter
-        const filteredOrders = this.state.orders;
-
-        const refreshData = () => {
-            const toastID = randomString();
-
-            iziToast.info({
-                title: "Fetching updates...",
-                progressBar: false,
-                timeout: false,
-                id: toastID
-            });
-
-            this.refreshState(toastID);
-        };
+        const filteredOrders = this.filteredOrders();
 
         return (
             <div id="orders"
                  className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
                 <OrderHead dates={this.state.dates}
+                           refreshData={this.onRefreshButtonClick}
                            onDateChange={this.onDateChange}
-                           refreshData={refreshData}/>
-                <OrderTable orders={filteredOrders}/>
+                           onStatusFilterChange={this.onStatusFilterChange}
+                />
+                <OrderTable orders={filteredOrders}
+                            hasFilter={this.state.statusFilter !== null}/>
             </div>
         );
     }
@@ -139,6 +159,24 @@ class Orders extends React.Component {
 class OrderHead extends React.Component {
     constructor(props) {
         super(props);
+
+        this.onDateChange = this.onDateChange.bind(this);
+    }
+
+    onDateChange(event, isStartDate) {
+        const value = event.target.value;
+
+        if (isStartDate) {
+            this.props.onDateChange({
+                startDate: value,
+                endDate: endDate
+            })
+        } else {
+            this.props.onDateChange({
+                startDate: startDate,
+                endDate: value
+            })
+        }
     }
 
     render() {
@@ -148,22 +186,6 @@ class OrderHead extends React.Component {
 
         const startDate = formatDate(this.props.dates.startDate);
         const endDate = formatDate(this.props.dates.endDate);
-
-        const onDateChange = (event, isStartDate) => {
-            const value = event.target.value;
-
-            if (isStartDate) {
-                this.props.onDateChange({
-                    startDate: value,
-                    endDate: endDate
-                })
-            } else {
-                this.props.onDateChange({
-                    startDate: startDate,
-                    endDate: value
-                })
-            }
-        };
 
         return (
             <div className="container-fluid row ml-auto mr-auto bg-light page-head">
@@ -182,27 +204,33 @@ class OrderHead extends React.Component {
                         <small className="text-muted mt-auto mb-2 mr-3 d-block">Status filter</small>
                         <div className="btn-group"
                              data-toggle="buttons">
-                            <label className="btn btn-outline-secondary active">
+                            <label className="btn btn-outline-secondary active"
+                                   onClick={() => this.props.onStatusFilterChange(null)}>
                                 <input type="radio"
                                        autoComplete="off"/>All
                             </label>
-                            <label className="btn btn-outline-secondary">
+                            <label className="btn btn-outline-secondary"
+                                   onClick={() => this.props.onStatusFilterChange('U')}>
                                 <input type="radio"
                                        autoComplete="off"/>Unpaid
                             </label>
-                            <label className="btn btn-outline-secondary">
+                            <label className="btn btn-outline-secondary"
+                                   onClick={() => this.props.onStatusFilterChange('V')}>
                                 <input type="radio"
                                        autoComplete="off"/>Verifying Payment
                             </label>
-                            <label className="btn btn-outline-secondary">
+                            <label className="btn btn-outline-secondary"
+                                   onClick={() => this.props.onStatusFilterChange('P')}>
                                 <input type="radio"
                                        autoComplete="off"/>Processing
                             </label>
-                            <label className="btn btn-outline-secondary">
+                            <label className="btn btn-outline-secondary"
+                                   onClick={() => this.props.onStatusFilterChange('S')}>
                                 <input type="radio"
                                        autoComplete="off"/>Shipped
                             </label>
-                            <label className="btn btn-outline-secondary">
+                            <label className="btn btn-outline-secondary"
+                                   onClick={() => this.props.onStatusFilterChange('C')}>
                                 <input type="radio"
                                        name="options"
                                        autoComplete="off"/>Cancelled
@@ -217,7 +245,7 @@ class OrderHead extends React.Component {
                                        type="date"
                                        placeholder="Start Date"
                                        value={startDate}
-                                       onChange={event => onDateChange(event, true)}/>
+                                       onChange={event => this.onDateChange(event, true)}/>
                             </div>
                         </div>
                         <div className="mr-2">
@@ -228,7 +256,7 @@ class OrderHead extends React.Component {
                                            type="date"
                                            placeholder="End Date"
                                            value={endDate}
-                                           onChange={event => onDateChange(event, false)}/>
+                                           onChange={event => this.onDateChange(event, false)}/>
                                 </div>
                             </div>
                         </div>
@@ -292,7 +320,8 @@ class OrderTable extends React.Component {
                     {this.rows()}
                     </tbody>
                 </table>
-                <OrderTableFooter orders={this.props.orders}/>
+                <OrderTableFooter orders={this.props.orders}
+                                  hasFilter={this.props.hasFilter}/>
             </div>
         )
     }
@@ -361,6 +390,7 @@ class OrderTableFooter extends React.Component {
     constructor(props) {
         super(props);
 
+        this.statistics = this.statistics.bind(this);
         this.totalItems = this.totalItems.bind(this);
         this.totalForStatus = this.totalForStatus.bind(this);
     }
@@ -375,17 +405,28 @@ class OrderTableFooter extends React.Component {
         }).length;
     }
 
-    render() {
+    statistics() {
         const totalItems = this.totalItems();
-        const totalUnpaid = this.totalForStatus('U');
-        const totalProcessing = this.totalForStatus('P');
-        const totalShipped = this.totalForStatus('S');
-        const totalCancelled = this.totalForStatus('C');
 
+        console.log(this.props.hasFilter);
+
+        if (this.props.hasFilter) {
+            return `${totalItems} Items`;
+        } else {
+            const totalUnpaid = this.totalForStatus('U');
+            const totalProcessing = this.totalForStatus('P');
+            const totalShipped = this.totalForStatus('S');
+            const totalCancelled = this.totalForStatus('C');
+
+            return `${totalItems} Items | ${totalUnpaid} Unpaid | ${totalProcessing} Processing | ${totalShipped} Shipped | ${totalCancelled} Cancelled`;
+        }
+    }
+
+    render() {
 
         return (
             <div className="table-footer bg-light d-flex align-items-center justify-content-center w-100">
-                <small className="mb-0">{`${totalItems} Items | ${totalUnpaid} Unpaid | ${totalProcessing} Processing | ${totalShipped} Shipped | ${totalCancelled} Cancelled`}</small>
+                <small className="mb-0">{this.statistics()}</small>
             </div>
         )
     }
