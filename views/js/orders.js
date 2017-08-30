@@ -197,7 +197,7 @@ class OrderTable extends React.Component {
 
         return (
             <div className="d-flex flex-column page-content">
-                <table className="table table-hover page-table d-flex flex-column mb-0">
+                <table className="table table-hover page-table d-flex flex-column">
                     <thead className="thead-default">
                     <tr>
                         <th>Order Number</th>
@@ -210,6 +210,7 @@ class OrderTable extends React.Component {
                     {this.rows()}
                     </tbody>
                 </table>
+                <OrderTableFooter orders={this.props.orders}/>
             </div>
         )
     }
@@ -225,7 +226,7 @@ class OrderRow extends React.Component {
     }
 
     rowClass() {
-        switch(this.props.order.status) {
+        switch (this.props.order.status) {
             case 'U':
                 return 'table-light';
             case 'V':
@@ -271,6 +272,40 @@ class OrderRow extends React.Component {
                 <td>{this.status()}</td>
             </tr>
         );
+    }
+}
+
+class OrderTableFooter extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.totalItems = this.totalItems.bind(this);
+        this.totalForStatus = this.totalForStatus.bind(this);
+    }
+
+    totalItems() {
+        return this.props.orders.length;
+    }
+
+    totalForStatus(statusCode) {
+        return this.props.orders.filter(order => {
+            return order.status === statusCode;
+        }).length;
+    }
+
+    render() {
+        const totalItems = this.totalItems();
+        const totalUnpaid = this.totalForStatus('U');
+        const totalProcessing = this.totalForStatus('P');
+        const totalShipped = this.totalForStatus('S');
+        const totalCancelled = this.totalForStatus('C');
+
+
+        return (
+            <div className="table-footer bg-light d-flex align-items-center justify-content-center w-100">
+                <small className="mb-0">{`${totalItems} Items | ${totalUnpaid} Unpaid | ${totalProcessing} Processing | ${totalShipped} Shipped | ${totalCancelled} Cancelled`}</small>
+            </div>
+        )
     }
 }
 

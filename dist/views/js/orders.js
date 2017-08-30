@@ -326,7 +326,7 @@ var OrderTable = function (_React$Component3) {
                 { className: 'd-flex flex-column page-content' },
                 _react2.default.createElement(
                     'table',
-                    { className: 'table table-hover page-table d-flex flex-column mb-0' },
+                    { className: 'table table-hover page-table d-flex flex-column' },
                     _react2.default.createElement(
                         'thead',
                         { className: 'thead-default' },
@@ -360,7 +360,8 @@ var OrderTable = function (_React$Component3) {
                         null,
                         this.rows()
                     )
-                )
+                ),
+                _react2.default.createElement(OrderTableFooter, { orders: this.props.orders })
             );
         }
     }], [{
@@ -468,6 +469,55 @@ var OrderRow = function (_React$Component4) {
     }]);
 
     return OrderRow;
+}(_react2.default.Component);
+
+var OrderTableFooter = function (_React$Component5) {
+    _inherits(OrderTableFooter, _React$Component5);
+
+    function OrderTableFooter(props) {
+        _classCallCheck(this, OrderTableFooter);
+
+        var _this6 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
+
+        _this6.totalItems = _this6.totalItems.bind(_this6);
+        _this6.totalForStatus = _this6.totalForStatus.bind(_this6);
+        return _this6;
+    }
+
+    _createClass(OrderTableFooter, [{
+        key: 'totalItems',
+        value: function totalItems() {
+            return this.props.orders.length;
+        }
+    }, {
+        key: 'totalForStatus',
+        value: function totalForStatus(statusCode) {
+            return this.props.orders.filter(function (order) {
+                return order.status === statusCode;
+            }).length;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var totalItems = this.totalItems();
+            var totalUnpaid = this.totalForStatus('U');
+            var totalProcessing = this.totalForStatus('P');
+            var totalShipped = this.totalForStatus('S');
+            var totalCancelled = this.totalForStatus('C');
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'table-footer bg-light d-flex align-items-center justify-content-center w-100' },
+                _react2.default.createElement(
+                    'small',
+                    { className: 'mb-0' },
+                    totalItems + ' Items | ' + totalUnpaid + ' Unpaid | ' + totalProcessing + ' Processing | ' + totalShipped + ' Shipped | ' + totalCancelled + ' Cancelled'
+                )
+            );
+        }
+    }]);
+
+    return OrderTableFooter;
 }(_react2.default.Component);
 
 exports.default = Orders;

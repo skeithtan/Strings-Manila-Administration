@@ -185,3 +185,14 @@ table.page-table tbody {
 #orders table td {
     width : 25vw;
 }
+
+#orders .page-table {
+    margin-bottom : 35px;
+}
+
+#orders .table-footer {
+    position   : fixed;
+    height     : 35px;
+    bottom     : 0;
+    border-top : 1px solid rgba(0, 0, 0, .125);
+}
