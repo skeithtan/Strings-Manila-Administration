@@ -34,9 +34,16 @@ class Orders extends React.Component {
     constructor(props) {
         super(props);
 
+        const dateToday = moment();
+        const dateLastWeek = moment().subtract(7, 'days');
+
         this.state = {
             orders: null,
             statusFilter: null,
+            dates: {
+                startDate: dateLastWeek,
+                endDate: dateToday,
+            }
         };
 
         this.refreshState = this.refreshState.bind(this);
@@ -44,14 +51,21 @@ class Orders extends React.Component {
     }
 
     refreshState(showSuccessAlert = false) {
+        function formatDate(date) {
+            return date.format('YYYY-MM-DD');
+        }
+
+        const startDate = formatDate(this.state.dates.startDate);
+        const endDate = formatDate(this.state.dates.endDate);
+
         fetchOrders({
-            startDate: "2017-08-23",
-            endDate: "2017-08-30",
+            startDate: startDate,
+            endDate: endDate,
             completionHandler: result => {
                 //TODO: Sort by date
 
                 const orders = result.map(order => {
-                    order.date_ordered = new Date(order.date_ordered);
+                    order.date_ordered = moment(order.date_ordered);
                     return order;
                 });
 
@@ -90,7 +104,7 @@ class Orders extends React.Component {
         return (
             <div id="orders"
                  className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
-                <OrderHead/>
+                <OrderHead dates={this.state.dates}/>
                 <OrderTable orders={filteredOrders}/>
             </div>
         );
@@ -104,9 +118,16 @@ class OrderHead extends React.Component {
     }
 
     render() {
+        function formatDate(date) {
+            return date.format('YYYY-MM-DD');
+        }
+
+        const startDate = formatDate(this.props.dates.startDate);
+        const endDate = formatDate(this.props.dates.endDate);
+
         return (
             <div className="container-fluid row ml-auto mr-auto bg-light page-head">
-                <div className="mr-auto row pt-5 pl-3 pr-3">
+                <div className="mr-auto row p-3 pt-5 mt-auto">
                     <h4 className="mr-3">Orders</h4>
                     <div>
                         <button className="btn btn-sm btn-outline-primary mr-1">Refresh Data</button>
@@ -114,8 +135,8 @@ class OrderHead extends React.Component {
                     </div>
                 </div>
 
-                <div className="row pt-3 pl-3 mr-3">
-                    <div className="mb-2 mb-sm-0">
+                <div className="row pl-3 pb-3 mr-3">
+                    <div className="mt-auto mr-2">
                         <small className="text-muted mt-auto mb-2 mr-3 d-block">Status filter</small>
                         <div className="btn-group"
                              data-toggle="buttons">
@@ -146,27 +167,27 @@ class OrderHead extends React.Component {
                             </label>
                         </div>
                     </div>
-                    <div className="row mb-2 ml-2">
+                    <div className="mt-auto ml-2 row ">
                         <div className="mr-2">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">Start Date</small>
                             <div className="input-group">
                                 <input className="form-control"
                                        type="date"
-                                       placeholder="Start Date"/>
+                                       placeholder="Start Date"
+                                       value={startDate}/>
                             </div>
                         </div>
                         <div className="mr-2">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">End Date</small>
                             <div className="input-group mb-2 mb-sm-0">
-
                                 <div className="input-group">
                                     <input className="form-control"
                                            type="date"
-                                           placeholder="End Date"/>
+                                           placeholder="End Date"
+                                           value={endDate}/>
                                 </div>
                             </div>
                         </div>
-                        <button className="btn btn-primary mt-auto">Filter</button>
                     </div>
                 </div>
             </div>
@@ -260,7 +281,7 @@ class OrderRow extends React.Component {
     }
 
     date() {
-        return moment(this.props.order.date_ordered).format('LLL');
+        return this.props.order.date_ordered.format('LLL');
     }
 
     render() {

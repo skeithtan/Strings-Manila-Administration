@@ -228,7 +228,7 @@ var StockInventoryHead = function (_React$Component2) {
                 _react2.default.createElement(
                     "div",
                     { id: "stock-filter",
-                        className: "row ml-auto mt-auto mb-2" },
+                        className: "row ml-auto mt-auto p-3" },
                     _react2.default.createElement(
                         "div",
                         { className: "mt-auto mr-2" },

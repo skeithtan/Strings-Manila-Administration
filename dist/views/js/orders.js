@@ -67,9 +67,16 @@ var Orders = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Orders.__proto__ || Object.getPrototypeOf(Orders)).call(this, props));
 
+        var dateToday = (0, _moment2.default)();
+        var dateLastWeek = (0, _moment2.default)().subtract(7, 'days');
+
         _this.state = {
             orders: null,
-            statusFilter: null
+            statusFilter: null,
+            dates: {
+                startDate: dateLastWeek,
+                endDate: dateToday
+            }
         };
 
         _this.refreshState = _this.refreshState.bind(_this);
@@ -84,14 +91,21 @@ var Orders = function (_React$Component) {
 
             var showSuccessAlert = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+            function formatDate(date) {
+                return date.format('YYYY-MM-DD');
+            }
+
+            var startDate = formatDate(this.state.dates.startDate);
+            var endDate = formatDate(this.state.dates.endDate);
+
             fetchOrders({
-                startDate: "2017-08-23",
-                endDate: "2017-08-30",
+                startDate: startDate,
+                endDate: endDate,
                 completionHandler: function completionHandler(result) {
                     //TODO: Sort by date
 
                     var orders = result.map(function (order) {
-                        order.date_ordered = new Date(order.date_ordered);
+                        order.date_ordered = (0, _moment2.default)(order.date_ordered);
                         return order;
                     });
 
@@ -124,7 +138,7 @@ var Orders = function (_React$Component) {
                 'div',
                 { id: 'orders',
                     className: 'container-fluid m-0 p-0 h-100 w-100 d-flex flex-column' },
-                _react2.default.createElement(OrderHead, null),
+                _react2.default.createElement(OrderHead, { dates: this.state.dates }),
                 _react2.default.createElement(OrderTable, { orders: filteredOrders })
             );
         }
@@ -158,12 +172,19 @@ var OrderHead = function (_React$Component2) {
     _createClass(OrderHead, [{
         key: 'render',
         value: function render() {
+            function formatDate(date) {
+                return date.format('YYYY-MM-DD');
+            }
+
+            var startDate = formatDate(this.props.dates.startDate);
+            var endDate = formatDate(this.props.dates.endDate);
+
             return _react2.default.createElement(
                 'div',
                 { className: 'container-fluid row ml-auto mr-auto bg-light page-head' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'mr-auto row pt-5 pl-3 pr-3' },
+                    { className: 'mr-auto row p-3 pt-5 mt-auto' },
                     _react2.default.createElement(
                         'h4',
                         { className: 'mr-3' },
@@ -186,10 +207,10 @@ var OrderHead = function (_React$Component2) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'row pt-3 pl-3 mr-3' },
+                    { className: 'row pl-3 pb-3 mr-3' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'mb-2 mb-sm-0' },
+                        { className: 'mt-auto mr-2' },
                         _react2.default.createElement(
                             'small',
                             { className: 'text-muted mt-auto mb-2 mr-3 d-block' },
@@ -246,7 +267,7 @@ var OrderHead = function (_React$Component2) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'row mb-2 ml-2' },
+                        { className: 'mt-auto ml-2 row ' },
                         _react2.default.createElement(
                             'div',
                             { className: 'mr-2' },
@@ -260,7 +281,8 @@ var OrderHead = function (_React$Component2) {
                                 { className: 'input-group' },
                                 _react2.default.createElement('input', { className: 'form-control',
                                     type: 'date',
-                                    placeholder: 'Start Date' })
+                                    placeholder: 'Start Date',
+                                    value: startDate })
                             )
                         ),
                         _react2.default.createElement(
@@ -279,14 +301,10 @@ var OrderHead = function (_React$Component2) {
                                     { className: 'input-group' },
                                     _react2.default.createElement('input', { className: 'form-control',
                                         type: 'date',
-                                        placeholder: 'End Date' })
+                                        placeholder: 'End Date',
+                                        value: endDate })
                                 )
                             )
-                        ),
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn btn-primary mt-auto' },
-                            'Filter'
                         )
                     )
                 )
@@ -435,7 +453,7 @@ var OrderRow = function (_React$Component4) {
     }, {
         key: 'date',
         value: function date() {
-            return (0, _moment2.default)(this.props.order.date_ordered).format('LLL');
+            return this.props.order.date_ordered.format('LLL');
         }
     }, {
         key: 'render',

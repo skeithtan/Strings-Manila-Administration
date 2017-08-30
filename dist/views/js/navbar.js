@@ -49,11 +49,11 @@ var navbarItems = [{
 }, {
     name: "Waitlists",
     isActive: false,
-    tab: undefined //TODO
+    tab: null //TODO
 }, {
     name: "Payments",
     isActive: false,
-    tab: undefined //TODO
+    tab: null //TODO
 }, {
     name: "Orders",
     isActive: false,
@@ -61,7 +61,7 @@ var navbarItems = [{
 }, {
     name: "Sales",
     isActive: false,
-    tab: undefined //TODO
+    tab: null //TODO
 }];
 
 var Navbar = function (_React$Component) {

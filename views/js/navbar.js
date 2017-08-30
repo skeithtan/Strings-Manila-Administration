@@ -22,12 +22,12 @@ const navbarItems = [
     {
         name: "Waitlists",
         isActive: false,
-        tab: undefined //TODO
+        tab: null //TODO
     },
     {
         name: "Payments",
         isActive: false,
-        tab: undefined //TODO
+        tab: null //TODO
     },
     {
         name: "Orders",
@@ -37,7 +37,7 @@ const navbarItems = [
     {
         name: "Sales",
         isActive: false,
-        tab: undefined //TODO
+        tab: null //TODO
     },
 
 ];

@@ -167,7 +167,7 @@ class StockInventoryHead extends React.Component {
                     </div>
                 </div>
                 <div id="stock-filter"
-                     className="row ml-auto mt-auto mb-2">
+                     className="row ml-auto mt-auto p-3">
                     <div className="mt-auto mr-2">
                         <div className="mb-2 mb-sm-0">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">Quantity filters</small>
