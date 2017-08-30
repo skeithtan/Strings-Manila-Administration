@@ -79,12 +79,29 @@ var Orders = function (_React$Component) {
             }
         };
 
+        _this.onDateChange = _this.onDateChange.bind(_this);
         _this.refreshState = _this.refreshState.bind(_this);
+
         _this.refreshState();
         return _this;
     }
 
     _createClass(Orders, [{
+        key: 'onDateChange',
+        value: function onDateChange(dates) {
+            this.setState({ orders: null });
+
+            function toDate(dateString) {
+                return (0, _moment2.default)(dateString, 'YYYY-MM-DD');
+            }
+
+            dates.startDate = toDate(dates.startDate);
+            dates.endDate = toDate(dates.endDate);
+
+            this.state.dates = dates;
+            this.refreshState();
+        }
+    }, {
         key: 'refreshState',
         value: function refreshState() {
             var _this2 = this;
@@ -127,10 +144,6 @@ var Orders = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.orders === null) {
-                return Orders.loadingState();
-            }
-
             //TODO: Filter
             var filteredOrders = this.state.orders;
 
@@ -138,21 +151,9 @@ var Orders = function (_React$Component) {
                 'div',
                 { id: 'orders',
                     className: 'container-fluid m-0 p-0 h-100 w-100 d-flex flex-column' },
-                _react2.default.createElement(OrderHead, { dates: this.state.dates }),
+                _react2.default.createElement(OrderHead, { dates: this.state.dates,
+                    onDateChange: this.onDateChange }),
                 _react2.default.createElement(OrderTable, { orders: filteredOrders })
-            );
-        }
-    }], [{
-        key: 'loadingState',
-        value: function loadingState() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid d-flex flex-column justify-content-center align-items-center h-100' },
-                _react2.default.createElement(
-                    'h3',
-                    null,
-                    'Loading...'
-                )
             );
         }
     }]);
@@ -172,12 +173,30 @@ var OrderHead = function (_React$Component2) {
     _createClass(OrderHead, [{
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             function formatDate(date) {
                 return date.format('YYYY-MM-DD');
             }
 
             var startDate = formatDate(this.props.dates.startDate);
             var endDate = formatDate(this.props.dates.endDate);
+
+            var onDateChange = function onDateChange(event, isStartDate) {
+                var value = event.target.value;
+
+                if (isStartDate) {
+                    _this4.props.onDateChange({
+                        startDate: value,
+                        endDate: endDate
+                    });
+                } else {
+                    _this4.props.onDateChange({
+                        startDate: startDate,
+                        endDate: value
+                    });
+                }
+            };
 
             return _react2.default.createElement(
                 'div',
@@ -282,7 +301,10 @@ var OrderHead = function (_React$Component2) {
                                 _react2.default.createElement('input', { className: 'form-control',
                                     type: 'date',
                                     placeholder: 'Start Date',
-                                    value: startDate })
+                                    value: startDate,
+                                    onChange: function onChange(event) {
+                                        return onDateChange(event, true);
+                                    } })
                             )
                         ),
                         _react2.default.createElement(
@@ -302,7 +324,10 @@ var OrderHead = function (_React$Component2) {
                                     _react2.default.createElement('input', { className: 'form-control',
                                         type: 'date',
                                         placeholder: 'End Date',
-                                        value: endDate })
+                                        value: endDate,
+                                        onChange: function onChange(event) {
+                                            return onDateChange(event, false);
+                                        } })
                                 )
                             )
                         )
@@ -321,10 +346,10 @@ var OrderTable = function (_React$Component3) {
     function OrderTable(props) {
         _classCallCheck(this, OrderTable);
 
-        var _this4 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
 
-        _this4.rows = _this4.rows.bind(_this4);
-        return _this4;
+        _this5.rows = _this5.rows.bind(_this5);
+        return _this5;
     }
 
     _createClass(OrderTable, [{
@@ -338,6 +363,14 @@ var OrderTable = function (_React$Component3) {
     }, {
         key: 'render',
         value: function render() {
+
+            if (this.props.orders === null) {
+                return OrderTable.loadingState();
+            }
+
+            if (this.props.orders.length === 0) {
+                return OrderTable.emptyState();
+            }
 
             return _react2.default.createElement(
                 'div',
@@ -387,11 +420,29 @@ var OrderTable = function (_React$Component3) {
         value: function emptyState() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-light' },
                 _react2.default.createElement(
-                    'h1',
+                    'h3',
                     null,
-                    'TODO'
+                    'There\'s nothing here.'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: 'text-muted' },
+                    'Refine your filters and try again.'
+                )
+            );
+        }
+    }, {
+        key: 'loadingState',
+        value: function loadingState() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'container-fluid d-flex flex-column justify-content-center align-items-center h-100' },
+                _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Loading...'
                 )
             );
         }
@@ -406,12 +457,12 @@ var OrderRow = function (_React$Component4) {
     function OrderRow(props) {
         _classCallCheck(this, OrderRow);
 
-        var _this5 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+        var _this6 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
 
-        _this5.date = _this5.date.bind(_this5);
-        _this5.status = _this5.status.bind(_this5);
-        _this5.rowClass = _this5.rowClass.bind(_this5);
-        return _this5;
+        _this6.date = _this6.date.bind(_this6);
+        _this6.status = _this6.status.bind(_this6);
+        _this6.rowClass = _this6.rowClass.bind(_this6);
+        return _this6;
     }
 
     _createClass(OrderRow, [{
@@ -495,11 +546,11 @@ var OrderTableFooter = function (_React$Component5) {
     function OrderTableFooter(props) {
         _classCallCheck(this, OrderTableFooter);
 
-        var _this6 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
 
-        _this6.totalItems = _this6.totalItems.bind(_this6);
-        _this6.totalForStatus = _this6.totalForStatus.bind(_this6);
-        return _this6;
+        _this7.totalItems = _this7.totalItems.bind(_this7);
+        _this7.totalForStatus = _this7.totalForStatus.bind(_this7);
+        return _this7;
     }
 
     _createClass(OrderTableFooter, [{

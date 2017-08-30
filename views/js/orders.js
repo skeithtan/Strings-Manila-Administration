@@ -46,7 +46,23 @@ class Orders extends React.Component {
             }
         };
 
+        this.onDateChange = this.onDateChange.bind(this);
         this.refreshState = this.refreshState.bind(this);
+
+        this.refreshState();
+    }
+
+    onDateChange(dates) {
+        this.setState({orders: null});
+
+        function toDate(dateString) {
+            return moment(dateString, 'YYYY-MM-DD')
+        }
+
+        dates.startDate = toDate(dates.startDate);
+        dates.endDate = toDate(dates.endDate);
+
+        this.state.dates = dates;
         this.refreshState();
     }
 
@@ -85,26 +101,16 @@ class Orders extends React.Component {
         })
     }
 
-    static loadingState() {
-        return (
-            <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100">
-                <h3>Loading...</h3>
-            </div>
-        );
-    }
 
     render() {
-        if (this.state.orders === null) {
-            return Orders.loadingState();
-        }
-
         //TODO: Filter
         const filteredOrders = this.state.orders;
 
         return (
             <div id="orders"
                  className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
-                <OrderHead dates={this.state.dates}/>
+                <OrderHead dates={this.state.dates}
+                           onDateChange={this.onDateChange}/>
                 <OrderTable orders={filteredOrders}/>
             </div>
         );
@@ -124,6 +130,22 @@ class OrderHead extends React.Component {
 
         const startDate = formatDate(this.props.dates.startDate);
         const endDate = formatDate(this.props.dates.endDate);
+
+        const onDateChange = (event, isStartDate) => {
+            const value = event.target.value;
+
+            if (isStartDate) {
+                this.props.onDateChange({
+                    startDate: value,
+                    endDate: endDate
+                })
+            } else {
+                this.props.onDateChange({
+                    startDate: startDate,
+                    endDate: value
+                })
+            }
+        };
 
         return (
             <div className="container-fluid row ml-auto mr-auto bg-light page-head">
@@ -174,7 +196,8 @@ class OrderHead extends React.Component {
                                 <input className="form-control"
                                        type="date"
                                        placeholder="Start Date"
-                                       value={startDate}/>
+                                       value={startDate}
+                                       onChange={event => onDateChange(event, true)}/>
                             </div>
                         </div>
                         <div className="mr-2">
@@ -184,7 +207,8 @@ class OrderHead extends React.Component {
                                     <input className="form-control"
                                            type="date"
                                            placeholder="End Date"
-                                           value={endDate}/>
+                                           value={endDate}
+                                           onChange={event => onDateChange(event, false)}/>
                                 </div>
                             </div>
                         </div>
@@ -203,10 +227,19 @@ class OrderTable extends React.Component {
 
     static emptyState() {
         return (
-            <div>
-                <h1>TODO</h1>
+            <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-light">
+                <h3>There's nothing here.</h3>
+                <p className="text-muted">Refine your filters and try again.</p>
             </div>
         )
+    }
+
+    static loadingState() {
+        return (
+            <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100">
+                <h3>Loading...</h3>
+            </div>
+        );
     }
 
     rows() {
@@ -215,6 +248,14 @@ class OrderTable extends React.Component {
     }
 
     render() {
+
+        if (this.props.orders === null) {
+            return OrderTable.loadingState();
+        }
+
+        if (this.props.orders.length === 0) {
+            return OrderTable.emptyState();
+        }
 
         return (
             <div className="d-flex flex-column page-content">
