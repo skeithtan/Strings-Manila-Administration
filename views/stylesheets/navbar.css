@@ -1,5 +1,6 @@
-/*Disallow highlighting*/
+/*General*/
 
+/*Disallow highlighting*/
 * {
     user-select : none;
     cursor      : default;
@@ -12,6 +13,50 @@ textarea,
     user-select : text;
 }
 
+.table td,
+.table th {
+    vertical-align : middle;
+    transition     : all 100ms;
+}
+
+.page-head {
+    border-bottom : 1px solid rgba(0, 0, 0, .125);
+    min-height    : 90px;
+    flex          : 0 0 auto;
+}
+
+.page-content {
+    flex       : 1 1 auto;
+    min-height : 0; /*This forces the content to shrink when needed*/
+}
+
+/*Tables*/
+.page-content table.page-table {
+    flex       : 0 1 auto;
+    min-height : 0;
+}
+
+table.page-table thead {
+    flex : 1 0 auto; /* Do not shrink. */
+}
+
+table.page-table tbody {
+    flex       : 1 1 auto;
+    min-height : 0; /* Shrink when needed*/
+    overflow   : scroll !important; /* Allow scrolling when resized */
+}
+
+table.page-table th:first-child,
+table.page-table td:first-child {
+    padding-left : 30px;
+}
+
+table.page-table thead,
+table.page-table tbody {
+    display : block
+}
+
+/*Navigation*/
 #main-navigation.navbar {
     background         : linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
     /*background         : linear-gradient(to bottom, #e6e6e6 0%, #cfcfcf 100%);*/
@@ -124,34 +169,19 @@ textarea,
     overflow      : hidden;
 }
 
-/* End Entity Management */
-#stock-inventory-head {
-    border-bottom : 1px solid rgba(0, 0, 0, .125);
-    min-height    : 90px;
-    max-height    : 90px;
-}
-
-#stock-inventory table th:first-child,
-#stock-inventory table td:first-child {
-    padding-left : 30px;
-}
-
+/* Inventory */
 #stock-inventory table th,
 #stock-inventory table td {
     width : 25vw;
 }
 
-#stock-inventory table thead,
-#stock-inventory table tbody {
-    display : block
-}
-
-#stock-inventory table tbody {
-    overflow : scroll !important;
-    height   : calc(100vh - 180px);
-}
-
 #stock-inventory #less-than-filter,
 #stock-inventory #greater-than-filter {
     width : 100px;
+}
+
+/* Orders */
+#orders table th,
+#orders table td {
+    width : 25vw;
 }

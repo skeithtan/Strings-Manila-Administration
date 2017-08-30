@@ -90,7 +90,7 @@ function onRenameStallButtonClick() {
     stallNameInput.val('');
 
     $.ajax({
-        url: `${baseURL}stalls/${stallID}/`,
+        url: `${baseURL}/stalls/${stallID}/`,
         method: 'PUT',
         data: {
             name: stallName
@@ -118,7 +118,7 @@ function onRenameStallButtonClick() {
 function onDeleteStallButtonClick() {
     const stallID = $('#delete-stall-id').val();
     $.ajax({
-        url: `${baseURL}stalls/${stallID}/`,
+        url: `${baseURL}/stalls/${stallID}/`,
         method: 'DELETE',
         beforeSend: authorizeXHR,
         success: () => {
@@ -216,7 +216,7 @@ function hideUploadingToast(id) {
 function submitAddProduct(product, stallID, image) {
     function submit(product) {
         $.ajax({
-            url: `${baseURL}stalls/${stallID}/products/`,
+            url: `${baseURL}/stalls/${stallID}/products/`,
             method: 'POST',
             data: JSON.stringify(product),
             contentType: 'application/json; charset=utf-8',
@@ -258,7 +258,7 @@ function submitAddProduct(product, stallID, image) {
 function submitModifyProduct(product, productID, image) {
     function submit(product) {
         $.ajax({
-            url: `${baseURL}products/${productID}/`,
+            url: `${baseURL}/products/${productID}/`,
             method: 'PATCH',
             data: JSON.stringify(product),
             contentType: 'application/json; charset=utf-8',
@@ -437,7 +437,7 @@ function onModifyTieredProductButtonClick() {
 function onDeleteProductButtonClick() {
     const productID = $('#delete-product-id').val();
     $.ajax({
-        url: `${baseURL}products/${productID}/`,
+        url: `${baseURL}/products/${productID}/`,
         method: 'DELETE',
         beforeSend: authorizeXHR,
         success: () => {
@@ -536,7 +536,7 @@ function onRestockButtonClick() {
     const isAdd = $('#restock-add').is(':checked');
 
     $.ajax({
-        url: `${baseURL}product-tiers/${tierID}/restock/`,
+        url: `${baseURL}/product-tiers/${tierID}/restock/`,
         method: 'POST',
         data: {
             quantity: quantity,

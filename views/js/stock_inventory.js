@@ -3,7 +3,7 @@ import React from 'react';
 //Fetch data
 function fetchStocks(completionHandler) {
     graphQL({
-        query:`{
+        query: `{
                   tiers {
                     id
                     name
@@ -40,7 +40,7 @@ class StockInventory extends React.Component {
         this.refreshState();
     }
 
-    refreshState(completion) {
+    refreshState(showSuccessAlert = false) {
         fetchStocks(result => {
 
             function ascending(tierA, tierB) {
@@ -53,8 +53,13 @@ class StockInventory extends React.Component {
                 tiers: tiers
             });
 
-            if (completion !== undefined) {
-                completion()
+            if (showSuccessAlert) {
+                iziToast.success({
+                    title: "Refreshed",
+                    message: "Data is up to date.",
+                    timeout: 1500,
+                    progressBar: false
+                })
             }
         });
     }
@@ -145,29 +150,19 @@ class StockInventory extends React.Component {
 class StockInventoryHead extends React.Component {
     constructor(props) {
         super(props);
-        this.refreshData = this.refreshData.bind(this);
-    }
-
-    refreshData() {
-        this.props.refreshState(
-            iziToast.success({
-                title: "Refreshed",
-                message: "Data is up to date.",
-                timeout: 1500,
-                progressBar: false
-            })
-        )
     }
 
     render() {
         return (
             <div id="stock-inventory-head"
-                 className="container-fluid d-flex flex-row bg-light">
+                 className="container-fluid d-flex flex-row bg-light page-head">
                 <div className="mr-auto pt-5 row pl-3">
                     <h4 className="mr-3">Inventory</h4>
                     <div>
                         <button className="btn btn-sm btn-outline-primary"
-                                onClick={this.refreshData}>Refresh data
+                                onClick={() => {
+                                    this.props.refreshState(true);
+                                }}>Refresh data
                         </button>
                     </div>
                 </div>
@@ -207,6 +202,12 @@ class StockInventoryHead extends React.Component {
 class StockTable extends React.Component {
     constructor(props) {
         super(props);
+        this.rows = this.rows.bind(this);
+    }
+
+    rows() {
+        return this.props.tiers.map(tier => <StockRow tier={tier}
+                                                      key={tier.id}/>);
     }
 
     static emptyState() {
@@ -219,19 +220,15 @@ class StockTable extends React.Component {
     }
 
     render() {
-        const rows = this.props.tiers.map(tier => {
-            return <StockRow tier={tier}
-                             key={tier.id}/>;
-        });
 
-        if (rows.length === 0) {
+        if (this.props.tiers.length === 0) {
             return StockTable.emptyState();
         }
 
         return (
-            <div id="stocks-table">
-                <table className="table table-hover">
-                    <thead className="bg-light">
+            <div id="stocks-table" className="page-content d-flex flex-column">
+                <table className="table table-hover page-table d-flex flex-column mb-0">
+                    <thead className="thead-default">
                     <tr>
                         <th>Product Name</th>
                         <th>Tier</th>
@@ -240,7 +237,7 @@ class StockTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {rows}
+                    {this.rows()}
                     </tbody>
 
                 </table>

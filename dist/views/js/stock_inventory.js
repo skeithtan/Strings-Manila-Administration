@@ -54,8 +54,10 @@ var StockInventory = function (_React$Component) {
 
     _createClass(StockInventory, [{
         key: "refreshState",
-        value: function refreshState(completion) {
+        value: function refreshState() {
             var _this2 = this;
+
+            var showSuccessAlert = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
             fetchStocks(function (result) {
 
@@ -69,8 +71,13 @@ var StockInventory = function (_React$Component) {
                     tiers: tiers
                 });
 
-                if (completion !== undefined) {
-                    completion();
+                if (showSuccessAlert) {
+                    iziToast.success({
+                        title: "Refreshed",
+                        message: "Data is up to date.",
+                        timeout: 1500,
+                        progressBar: false
+                    });
                 }
             });
         }
@@ -185,29 +192,18 @@ var StockInventoryHead = function (_React$Component2) {
     function StockInventoryHead(props) {
         _classCallCheck(this, StockInventoryHead);
 
-        var _this3 = _possibleConstructorReturn(this, (StockInventoryHead.__proto__ || Object.getPrototypeOf(StockInventoryHead)).call(this, props));
-
-        _this3.refreshData = _this3.refreshData.bind(_this3);
-        return _this3;
+        return _possibleConstructorReturn(this, (StockInventoryHead.__proto__ || Object.getPrototypeOf(StockInventoryHead)).call(this, props));
     }
 
     _createClass(StockInventoryHead, [{
-        key: "refreshData",
-        value: function refreshData() {
-            this.props.refreshState(iziToast.success({
-                title: "Refreshed",
-                message: "Data is up to date.",
-                timeout: 1500,
-                progressBar: false
-            }));
-        }
-    }, {
         key: "render",
         value: function render() {
+            var _this4 = this;
+
             return _react2.default.createElement(
                 "div",
                 { id: "stock-inventory-head",
-                    className: "container-fluid d-flex flex-row bg-light" },
+                    className: "container-fluid d-flex flex-row bg-light page-head" },
                 _react2.default.createElement(
                     "div",
                     { className: "mr-auto pt-5 row pl-3" },
@@ -222,7 +218,9 @@ var StockInventoryHead = function (_React$Component2) {
                         _react2.default.createElement(
                             "button",
                             { className: "btn btn-sm btn-outline-primary",
-                                onClick: this.refreshData },
+                                onClick: function onClick() {
+                                    _this4.props.refreshState(true);
+                                } },
                             "Refresh data"
                         )
                     )
@@ -292,30 +290,37 @@ var StockTable = function (_React$Component3) {
     function StockTable(props) {
         _classCallCheck(this, StockTable);
 
-        return _possibleConstructorReturn(this, (StockTable.__proto__ || Object.getPrototypeOf(StockTable)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (StockTable.__proto__ || Object.getPrototypeOf(StockTable)).call(this, props));
+
+        _this5.rows = _this5.rows.bind(_this5);
+        return _this5;
     }
 
     _createClass(StockTable, [{
-        key: "render",
-        value: function render() {
-            var rows = this.props.tiers.map(function (tier) {
+        key: "rows",
+        value: function rows() {
+            return this.props.tiers.map(function (tier) {
                 return _react2.default.createElement(StockRow, { tier: tier,
                     key: tier.id });
             });
+        }
+    }, {
+        key: "render",
+        value: function render() {
 
-            if (rows.length === 0) {
+            if (this.props.tiers.length === 0) {
                 return StockTable.emptyState();
             }
 
             return _react2.default.createElement(
                 "div",
-                { id: "stocks-table" },
+                { id: "stocks-table", className: "page-content d-flex flex-column" },
                 _react2.default.createElement(
                     "table",
-                    { className: "table table-hover" },
+                    { className: "table table-hover page-table d-flex flex-column mb-0" },
                     _react2.default.createElement(
                         "thead",
-                        { className: "bg-light" },
+                        { className: "thead-default" },
                         _react2.default.createElement(
                             "tr",
                             null,
@@ -344,7 +349,7 @@ var StockTable = function (_React$Component3) {
                     _react2.default.createElement(
                         "tbody",
                         null,
-                        rows
+                        this.rows()
                     )
                 )
             );

@@ -22,6 +22,10 @@ var _stock_inventory = require('./stock_inventory');
 
 var _stock_inventory2 = _interopRequireDefault(_stock_inventory);
 
+var _orders = require('./orders');
+
+var _orders2 = _interopRequireDefault(_orders);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43,17 +47,17 @@ var navbarItems = [{
     isActive: false,
     tab: _react2.default.createElement(_stock_inventory2.default, null)
 }, {
+    name: "Waitlists",
+    isActive: false,
+    tab: undefined //TODO
+}, {
     name: "Payments",
     isActive: false,
     tab: undefined //TODO
 }, {
     name: "Orders",
     isActive: false,
-    tab: undefined //TODO
-}, {
-    name: "Waitlists",
-    isActive: false,
-    tab: undefined //TODO
+    tab: _react2.default.createElement(_orders2.default, null) //TODO
 }, {
     name: "Sales",
     isActive: false,
