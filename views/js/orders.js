@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import moment from 'moment';
 
 // Fetch data
 function fetchOrders(object) {
@@ -49,8 +50,13 @@ class Orders extends React.Component {
             completionHandler: result => {
                 //TODO: Sort by date
 
+                const orders = result.map(order => {
+                    order.date_ordered = new Date(order.date_ordered);
+                    return order;
+                });
+
                 this.setState({
-                    orders: result
+                    orders: orders
                 });
 
                 if (showSuccessAlert) {
@@ -212,10 +218,31 @@ class OrderTable extends React.Component {
 class OrderRow extends React.Component {
     constructor(props) {
         super(props);
+
+        this.date = this.date.bind(this);
+        this.status = this.status.bind(this);
+        this.rowClass = this.rowClass.bind(this);
     }
 
-    static orderStatus(status) {
-        switch (status) {
+    rowClass() {
+        switch(this.props.order.status) {
+            case 'U':
+                return 'table-light';
+            case 'V':
+                return 'table-warning';
+            case 'P':
+                return 'table-primary';
+            case 'S':
+                return 'table-success';
+            case 'C':
+                return 'table-danger';
+        }
+
+        return '';
+    }
+
+    status() {
+        switch (this.props.order.status) {
             case 'U':
                 return 'Unpaid';
             case 'V':
@@ -228,18 +255,20 @@ class OrderRow extends React.Component {
                 return 'Cancelled';
         }
 
-        return status;
+        return this.props.order.status;
+    }
+
+    date() {
+        return moment(this.props.order.date_ordered).format('LLL');
     }
 
     render() {
-        const status = OrderRow.orderStatus(this.props.order.status);
-
         return (
-            <tr>
+            <tr className={this.rowClass()}>
                 <td>{this.props.order.id}</td>
-                <td>{this.props.order.total_price}</td>
-                <td>{this.props.order.date_ordered}</td>
-                <td>{status}</td>
+                <td>₱{this.props.order.total_price}</td>
+                <td>{this.date()}</td>
+                <td>{this.status()}</td>
             </tr>
         );
     }

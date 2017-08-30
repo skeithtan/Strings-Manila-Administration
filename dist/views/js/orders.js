@@ -14,6 +14,10 @@ var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -86,8 +90,13 @@ var Orders = function (_React$Component) {
                 completionHandler: function completionHandler(result) {
                     //TODO: Sort by date
 
+                    var orders = result.map(function (order) {
+                        order.date_ordered = new Date(order.date_ordered);
+                        return order;
+                    });
+
                     _this2.setState({
-                        orders: result
+                        orders: orders
                     });
 
                     if (showSuccessAlert) {
@@ -378,43 +387,36 @@ var OrderRow = function (_React$Component4) {
     function OrderRow(props) {
         _classCallCheck(this, OrderRow);
 
-        return _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+
+        _this5.date = _this5.date.bind(_this5);
+        _this5.status = _this5.status.bind(_this5);
+        _this5.rowClass = _this5.rowClass.bind(_this5);
+        return _this5;
     }
 
     _createClass(OrderRow, [{
-        key: 'render',
-        value: function render() {
-            var status = OrderRow.orderStatus(this.props.order.status);
+        key: 'rowClass',
+        value: function rowClass() {
+            switch (this.props.order.status) {
+                case 'U':
+                    return 'table-light';
+                case 'V':
+                    return 'table-warning';
+                case 'P':
+                    return 'table-primary';
+                case 'S':
+                    return 'table-success';
+                case 'C':
+                    return 'table-danger';
+            }
 
-            return _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.order.id
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.order.total_price
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.order.date_ordered
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    status
-                )
-            );
+            return '';
         }
-    }], [{
-        key: 'orderStatus',
-        value: function orderStatus(status) {
-            switch (status) {
+    }, {
+        key: 'status',
+        value: function status() {
+            switch (this.props.order.status) {
                 case 'U':
                     return 'Unpaid';
                 case 'V':
@@ -427,7 +429,41 @@ var OrderRow = function (_React$Component4) {
                     return 'Cancelled';
             }
 
-            return status;
+            return this.props.order.status;
+        }
+    }, {
+        key: 'date',
+        value: function date() {
+            return (0, _moment2.default)(this.props.order.date_ordered).format('LLL');
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'tr',
+                { className: this.rowClass() },
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.order.id
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    '\u20B1',
+                    this.props.order.total_price
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.date()
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.status()
+                )
+            );
         }
     }]);
 
