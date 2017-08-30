@@ -1,10 +1,10 @@
 import React from 'react'
 import {
-    fillOutDeleteStallModal,
+    fillOutDiscontinueStallModal,
     fillOutRenameStallModal,
     fillOutAddProductModal,
     fillOutModifyProductModal,
-    fillOutDeleteProductModal
+    fillOutDiscontinueProductModal
 } from "../modals";
 
 class Products extends React.Component {
@@ -62,7 +62,7 @@ function ProductListHeader(props) {
                         data-toggle="modal"
                         data-target="#delete-stall-modal"
                         onClick={() => {
-                            fillOutDeleteStallModal(props.activeStall)
+                            fillOutDiscontinueStallModal(props.activeStall)
                         }}>Discontinue stall
                 </button>
             </div>
@@ -150,7 +150,7 @@ function ProductCard(props) {
                         data-toggle="modal"
                         data-target="#delete-product-modal"
                         onClick={() => {
-                            fillOutDeleteProductModal(props.product);
+                            fillOutDiscontinueProductModal(props.product);
                         }}>Discontinue
                 </button>
             </div>

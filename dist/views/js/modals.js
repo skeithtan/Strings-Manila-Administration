@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fillOutRenameStallModal = exports.fillOutDeleteStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDeleteProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
+exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
 var _random = require('./random');
 
@@ -152,7 +152,7 @@ function fillOutRenameStallModal(activeStall) {
     $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
 }
 
-function fillOutDeleteStallModal(activeStall) {
+function fillOutDiscontinueStallModal(activeStall) {
     $('#delete-stall-id').val(activeStall.id);
     $('span.delete-stall-name').html(activeStall.name);
 }
@@ -526,7 +526,7 @@ function fillOutAddProductModal(activeStall) {
     $('#add-product-stall-id').val(activeStall.id);
 }
 
-function fillOutDeleteProductModal(product) {
+function fillOutDiscontinueProductModal(product) {
     $('#delete-product-id').val(product.id);
     $('span.delete-product-name').html(product.name);
 }
@@ -593,9 +593,9 @@ function authorizeXHR(xhr) {
 exports.fillOutTieredProductModal = fillOutTieredProductModal;
 exports.fillOutSingularProductModal = fillOutSingularProductModal;
 exports.fillOutRestockModal = fillOutRestockModal;
-exports.fillOutDeleteProductModal = fillOutDeleteProductModal;
+exports.fillOutDiscontinueProductModal = fillOutDiscontinueProductModal;
 exports.fillOutModifyProductModal = fillOutModifyProductModal;
 exports.fillOutAddProductModal = fillOutAddProductModal;
-exports.fillOutDeleteStallModal = fillOutDeleteStallModal;
+exports.fillOutDiscontinueStallModal = fillOutDiscontinueStallModal;
 exports.fillOutRenameStallModal = fillOutRenameStallModal;
 //# sourceMappingURL=modals.js.map

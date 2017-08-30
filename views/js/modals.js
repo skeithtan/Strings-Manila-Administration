@@ -143,7 +143,7 @@ function fillOutRenameStallModal(activeStall) {
     $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
 }
 
-function fillOutDeleteStallModal(activeStall) {
+function fillOutDiscontinueStallModal(activeStall) {
     $('#delete-stall-id').val(activeStall.id);
     $('span.delete-stall-name').html(activeStall.name);
 }
@@ -520,7 +520,7 @@ function fillOutAddProductModal(activeStall) {
     $('#add-product-stall-id').val(activeStall.id);
 }
 
-function fillOutDeleteProductModal(product) {
+function fillOutDiscontinueProductModal(product) {
     $('#delete-product-id').val(product.id);
     $('span.delete-product-name').html(product.name);
 }
@@ -589,9 +589,9 @@ export {
     fillOutTieredProductModal,
     fillOutSingularProductModal,
     fillOutRestockModal,
-    fillOutDeleteProductModal,
+    fillOutDiscontinueProductModal,
     fillOutModifyProductModal,
     fillOutAddProductModal,
-    fillOutDeleteStallModal,
+    fillOutDiscontinueStallModal,
     fillOutRenameStallModal
 }

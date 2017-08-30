@@ -104,7 +104,7 @@ function ProductListHeader(props) {
                     "data-toggle": "modal",
                     "data-target": "#delete-stall-modal",
                     onClick: function onClick() {
-                        (0, _modals.fillOutDeleteStallModal)(props.activeStall);
+                        (0, _modals.fillOutDiscontinueStallModal)(props.activeStall);
                     } },
                 "Discontinue stall"
             )
@@ -237,7 +237,7 @@ function ProductCard(props) {
                     "data-toggle": "modal",
                     "data-target": "#delete-product-modal",
                     onClick: function onClick() {
-                        (0, _modals.fillOutDeleteProductModal)(props.product);
+                        (0, _modals.fillOutDiscontinueProductModal)(props.product);
                     } },
                 "Discontinue"
             )
