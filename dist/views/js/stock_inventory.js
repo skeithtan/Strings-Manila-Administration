@@ -303,7 +303,10 @@ var StockTable = function (_React$Component3) {
         value: function rows() {
             return this.props.tiers.map(function (tier) {
                 return _react2.default.createElement(StockRow, { tier: tier,
-                    key: tier.id });
+                    key: tier.id,
+                    onStockRowClick: function onStockRowClick() {
+                        return (0, _modals.fillOutRestockModal)(tier);
+                    } });
             });
         }
     }, {
@@ -316,7 +319,8 @@ var StockTable = function (_React$Component3) {
 
             return _react2.default.createElement(
                 "div",
-                { id: "stocks-table", className: "page-content d-flex flex-column" },
+                { id: "stocks-table",
+                    className: "page-content d-flex flex-column" },
                 _react2.default.createElement(
                     "table",
                     { className: "table table-hover page-table d-flex flex-column mb-0" },
@@ -399,9 +403,7 @@ var StockRow = function (_React$Component4) {
                 { className: StockRow.rowClass(tier.quantity),
                     "data-toggle": "modal",
                     "data-target": "#restock-modal",
-                    onClick: function onClick() {
-                        (0, _modals.fillOutRestockModal)(tier);
-                    } },
+                    onClick: this.props.onStockRowClick },
                 _react2.default.createElement(
                     "td",
                     null,

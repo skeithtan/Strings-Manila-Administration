@@ -3,11 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
+exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
 var _random = require('./random');
 
 var _random2 = _interopRequireDefault(_random);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,6 +63,12 @@ $(function () {
 
     //Restock
     $('#restock-button').click(onRestockButtonClick);
+
+    //Order Details
+    $('#order-modal').on('hidden.bs.modal', function () {
+        $('#order-modal-loading').show();
+        $('#order-modal-information').hide();
+    });
 });
 
 //MARK: - Stalls
@@ -585,6 +595,89 @@ function fillOutRestockModal(tier) {
     }
 }
 
+//MARK: - Orders
+function fillOutOrderModal(orderID, refreshState) {
+
+    function orderStatus(statusCode) {
+        switch (statusCode) {
+            case 'U':
+                return 'Unpaid';
+            case 'V':
+                return 'Verifying Payment';
+            case 'P':
+                return 'Processing';
+            case 'S':
+                return 'Shipped';
+            case 'C':
+                return 'Cancelled';
+        }
+
+        return statusCode;
+    }
+
+    function fetchOrder(completionHandler) {
+        $.get({
+            url: baseURL + '/api/orders/' + orderID + '/',
+            beforeSend: authorizeXHR,
+            success: completionHandler,
+            error: function error(response) {
+                return console.log(response);
+            }
+        });
+    }
+
+    function appendLineItem(lineItem) {
+        var clone = $('#order-modal-line-item-clone').clone();
+        clone.removeAttr('id');
+
+        var lineItemProductName = $(clone.find('#order-modal-product-name')[0]);
+        var lineItemQuantity = $(clone.find('#order-modal-quantity')[0]);
+        var lineItemTierName = $(clone.find('#order-modal-tier-name')[0]);
+
+        lineItemProductName.removeAttr('id');
+        lineItemQuantity.removeAttr('id');
+        lineItemTierName.removeAttr('id');
+
+        lineItemProductName.html(lineItem.product);
+        lineItemQuantity.html(lineItem.quantity);
+
+        if (lineItem.is_singular) {
+            lineItemTierName.html('<small class="text-muted">N/A</small>');
+        } else {
+            lineItemTierName.html(lineItem.product);
+        }
+
+        $('#order-modal-line-items').append(clone);
+    }
+
+    fetchOrder(function (order) {
+        console.log(order);
+
+        $('#order-modal-loading').hide();
+        $('#order-modal-information').show();
+
+        $('#order-modal-customer-name').html(order.profile.customer_name);
+        $('#order-modal-customer-phone').html(order.profile.phone);
+        $('#order-modal-customer-email').html(order.profile.email);
+
+        $('#order-modal-customer-city').html(order.profile.city);
+        $('#order-modal-customer-address').html(order.profile.address);
+        $('#order-modal-customer-postal-code').html(order.profile.postal_code);
+
+        var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
+
+        $('#order-modal-order-id').html(order.id);
+        $('#order-modal-order-date').html(dateString);
+        $('#order-modal-order-total').html("₱" + order.total_price);
+        //FIXME: Show actual deposit slip
+        $('#order-modal-deposit-slip').html("<small>The customer has not deposited yet.</small>");
+        $('#order-modal-order-status').html(orderStatus(order.status));
+
+        $('#order-modal-line-items').html('');
+        order.line_items.forEach(appendLineItem);
+    });
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
@@ -598,4 +691,5 @@ exports.fillOutModifyProductModal = fillOutModifyProductModal;
 exports.fillOutAddProductModal = fillOutAddProductModal;
 exports.fillOutDiscontinueStallModal = fillOutDiscontinueStallModal;
 exports.fillOutRenameStallModal = fillOutRenameStallModal;
+exports.fillOutOrderModal = fillOutOrderModal;
 //# sourceMappingURL=modals.js.map

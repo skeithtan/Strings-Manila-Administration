@@ -208,7 +208,8 @@ class StockTable extends React.Component {
 
     rows() {
         return this.props.tiers.map(tier => <StockRow tier={tier}
-                                                      key={tier.id}/>);
+                                                      key={tier.id}
+                                                      onStockRowClick={() => fillOutRestockModal(tier)}/>);
     }
 
     static emptyState() {
@@ -227,7 +228,8 @@ class StockTable extends React.Component {
         }
 
         return (
-            <div id="stocks-table" className="page-content d-flex flex-column">
+            <div id="stocks-table"
+                 className="page-content d-flex flex-column">
                 <table className="table table-hover page-table d-flex flex-column mb-0">
                     <thead className="thead-default">
                     <tr>
@@ -246,7 +248,6 @@ class StockTable extends React.Component {
         );
     }
 }
-
 
 class StockRow extends React.Component {
     constructor(props) {
@@ -273,9 +274,7 @@ class StockRow extends React.Component {
             <tr className={StockRow.rowClass(tier.quantity)}
                 data-toggle="modal"
                 data-target="#restock-modal"
-                onClick={() => {
-                    fillOutRestockModal(tier)
-                }}>
+                onClick={this.props.onStockRowClick}>
                 <td>{tier.productDescription.name}</td>
                 <td className={isSingular ? "text-muted" : ""}>{isSingular ? <small>N/A</small> : tier.name}</td>
                 <td>{tier.productDescription.stall.name}</td>

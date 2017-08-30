@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
 import randomString from './random';
+import {fillOutOrderModal} from "./modals";
 
 // Fetch data
 function fetchOrders(object) {
@@ -13,15 +14,6 @@ function fetchOrders(object) {
             "end-date": object.endDate
         },
         success: object.completionHandler,
-        error: response => console.log(response)
-    });
-}
-
-function fetchOrder(id, completionHandler) {
-    $.get({
-        url: `${baseURL}/api/orders/${id}/`,
-        beforeSend: authorizeXHR,
-        success: completionHandler,
         error: response => console.log(response)
     });
 }
@@ -50,6 +42,7 @@ class Orders extends React.Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.refreshState = this.refreshState.bind(this);
         this.filteredOrders = this.filteredOrders.bind(this);
+        this.onOrderRowClick = this.onOrderRowClick.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.onRefreshButtonClick = this.onRefreshButtonClick.bind(this);
 
@@ -136,6 +129,9 @@ class Orders extends React.Component {
         this.refreshState(toastID);
     }
 
+    onOrderRowClick(orderID) {
+        fillOutOrderModal(orderID, this.refreshState);
+    }
 
     render() {
         const filteredOrders = this.filteredOrders();
@@ -149,11 +145,11 @@ class Orders extends React.Component {
                            onStatusFilterChange={this.onStatusFilterChange}
                 />
                 <OrderTable orders={filteredOrders}
-                            hasFilter={this.state.statusFilter !== null}/>
+                            hasFilter={this.state.statusFilter !== null}
+                            onOrderRowClick={this.onOrderRowClick}/>
             </div>
         );
     }
-
 }
 
 class OrderHead extends React.Component {
@@ -292,7 +288,9 @@ class OrderTable extends React.Component {
 
     rows() {
         return this.props.orders.map(order => <OrderRow key={order.id}
-                                                        order={order}/>)
+                                                        order={order}
+                                                        onOrderRowClick={() => this.props.onOrderRowClick(order.id)}/>
+        )
     }
 
     render() {
@@ -376,7 +374,10 @@ class OrderRow extends React.Component {
 
     render() {
         return (
-            <tr className={this.rowClass()}>
+            <tr className={this.rowClass()}
+                data-toggle="modal"
+                data-target="#order-modal"
+                onClick={this.props.onOrderRowClick}>
                 <td>{this.props.order.id}</td>
                 <td>₱{this.props.order.total_price}</td>
                 <td>{this.date()}</td>

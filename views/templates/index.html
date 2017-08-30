@@ -726,6 +726,129 @@
 
 </div>
 
+<div class="modal fade"
+     id="order-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog modal-lg"
+         role="document">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div id="order-modal-loading"
+                     class="h-100 w-100 p-5 text-center">
+                    <h3 class="mb-0">Loading...</h3>
+                </div>
+
+                <div id="order-modal-information" class="p-4">
+                    <div>
+                        <h3 class="mb-4">Customer Information</h3>
+                        <div class="d-flex flex-row">
+                            <div class="mr-3">
+                                <h5 class="ml-2">Contact</h5>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td id="order-modal-customer-name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Phone Number</th>
+                                        <td id="order-modal-customer-phone"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email Address</th>
+                                        <td id="order-modal-customer-email"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <h5 class="ml-2">Address</h5>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th>City</th>
+                                        <td id="order-modal-customer-city"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td id="order-modal-customer-address"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Postal Code</th>
+                                        <td id="order-modal-customer-postal-code"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="mt-5 mb-4">Order Details</h3>
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>Order Number</th>
+                                <td id="order-modal-order-id"></td>
+                            </tr>
+                            <tr>
+                                <th>Order Date</th>
+                                <td id="order-modal-order-date"></td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td id="order-modal-order-total"></td>
+                            </tr>
+                            <tr>
+                                <th>Deposit Slip</th>
+                                <td id="order-modal-deposit-slip"></td>
+                            </tr>
+                            <tr>
+                                <th>Order Status</th>
+                                <td id="order-modal-order-status"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <h3 class="mt-5 mb-4">Order Products</h3>
+                        <table class="table">
+                            <thead class="thead-default">
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Tier</th>
+                                    <th>Quantity</th>
+                                </tr>
+                                <tr id="order-modal-line-item-clone">
+                                    <td id="order-modal-product-name">Sunlit Youth Vinyl</td>
+                                    <td id="order-modal-tier-name">N/A</td>
+                                    <th id="order-modal-quantity">1</th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-modal-line-items">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--React Scripts-->
 <script>
