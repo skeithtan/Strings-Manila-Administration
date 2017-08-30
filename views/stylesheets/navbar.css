@@ -1,3 +1,17 @@
+/*Disallow highlighting*/
+
+* {
+    user-select : none;
+    cursor      : default;
+}
+
+input,
+textarea,
+.selectable {
+    cursor      : text;
+    user-select : text;
+}
+
 #main-navigation.navbar {
     background         : linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
     /*background         : linear-gradient(to bottom, #e6e6e6 0%, #cfcfcf 100%);*/
@@ -16,11 +30,14 @@
 }
 
 #main-navigation a.nav-link {
-    font-size     : 14px;
-    font-weight   : 500;
-    padding-left  : 20px !important;
-    padding-right : 20px !important;
-    transition    : all 100ms;
+    font-size   : 14px;
+    font-weight : 500;
+    padding     : 10px 30px 10px 30px !important;
+    transition  : all 100ms;
+    display     : block !important;
+    margin-top  : -1px;
+    text-align  : center;
+    min-width   : 130px;
 }
 
 #main-navigation .nav-item a.nav-link.active {
@@ -35,7 +52,7 @@
 
 #main-navigation .nav-item a.nav-link:active {
     background : #dddddd;
-    color       : #007bff !important;
+    color      : #007bff !important;
 }
 
 #current-tab {

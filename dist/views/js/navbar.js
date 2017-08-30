@@ -35,7 +35,7 @@ function currentTab() {
 }
 
 var navbarItems = [{
-    name: "Manage Products",
+    name: "Products",
     isActive: false,
     tab: _react2.default.createElement(_entity_management2.default, null)
 }, {
@@ -43,19 +43,19 @@ var navbarItems = [{
     isActive: false,
     tab: _react2.default.createElement(_stock_inventory2.default, null)
 }, {
+    name: "Payments",
+    isActive: false,
+    tab: undefined //TODO
+}, {
+    name: "Orders",
+    isActive: false,
+    tab: undefined //TODO
+}, {
     name: "Waitlists",
     isActive: false,
     tab: undefined //TODO
 }, {
-    name: "Confirm Payments",
-    isActive: false,
-    tab: undefined //TODO
-}, {
-    name: "Sales Report",
-    isActive: false,
-    tab: undefined //TODO
-}, {
-    name: "Orders Report",
+    name: "Sales",
     isActive: false,
     tab: undefined //TODO
 }];
