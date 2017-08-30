@@ -1,5 +1,5 @@
 #main-navigation.navbar {
-    background         : linear-gradient(to bottom, #ffffff 0%, #eaeaea 100%);
+    background         : linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
     /*background         : linear-gradient(to bottom, #e6e6e6 0%, #cfcfcf 100%);*/
     height             : 40px;
     box-shadow         : 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -20,20 +20,22 @@
     font-weight   : 500;
     padding-left  : 20px !important;
     padding-right : 20px !important;
-}
-
-#main-navigation .nav-item a.nav-link:hover {
-    transition : background 0.25s;
+    transition    : all 100ms;
 }
 
 #main-navigation .nav-item a.nav-link.active {
     background  : #edeeee;
     color       : #007bff !important;
-    font-weight : normal;
+    font-weight : 600;
 }
 
 #main-navigation .nav-item a.nav-link:hover {
     background : #edeeee;
+}
+
+#main-navigation .nav-item a.nav-link:active {
+    background : #dddddd;
+    color       : #007bff !important;
 }
 
 #current-tab {

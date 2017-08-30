@@ -20,7 +20,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Fetch data
 function fetchStocks(completionHandler) {
-    client.query("\n    {\n      tiers {\n        id\n        name\n        quantity\n        productDescription {\n          isSingular\n          name\n          stall {\n            name\n          }\n        }\n      }\n    }\n    ").then(completionHandler);
+    graphQL({
+        query: "{\n                  tiers {\n                    id\n                    name\n                    quantity\n                    productDescription {\n                      isSingular\n                      name\n                      stall {\n                        name\n                      }\n                    }\n                  }\n                }",
+        response: completionHandler
+    });
 }
 
 //React

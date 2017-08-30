@@ -28,11 +28,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Fetch data
 function fetchStalls(completionHandler) {
-    client.query('\n    {\n        stalls {\n            id\n            name\n        }\n    }\n    ').then(completionHandler);
+    graphQL({
+        query: '{\n                    stalls {\n                        id\n                        name\n                    }\n                }',
+        response: completionHandler
+    });
 }
 
 function fetchProducts(stallID, completionHandler) {
-    client.query('\n    {\n      stall(id:' + stallID + '){\n        activeProducts {\n          id\n          name\n          description\n          image\n          tiers {\n            id\n            name\n            currentPrice\n          }\n        }\n      }\n    }\n    ').then(completionHandler);
+    graphQL({
+        query: '{\n                  stall(id:' + stallID + '){\n                    activeProducts {\n                      id\n                      name\n                      description\n                      image\n                      tiers {\n                        id\n                        name\n                        currentPrice\n                      }\n                    }\n                  }\n                }',
+        response: completionHandler
+    });
 }
 
 //React

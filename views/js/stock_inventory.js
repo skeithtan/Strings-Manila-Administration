@@ -2,22 +2,23 @@ import React from 'react';
 
 //Fetch data
 function fetchStocks(completionHandler) {
-    client.query(`
-    {
-      tiers {
-        id
-        name
-        quantity
-        productDescription {
-          isSingular
-          name
-          stall {
-            name
-          }
-        }
-      }
-    }
-    `).then(completionHandler);
+    graphQL({
+        query:`{
+                  tiers {
+                    id
+                    name
+                    quantity
+                    productDescription {
+                      isSingular
+                      name
+                      stall {
+                        name
+                      }
+                    }
+                  }
+                }`,
+        response: completionHandler,
+    });
 }
 
 //React

@@ -4,34 +4,36 @@ import Products from './products';
 
 //Fetch data
 function fetchStalls(completionHandler) {
-    client.query(`
-    {
-        stalls {
-            id
-            name
-        }
-    }
-    `).then(completionHandler);
+    graphQL({
+        query: `{
+                    stalls {
+                        id
+                        name
+                    }
+                }`,
+        response: completionHandler,
+    });
 }
 
 function fetchProducts(stallID, completionHandler) {
-    client.query(`
-    {
-      stall(id:${stallID}){
-        activeProducts {
-          id
-          name
-          description
-          image
-          tiers {
-            id
-            name
-            currentPrice
-          }
-        }
-      }
-    }
-    `).then(completionHandler)
+    graphQL({
+        query: `{
+                  stall(id:${stallID}){
+                    activeProducts {
+                      id
+                      name
+                      description
+                      image
+                      tiers {
+                        id
+                        name
+                        currentPrice
+                      }
+                    }
+                  }
+                }`,
+        response: completionHandler,
+    });
 }
 
 //React
@@ -62,7 +64,7 @@ class EntityManagement extends React.Component {
                     });
 
                     result.stalls.forEach(stall => {
-                        if(stall.id === activeStall.id) {
+                        if (stall.id === activeStall.id) {
                             //Add the product to the new stall
                             stall.products = products;
                             this.setState({

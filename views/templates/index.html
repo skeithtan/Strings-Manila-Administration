@@ -132,7 +132,8 @@
         <div class="modal-content border-danger">
             <!--Modal header-->
             <div class="modal-header">
-                <h5 class="modal-title text-danger">Are you sure you want to discontinue <span class="delete-stall-name">this
+                <h5 class="modal-title text-danger">Are you sure you want to discontinue
+                    <span class="delete-stall-name">this
                     stall</span>?
                 </h5>
                 <button type="button"
@@ -433,7 +434,8 @@
                 <div id="modify-singular-product-body"
                      class="card border-0">
 
-                    <input id="modify-singular-product-tier-id" type="hidden">
+                    <input id="modify-singular-product-tier-id"
+                           type="hidden">
 
                     <div class="card-body">
                         <div class="form-group row">
@@ -588,7 +590,8 @@
         <div class="modal-content border-danger">
             <!--Modal header-->
             <div class="modal-header">
-                <h5 class="modal-title text-danger">Are you sure you want to discontinue <span class="delete-product-name">this
+                <h5 class="modal-title text-danger">Are you sure you want to discontinue
+                    <span class="delete-product-name">this
                     product</span>?
                 </h5>
                 <button type="button"
@@ -722,13 +725,25 @@
 
 <!--React Scripts-->
 <script>
-    const Lokka = require('lokka').Lokka;
-    const Transport = require('lokka-transport-http').Transport;
     const baseURL = "http://localhost:8000/";
 
-    const client = new Lokka({
-        transport: new Transport(baseURL + 'graphiql/')
-    });
+    function graphQL(object) {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+        xhr.open("POST", `${baseURL}graphiql/`);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+
+        if (object.adminQuery) {
+            xhr.setRequestHeader("Authorization", `Token ${localStorage.token}`);
+        }
+
+        xhr.onload = function () {
+            object.response(xhr.response.data);
+        };
+
+        xhr.send(JSON.stringify({query: object.query}));
+    }
 
     require('../../dist/views/js/index.js');
 </script>

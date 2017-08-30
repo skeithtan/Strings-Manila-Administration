@@ -59,9 +59,8 @@ $(function () {
 function onAddStallButtonClick() {
     var stallName = $('#add-stall-name-input').val();
 
-    $.ajax({
+    $.post({
         url: baseURL + 'stalls/',
-        type: 'POST',
         data: {
             name: stallName
         },
