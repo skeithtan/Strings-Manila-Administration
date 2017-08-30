@@ -647,8 +647,6 @@ var OrderTableFooter = function (_React$Component5) {
         value: function statistics() {
             var totalItems = this.totalItems();
 
-            console.log(this.props.hasFilter);
-
             if (this.props.hasFilter) {
                 return totalItems + ' Items';
             } else {

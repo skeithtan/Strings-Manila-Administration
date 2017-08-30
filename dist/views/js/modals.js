@@ -164,7 +164,7 @@ function fillOutRenameStallModal(activeStall) {
 
 function fillOutDiscontinueStallModal(activeStall) {
     $('#delete-stall-id').val(activeStall.id);
-    $('span.delete-stall-name').html(activeStall.name);
+    $('span.delete-stall-name').text(activeStall.name);
 }
 
 //MARK: - Products
@@ -505,7 +505,7 @@ function fillOutTieredProductModal(product) {
     $('#modify-tiered-product-name-input').val(product.name);
     $('#modify-tiered-product-description-input').val(product.description);
 
-    $('#modify-tiers-set').html('');
+    $('#modify-tiers-set').text('');
 
     product.tiers.forEach(function (tier) {
         var clone = $('#modify-tier-row-clone').clone();
@@ -538,7 +538,7 @@ function fillOutAddProductModal(activeStall) {
 
 function fillOutDiscontinueProductModal(product) {
     $('#delete-product-id').val(product.id);
-    $('span.delete-product-name').html(product.name);
+    $('span.delete-product-name').text(product.name);
 }
 
 //MARK: - Stock Inventory
@@ -575,14 +575,14 @@ function onRestockButtonClick() {
 //Fill Out
 function fillOutRestockModal(tier) {
     $('#restock-tier-id').val(tier.id);
-    $('#restock-modal-product-name').html(tier.productDescription.name);
-    $('#restock-modal-product-quantity').html(tier.quantity);
+    $('#restock-modal-product-name').text(tier.productDescription.name);
+    $('#restock-modal-product-quantity').text(tier.quantity);
 
     if (tier.productDescription.isSingular) {
         $("#restock-modal-tier-row").hide();
     } else {
         $("#restock-modal-tier-row").show();
-        $("#restock-modal-tier-name").html(tier.name);
+        $("#restock-modal-tier-name").text(tier.name);
     }
 
     if (tier.quantity === 0) {
@@ -638,42 +638,40 @@ function fillOutOrderModal(orderID, refreshState) {
         lineItemQuantity.removeAttr('id');
         lineItemTierName.removeAttr('id');
 
-        lineItemProductName.html(lineItem.product);
-        lineItemQuantity.html(lineItem.quantity);
+        lineItemProductName.text(lineItem.product);
+        lineItemQuantity.text(lineItem.quantity);
 
         if (lineItem.is_singular) {
             lineItemTierName.html('<small class="text-muted">N/A</small>');
         } else {
-            lineItemTierName.html(lineItem.product);
+            lineItemTierName.text(lineItem.product);
         }
 
         $('#order-modal-line-items').append(clone);
     }
 
     fetchOrder(function (order) {
-        console.log(order);
-
         $('#order-modal-loading').hide();
         $('#order-modal-information').show();
 
-        $('#order-modal-customer-name').html(order.profile.customer_name);
-        $('#order-modal-customer-phone').html(order.profile.phone);
-        $('#order-modal-customer-email').html(order.profile.email);
+        $('#order-modal-customer-name').text(order.profile.customer_name);
+        $('#order-modal-customer-phone').text(order.profile.phone);
+        $('#order-modal-customer-email').text(order.profile.email);
 
-        $('#order-modal-customer-city').html(order.profile.city);
-        $('#order-modal-customer-address').html(order.profile.address);
-        $('#order-modal-customer-postal-code').html(order.profile.postal_code);
+        $('#order-modal-customer-city').text(order.profile.city);
+        $('#order-modal-customer-address').text(order.profile.address);
+        $('#order-modal-customer-postal-code').text(order.profile.postal_code);
 
         var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
 
-        $('#order-modal-order-id').html(order.id);
-        $('#order-modal-order-date').html(dateString);
-        $('#order-modal-order-total').html("₱" + order.total_price);
+        $('#order-modal-order-id').text(order.id);
+        $('#order-modal-order-date').text(dateString);
+        $('#order-modal-order-total').text("₱" + order.total_price);
         //FIXME: Show actual deposit slip
         $('#order-modal-deposit-slip').html("<small>The customer has not deposited yet.</small>");
-        $('#order-modal-order-status').html(orderStatus(order.status));
+        $('#order-modal-order-status').text(orderStatus(order.status));
 
-        $('#order-modal-line-items').html('');
+        $('#order-modal-line-items').text('');
         order.line_items.forEach(appendLineItem);
     });
 }

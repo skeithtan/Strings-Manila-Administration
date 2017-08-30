@@ -409,8 +409,6 @@ class OrderTableFooter extends React.Component {
     statistics() {
         const totalItems = this.totalItems();
 
-        console.log(this.props.hasFilter);
-
         if (this.props.hasFilter) {
             return `${totalItems} Items`;
         } else {
