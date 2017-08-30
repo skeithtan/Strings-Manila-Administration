@@ -1,7 +1,4 @@
-var refreshStalls;
-var refreshProducts;
-
-var refreshStockInventory;
+import randomString from './random';
 
 
 $(() => {
@@ -588,10 +585,13 @@ function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token)
 }
 
-//MARK: - Random String Generator
-function randomString() {
-    // Random string with very little collision possibility
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
+export {
+    fillOutTieredProductModal,
+    fillOutSingularProductModal,
+    fillOutRestockModal,
+    fillOutDeleteProductModal,
+    fillOutModifyProductModal,
+    fillOutAddProductModal,
+    fillOutDeleteStallModal,
+    fillOutRenameStallModal
 }

@@ -10,6 +10,8 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _modals = require("../modals");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69,7 +71,8 @@ function ProductListHeader(props) {
             className: "container-fluid d-flex flex-row p-3 pt-5 bg-light" },
         _react2.default.createElement(
             "h4",
-            { id: "active-stall-name", className: "mr-auto mb-auto" },
+            { id: "active-stall-name",
+                className: "mr-auto mb-auto" },
             props.activeStall.name
         ),
         _react2.default.createElement(
@@ -81,7 +84,7 @@ function ProductListHeader(props) {
                     "data-toggle": "modal",
                     "data-target": "#add-product-modal",
                     onClick: function onClick() {
-                        fillOutAddProductModal(props.activeStall);
+                        (0, _modals.fillOutAddProductModal)(props.activeStall);
                     } },
                 "Add product"
             ),
@@ -91,7 +94,7 @@ function ProductListHeader(props) {
                     "data-toggle": "modal",
                     "data-target": "#rename-stall-modal",
                     onClick: function onClick() {
-                        fillOutRenameStallModal(props.activeStall);
+                        (0, _modals.fillOutRenameStallModal)(props.activeStall);
                     } },
                 "Rename stall"
             ),
@@ -101,7 +104,7 @@ function ProductListHeader(props) {
                     "data-toggle": "modal",
                     "data-target": "#delete-stall-modal",
                     onClick: function onClick() {
-                        fillOutDeleteStallModal(props.activeStall);
+                        (0, _modals.fillOutDeleteStallModal)(props.activeStall);
                     } },
                 "Discontinue stall"
             )
@@ -183,7 +186,7 @@ var ProductList = function (_React$Component2) {
                         "data-toggle": "modal",
                         "data-target": "#add-product-modal",
                         onClick: function onClick() {
-                            fillOutAddProductModal(activeStall);
+                            (0, _modals.fillOutAddProductModal)(activeStall);
                         } },
                     "Add a product"
                 )
@@ -224,7 +227,7 @@ function ProductCard(props) {
                     "data-toggle": "modal",
                     "data-target": "#modify-product-modal",
                     onClick: function onClick() {
-                        fillOutModifyProductModal(props.product);
+                        (0, _modals.fillOutModifyProductModal)(props.product);
                     } },
                 "Modify"
             ),
@@ -234,7 +237,7 @@ function ProductCard(props) {
                     "data-toggle": "modal",
                     "data-target": "#delete-product-modal",
                     onClick: function onClick() {
-                        fillOutDeleteProductModal(props.product);
+                        (0, _modals.fillOutDeleteProductModal)(props.product);
                     } },
                 "Discontinue"
             )

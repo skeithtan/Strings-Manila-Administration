@@ -18,6 +18,10 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _random = require('./random');
+
+var _random2 = _interopRequireDefault(_random);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -106,7 +110,7 @@ var Orders = function (_React$Component) {
         value: function refreshState() {
             var _this2 = this;
 
-            var showSuccessAlert = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+            var toastID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
             function formatDate(date) {
                 return date.format('YYYY-MM-DD');
@@ -130,11 +134,14 @@ var Orders = function (_React$Component) {
                         orders: orders
                     });
 
-                    if (showSuccessAlert) {
+                    if (toastID) {
+                        var toast = document.getElementById(toastID);
+                        iziToast.hide({}, toast);
+
                         iziToast.success({
                             title: "Refreshed",
                             message: "Data is up to date.",
-                            timeout: 1500,
+                            timeout: 2500,
                             progressBar: false
                         });
                     }
@@ -144,15 +151,31 @@ var Orders = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             //TODO: Filter
             var filteredOrders = this.state.orders;
+
+            var refreshData = function refreshData() {
+                var toastID = (0, _random2.default)();
+
+                iziToast.info({
+                    title: "Fetching updates...",
+                    progressBar: false,
+                    timeout: false,
+                    id: toastID
+                });
+
+                _this3.refreshState(toastID);
+            };
 
             return _react2.default.createElement(
                 'div',
                 { id: 'orders',
                     className: 'container-fluid m-0 p-0 h-100 w-100 d-flex flex-column' },
                 _react2.default.createElement(OrderHead, { dates: this.state.dates,
-                    onDateChange: this.onDateChange }),
+                    onDateChange: this.onDateChange,
+                    refreshData: refreshData }),
                 _react2.default.createElement(OrderTable, { orders: filteredOrders })
             );
         }
@@ -173,7 +196,7 @@ var OrderHead = function (_React$Component2) {
     _createClass(OrderHead, [{
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             function formatDate(date) {
                 return date.format('YYYY-MM-DD');
@@ -186,12 +209,12 @@ var OrderHead = function (_React$Component2) {
                 var value = event.target.value;
 
                 if (isStartDate) {
-                    _this4.props.onDateChange({
+                    _this5.props.onDateChange({
                         startDate: value,
                         endDate: endDate
                     });
                 } else {
-                    _this4.props.onDateChange({
+                    _this5.props.onDateChange({
                         startDate: startDate,
                         endDate: value
                     });
@@ -214,7 +237,8 @@ var OrderHead = function (_React$Component2) {
                         null,
                         _react2.default.createElement(
                             'button',
-                            { className: 'btn btn-sm btn-outline-primary mr-1' },
+                            { className: 'btn btn-sm btn-outline-primary mr-1',
+                                onClick: this.props.refreshData },
                             'Refresh Data'
                         ),
                         _react2.default.createElement(
@@ -346,10 +370,10 @@ var OrderTable = function (_React$Component3) {
     function OrderTable(props) {
         _classCallCheck(this, OrderTable);
 
-        var _this5 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
+        var _this6 = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this, props));
 
-        _this5.rows = _this5.rows.bind(_this5);
-        return _this5;
+        _this6.rows = _this6.rows.bind(_this6);
+        return _this6;
     }
 
     _createClass(OrderTable, [{
@@ -457,12 +481,12 @@ var OrderRow = function (_React$Component4) {
     function OrderRow(props) {
         _classCallCheck(this, OrderRow);
 
-        var _this6 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
 
-        _this6.date = _this6.date.bind(_this6);
-        _this6.status = _this6.status.bind(_this6);
-        _this6.rowClass = _this6.rowClass.bind(_this6);
-        return _this6;
+        _this7.date = _this7.date.bind(_this7);
+        _this7.status = _this7.status.bind(_this7);
+        _this7.rowClass = _this7.rowClass.bind(_this7);
+        return _this7;
     }
 
     _createClass(OrderRow, [{
@@ -546,11 +570,11 @@ var OrderTableFooter = function (_React$Component5) {
     function OrderTableFooter(props) {
         _classCallCheck(this, OrderTableFooter);
 
-        var _this7 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
+        var _this8 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
 
-        _this7.totalItems = _this7.totalItems.bind(_this7);
-        _this7.totalForStatus = _this7.totalForStatus.bind(_this7);
-        return _this7;
+        _this8.totalItems = _this8.totalItems.bind(_this8);
+        _this8.totalForStatus = _this8.totalForStatus.bind(_this8);
+        return _this8;
     }
 
     _createClass(OrderTableFooter, [{

@@ -9,7 +9,6 @@
     <script src="../../dist/views/js/popper.js"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../../dist/views/js/form_verification.js"></script>
-    <script src="../../dist/views/js/modals.js"></script>
     <script src="../../node_modules/izitoast/dist/js/iziToast.min.js"></script>
 
     <!--Stylesheets-->
@@ -750,7 +749,12 @@
         xhr.send(JSON.stringify({query: object.query}));
     }
 
+    var refreshStalls;
+    var refreshProducts;
+    var refreshStockInventory;
+
     require('../../dist/views/js/index.js');
+    require('../../dist/views/js/modals.js');
 </script>
 
 </body>

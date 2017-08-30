@@ -1,9 +1,15 @@
 'use strict';
 
-var refreshStalls;
-var refreshProducts;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fillOutRenameStallModal = exports.fillOutDeleteStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDeleteProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
-var refreshStockInventory;
+var _random = require('./random');
+
+var _random2 = _interopRequireDefault(_random);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
     //MARK: - Entity Management
@@ -197,7 +203,7 @@ function setUpAddProductModal() {
 }
 
 function displayUploadingToast() {
-    var id = randomString();
+    var id = (0, _random2.default)();
     iziToast.info({
         title: 'Uploading image...',
         id: id,
@@ -584,11 +590,12 @@ function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
 }
 
-//MARK: - Random String Generator
-function randomString() {
-    // Random string with very little collision possibility
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-    });
-}
+exports.fillOutTieredProductModal = fillOutTieredProductModal;
+exports.fillOutSingularProductModal = fillOutSingularProductModal;
+exports.fillOutRestockModal = fillOutRestockModal;
+exports.fillOutDeleteProductModal = fillOutDeleteProductModal;
+exports.fillOutModifyProductModal = fillOutModifyProductModal;
+exports.fillOutAddProductModal = fillOutAddProductModal;
+exports.fillOutDeleteStallModal = fillOutDeleteStallModal;
+exports.fillOutRenameStallModal = fillOutRenameStallModal;
 //# sourceMappingURL=modals.js.map

@@ -1,4 +1,5 @@
 import React from 'react';
+import {fillOutRestockModal} from "./modals";
 
 //Fetch data
 function fetchStocks(completionHandler) {
@@ -57,7 +58,7 @@ class StockInventory extends React.Component {
                 iziToast.success({
                     title: "Refreshed",
                     message: "Data is up to date.",
-                    timeout: 1500,
+                    timeout: 2500,
                     progressBar: false
                 })
             }

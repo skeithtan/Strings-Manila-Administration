@@ -10,6 +10,8 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _modals = require("./modals");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -75,7 +77,7 @@ var StockInventory = function (_React$Component) {
                     iziToast.success({
                         title: "Refreshed",
                         message: "Data is up to date.",
-                        timeout: 1500,
+                        timeout: 2500,
                         progressBar: false
                     });
                 }
@@ -398,7 +400,7 @@ var StockRow = function (_React$Component4) {
                     "data-toggle": "modal",
                     "data-target": "#restock-modal",
                     onClick: function onClick() {
-                        fillOutRestockModal(tier);
+                        (0, _modals.fillOutRestockModal)(tier);
                     } },
                 _react2.default.createElement(
                     "td",

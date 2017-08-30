@@ -1,4 +1,11 @@
 import React from 'react'
+import {
+    fillOutDeleteStallModal,
+    fillOutRenameStallModal,
+    fillOutAddProductModal,
+    fillOutModifyProductModal,
+    fillOutDeleteProductModal
+} from "../modals";
 
 class Products extends React.Component {
     constructor(props) {
@@ -34,7 +41,8 @@ function ProductListHeader(props) {
     return (
         <div id="product-list-header"
              className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
-            <h4 id="active-stall-name" className="mr-auto mb-auto">{props.activeStall.name}</h4>
+            <h4 id="active-stall-name"
+                className="mr-auto mb-auto">{props.activeStall.name}</h4>
             <div>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"

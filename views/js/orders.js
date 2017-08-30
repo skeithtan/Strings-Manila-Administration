@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
+import randomString from './random';
 
 // Fetch data
 function fetchOrders(object) {
@@ -66,7 +67,7 @@ class Orders extends React.Component {
         this.refreshState();
     }
 
-    refreshState(showSuccessAlert = false) {
+    refreshState(toastID = false) {
         function formatDate(date) {
             return date.format('YYYY-MM-DD');
         }
@@ -89,11 +90,14 @@ class Orders extends React.Component {
                     orders: orders
                 });
 
-                if (showSuccessAlert) {
+                if (toastID) {
+                    const toast = document.getElementById(toastID);
+                    iziToast.hide({}, toast);
+
                     iziToast.success({
                         title: "Refreshed",
                         message: "Data is up to date.",
-                        timeout: 1500,
+                        timeout: 2500,
                         progressBar: false
                     })
                 }
@@ -106,11 +110,25 @@ class Orders extends React.Component {
         //TODO: Filter
         const filteredOrders = this.state.orders;
 
+        const refreshData = () => {
+            const toastID = randomString();
+
+            iziToast.info({
+                title: "Fetching updates...",
+                progressBar: false,
+                timeout: false,
+                id: toastID
+            });
+
+            this.refreshState(toastID);
+        };
+
         return (
             <div id="orders"
                  className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
                 <OrderHead dates={this.state.dates}
-                           onDateChange={this.onDateChange}/>
+                           onDateChange={this.onDateChange}
+                           refreshData={refreshData}/>
                 <OrderTable orders={filteredOrders}/>
             </div>
         );
@@ -152,7 +170,9 @@ class OrderHead extends React.Component {
                 <div className="mr-auto row p-3 pt-5 mt-auto">
                     <h4 className="mr-3">Orders</h4>
                     <div>
-                        <button className="btn btn-sm btn-outline-primary mr-1">Refresh Data</button>
+                        <button className="btn btn-sm btn-outline-primary mr-1"
+                                onClick={this.props.refreshData}>Refresh Data
+                        </button>
                         <button className="btn btn-sm btn-outline-primary">Generate Report</button>
                     </div>
                 </div>
