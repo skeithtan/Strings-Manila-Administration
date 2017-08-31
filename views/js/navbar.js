@@ -20,14 +20,14 @@ const navbarItems = [
         tab: <StockInventory/>
     },
     {
-        name: "Payments",
-        isActive: false,
-        tab: null //TODO
-    },
-    {
         name: "Orders",
         isActive: false,
         tab: <Orders/> //TODO
+    },
+    {
+        name: "Payments",
+        isActive: false,
+        tab: null //TODO
     },
     {
         name: "Sales",

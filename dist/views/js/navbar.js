@@ -47,13 +47,13 @@ var navbarItems = [{
     isActive: false,
     tab: _react2.default.createElement(_stock_inventory2.default, null)
 }, {
-    name: "Payments",
-    isActive: false,
-    tab: null //TODO
-}, {
     name: "Orders",
     isActive: false,
     tab: _react2.default.createElement(_orders2.default, null) //TODO
+}, {
+    name: "Payments",
+    isActive: false,
+    tab: null //TODO
 }, {
     name: "Sales",
     isActive: false,
