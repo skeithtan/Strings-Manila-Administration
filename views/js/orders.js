@@ -411,11 +411,12 @@ class OrderTableFooter extends React.Component {
             return `${totalItems} Items`;
         } else {
             const totalUnpaid = this.totalForStatus('U');
+            const totalVerifying = this.totalForStatus('V');
             const totalProcessing = this.totalForStatus('P');
             const totalShipped = this.totalForStatus('S');
             const totalCancelled = this.totalForStatus('C');
 
-            return `${totalItems} Items | ${totalUnpaid} Unpaid | ${totalProcessing} Processing | ${totalShipped} Shipped | ${totalCancelled} Cancelled`;
+            return `${totalItems} Items | ${totalUnpaid} Unpaid | ${totalVerifying} Verifying Payment | ${totalProcessing} Processing | ${totalShipped} Shipped | ${totalCancelled} Cancelled`;
         }
     }
 

@@ -646,11 +646,12 @@ var OrderTableFooter = function (_React$Component5) {
                 return totalItems + ' Items';
             } else {
                 var totalUnpaid = this.totalForStatus('U');
+                var totalVerifying = this.totalForStatus('V');
                 var totalProcessing = this.totalForStatus('P');
                 var totalShipped = this.totalForStatus('S');
                 var totalCancelled = this.totalForStatus('C');
 
-                return totalItems + ' Items | ' + totalUnpaid + ' Unpaid | ' + totalProcessing + ' Processing | ' + totalShipped + ' Shipped | ' + totalCancelled + ' Cancelled';
+                return totalItems + ' Items | ' + totalUnpaid + ' Unpaid | ' + totalVerifying + ' Verifying Payment | ' + totalProcessing + ' Processing | ' + totalShipped + ' Shipped | ' + totalCancelled + ' Cancelled';
             }
         }
     }, {
