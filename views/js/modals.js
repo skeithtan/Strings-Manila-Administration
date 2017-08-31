@@ -146,7 +146,7 @@ function onDeleteStallButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not discontinue stall.'
+                message: 'Unable to discontinue stall.'
             })
         },
     })
@@ -465,7 +465,7 @@ function onDeleteProductButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not discontinue product.'
+                message: 'Unable to discontinue product.'
             })
         }
     })
@@ -622,10 +622,20 @@ function fillOutOrderModal(orderID) {
             url: `${baseURL}/api/orders/${orderID}/cancel/`,
             beforeSend: authorizeXHR,
             success: () => {
+                iziToast.success({
+                    title: 'Cancelled',
+                    message: 'Order is now cancelled.'
+                });
                 refreshOrders();
                 fetchOrder();
             },
-            error: response => console.log(response)
+            error: response => {
+                console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to cancel order'
+                })
+            }
         });
     }
 
@@ -664,7 +674,7 @@ function fillOutOrderModal(orderID) {
         orderStatus.removeAttr('class');
 
         orderStatus.text(orderStatusCodeToString(status));
-        switch(status) {
+        switch (status) {
             case 'U':
                 return '';
             case 'V':
@@ -685,7 +695,7 @@ function fillOutOrderModal(orderID) {
     function showActionsForStatus(status) {
         const cancelOrderButton = $('#cancel-order-button');
 
-        switch(status) {
+        switch (status) {
             case 'U':
                 cancelOrderButton.show();
                 return;

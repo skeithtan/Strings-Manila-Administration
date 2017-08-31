@@ -158,7 +158,7 @@ function onDeleteStallButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not discontinue stall.'
+                message: 'Unable to discontinue stall.'
             });
         }
     });
@@ -474,7 +474,7 @@ function onDeleteProductButtonClick() {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Could not discontinue product.'
+                message: 'Unable to discontinue product.'
             });
         }
     });
@@ -629,11 +629,19 @@ function fillOutOrderModal(orderID) {
             url: baseURL + '/api/orders/' + orderID + '/cancel/',
             beforeSend: authorizeXHR,
             success: function success() {
+                iziToast.success({
+                    title: 'Cancelled',
+                    message: 'Order is now cancelled.'
+                });
                 refreshOrders();
                 fetchOrder();
             },
             error: function error(response) {
-                return console.log(response);
+                console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to cancel order'
+                });
             }
         });
     }
