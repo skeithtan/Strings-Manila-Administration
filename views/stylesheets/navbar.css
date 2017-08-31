@@ -30,6 +30,10 @@ textarea,
     min-height : 0; /*This forces the content to shrink when needed*/
 }
 
+.text-warning {
+    color : #e0ab0c !important;
+}
+
 /*Tables*/
 .page-content table.page-table {
     flex       : 0 1 auto;
@@ -193,4 +197,8 @@ table.page-table tbody {
 
 #order-modal-line-item-clone {
     display : none;
+}
+
+#store-notes-input {
+    height : 200px;
 }

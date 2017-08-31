@@ -13,6 +13,8 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _electron = require('electron');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
@@ -69,15 +71,12 @@ $(function () {
         $('#order-modal-loading').show();
         $('#order-modal-information').hide();
     });
-    $('#cancel-order-button').click(function () {
-        $('#order-modal').css('z-index', '1040');
-    });
-    $('#cancel-order-modal').on('hidden.bs.modal', function () {
-        // Show modal again, make scrollable
-        $('#order-modal').css({
-            "z-index": 1050,
-            "overflow": "scroll"
-        });
+    $('#cancel-order-button').click(sendOrderModalToBack);
+    $('#cancel-order-modal').on('hidden.bs.modal', restoreOrderModal);
+    $('#mark-as-shipped-button').click(sendOrderModalToBack);
+    $('#mark-as-shipped-modal').on('hidden.bs.modal', function () {
+        restoreOrderModal();
+        $('#store-notes-input').val('');
     });
 });
 
@@ -605,6 +604,19 @@ function fillOutRestockModal(tier) {
 }
 
 //MARK: - Orders
+
+function sendOrderModalToBack() {
+    $('#order-modal').css('z-index', '1040');
+}
+
+function restoreOrderModal() {
+    // Show modal again, make scrollable
+    $('#order-modal').css({
+        "z-index": 1050,
+        "overflow": "scroll"
+    });
+}
+
 function fillOutOrderModal(orderID) {
 
     function orderStatusCodeToString(statusCode) {
@@ -622,6 +634,25 @@ function fillOutOrderModal(orderID) {
         }
 
         return statusCode;
+    }
+
+    function fillOutCustomerDetails(order) {
+        $('#order-modal-customer-name').text(order.profile.customer_name);
+        $('#order-modal-customer-phone').text(order.profile.phone);
+        $('#order-modal-customer-email').text(order.profile.email);
+
+        $('#order-modal-customer-city').text(order.profile.city);
+        $('#order-modal-customer-address').text(order.profile.address);
+        $('#order-modal-customer-postal-code').text(order.profile.postal_code);
+    }
+
+    function fillOutModal(order) {
+        $('#order-modal-loading').hide();
+        $('#order-modal-information').show();
+
+        fillOutCustomerDetails(order);
+        fillOutOrderDetails(order);
+        fillOutOrderProducts(order);
     }
 
     function onConfirmCancelOrderButtonClick(orderID) {
@@ -646,36 +677,167 @@ function fillOutOrderModal(orderID) {
         });
     }
 
-    function fillOutModal(order) {
-        $('#order-modal-loading').hide();
-        $('#order-modal-information').show();
+    function onMarkAsVerifiedButtonClick(orderID) {
+        $.post({
+            url: baseURL + '/api/orders/' + orderID + '/verify/',
+            beforeSend: authorizeXHR,
+            success: function success() {
+                iziToast.success({
+                    title: 'Verified',
+                    message: 'Order is now processing.'
+                });
+                refreshOrders();
+                fetchOrder();
+            },
+            error: function error(response) {
+                console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to mark order as verified.'
+                });
+            }
+        });
+    }
 
-        $('#order-modal-customer-name').text(order.profile.customer_name);
-        $('#order-modal-customer-phone').text(order.profile.phone);
-        $('#order-modal-customer-email').text(order.profile.email);
+    function onMarkAsShippedButtonClick(orderID) {
+        var storeNotes = $('#store-notes-input').val().trim();
+        if (storeNotes.length === 0) {
+            storeNotes = null;
+        }
 
-        $('#order-modal-customer-city').text(order.profile.city);
-        $('#order-modal-customer-address').text(order.profile.address);
-        $('#order-modal-customer-postal-code').text(order.profile.postal_code);
+        $.post({
+            url: baseURL + '/api/orders/' + orderID + '/ship/',
+            beforeSend: authorizeXHR,
+            data: {
+                notes: storeNotes
+            },
+            success: function success() {
+                iziToast.success({
+                    title: 'Shipped',
+                    message: 'Order is now marked as shipped.'
+                });
+                refreshOrders();
+                fetchOrder();
+            },
+            error: function error(response) {
+                console.log(response);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to mark order as shipped.'
+                });
+            }
+        });
+    }
 
+    function fillOutOrderDetails(order) {
         var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
 
         $('#order-modal-order-id').text(order.id);
         $('#order-modal-order-date').text(dateString);
         $('#order-modal-order-total').text("₱" + order.total_price);
-        //FIXME: Show actual deposit slip
-        $('#order-modal-deposit-slip').html("<small class='text-muted'>The customer has not deposited yet.</small>");
-        showActionsForStatus(order.status);
+
+        //Deposit Slip
+        var openDepositSliplink = $('#open-deposit-slip-link');
+        var noDepositSlipMessage = $('#no-deposit-slip-message');
+
+        if (order.deposit_photo) {
+            noDepositSlipMessage.hide();
+            openDepositSliplink.show();
+
+            openDepositSliplink.off();
+            openDepositSliplink.text(order.deposit_photo);
+            openDepositSliplink.click(function () {
+                return _electron.shell.openExternal(order.deposit_photo);
+            });
+        } else {
+            openDepositSliplink.hide();
+            noDepositSlipMessage.show();
+        }
+
+        //Order Status
         showOrderStatus(order.status);
+
+        var status = order.status;
+        var cancelOrderButton = $('#cancel-order-button');
+        if (status === 'U' || status === 'V' || status === 'P') {
+            cancelOrderButton.show();
+
+            var confirmCancelButton = $('#confirm-cancel-order-button');
+            confirmCancelButton.off(); //Unbind everything
+            confirmCancelButton.click(function () {
+                return onConfirmCancelOrderButtonClick(order.id);
+            });
+        } else {
+            cancelOrderButton.hide();
+        }
+
+        var markAsVerifiedButton = $('#mark-as-verified-button');
+        if (status === 'V') {
+            markAsVerifiedButton.show();
+            markAsVerifiedButton.off(); //Unbind
+            markAsVerifiedButton.click(function () {
+                return onMarkAsVerifiedButtonClick(order.id);
+            });
+        } else {
+            markAsVerifiedButton.hide();
+        }
+
+        var paymentVerifiedMessage = $('#payment-verified-message');
+
+        if (status === 'S' || status === 'P') {
+            paymentVerifiedMessage.show();
+        } else {
+            paymentVerifiedMessage.hide();
+        }
+
+        var markAsShippedButton = $('#mark-as-shipped-button');
+        if (status === 'P') {
+            markAsShippedButton.show();
+
+            var confirmMarkAsShippedButton = $('#confirm-mark-as-shipped-button');
+            confirmMarkAsShippedButton.click(function () {
+                return onMarkAsShippedButtonClick(order.id);
+            });
+        } else {
+            markAsShippedButton.hide();
+        }
+
+        var storeNotesRow = $('#store-notes-row');
+        if (order.store_notes) {
+            storeNotesRow.show();
+            $('#store-notes').text(order.store_notes);
+        } else {
+            storeNotesRow.hide();
+        }
+    }
+
+    function fillOutOrderProducts(order) {
+        function appendLineItem(lineItem) {
+            var clone = $('#order-modal-line-item-clone').clone();
+            clone.removeAttr('id');
+
+            var lineItemProductName = $(clone.find('#order-modal-product-name')[0]);
+            var lineItemQuantity = $(clone.find('#order-modal-quantity')[0]);
+            var lineItemTierName = $(clone.find('#order-modal-tier-name')[0]);
+
+            lineItemProductName.removeAttr('id');
+            lineItemQuantity.removeAttr('id');
+            lineItemTierName.removeAttr('id');
+
+            lineItemProductName.text(lineItem.product);
+            lineItemQuantity.text(lineItem.quantity);
+
+            if (lineItem.is_singular) {
+                lineItemTierName.html('<small class="text-muted">N/A</small>');
+            } else {
+                lineItemTierName.text(lineItem.product);
+            }
+
+            $('#order-modal-line-items').append(clone);
+        }
 
         $('#order-modal-line-items').text('');
         order.line_items.forEach(appendLineItem);
-
-        var confirmCancelButton = $('#confirm-cancel-order-button');
-        confirmCancelButton.off(); //Unbind everything
-        confirmCancelButton.click(function () {
-            return onConfirmCancelOrderButtonClick(order.id);
-        });
     }
 
     function showOrderStatus(status) {
@@ -701,19 +863,6 @@ function fillOutOrderModal(orderID) {
         }
     }
 
-    function showActionsForStatus(status) {
-        var cancelOrderButton = $('#cancel-order-button');
-
-        switch (status) {
-            case 'U':
-                cancelOrderButton.show();
-                return;
-            case 'C':
-                cancelOrderButton.hide();
-                return;
-        }
-    }
-
     function fetchOrder() {
         $.get({
             url: baseURL + '/api/orders/' + orderID + '/',
@@ -723,30 +872,6 @@ function fillOutOrderModal(orderID) {
                 return console.log(response);
             }
         });
-    }
-
-    function appendLineItem(lineItem) {
-        var clone = $('#order-modal-line-item-clone').clone();
-        clone.removeAttr('id');
-
-        var lineItemProductName = $(clone.find('#order-modal-product-name')[0]);
-        var lineItemQuantity = $(clone.find('#order-modal-quantity')[0]);
-        var lineItemTierName = $(clone.find('#order-modal-tier-name')[0]);
-
-        lineItemProductName.removeAttr('id');
-        lineItemQuantity.removeAttr('id');
-        lineItemTierName.removeAttr('id');
-
-        lineItemProductName.text(lineItem.product);
-        lineItemQuantity.text(lineItem.quantity);
-
-        if (lineItem.is_singular) {
-            lineItemTierName.html('<small class="text-muted">N/A</small>');
-        } else {
-            lineItemTierName.text(lineItem.product);
-        }
-
-        $('#order-modal-line-items').append(clone);
     }
 
     fetchOrder();

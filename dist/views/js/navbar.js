@@ -51,10 +51,6 @@ var navbarItems = [{
     isActive: false,
     tab: _react2.default.createElement(_orders2.default, null) //TODO
 }, {
-    name: "Payments",
-    isActive: false,
-    tab: null //TODO
-}, {
     name: "Sales",
     isActive: false,
     tab: null //TODO

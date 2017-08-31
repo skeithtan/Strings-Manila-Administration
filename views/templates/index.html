@@ -30,6 +30,7 @@
 
 <!--Modals-->
 
+
 <!--Add Stall Modal-->
 <div class="modal fade"
      id="add-stall-modal"
@@ -162,6 +163,7 @@
         </div>
     </div>
 </div>
+
 
 <!--Add Product Modal-->
 <div class="modal fade"
@@ -402,7 +404,6 @@
         <span>&times;</span>
     </button>
 </div>
-
 
 <!--Modify Product Modal-->
 <div class="modal fade"
@@ -766,15 +767,18 @@
                                     <tbody>
                                     <tr>
                                         <th>Name</th>
-                                        <td id="order-modal-customer-name"></td>
+                                        <td id="order-modal-customer-name"
+                                            class="selectable"></td>
                                     </tr>
                                     <tr>
                                         <th>Phone Number</th>
-                                        <td id="order-modal-customer-phone"></td>
+                                        <td id="order-modal-customer-phone"
+                                            class="selectable"></td>
                                     </tr>
                                     <tr>
                                         <th>Email Address</th>
-                                        <td id="order-modal-customer-email"></td>
+                                        <td id="order-modal-customer-email"
+                                            class="selectable"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -785,15 +789,18 @@
                                     <tbody>
                                     <tr>
                                         <th>City</th>
-                                        <td id="order-modal-customer-city"></td>
+                                        <td id="order-modal-customer-city"
+                                            class="selectable"></td>
                                     </tr>
                                     <tr>
                                         <th>Address</th>
-                                        <td id="order-modal-customer-address"></td>
+                                        <td id="order-modal-customer-address"
+                                            class="selectable"></td>
                                     </tr>
                                     <tr>
                                         <th>Postal Code</th>
-                                        <td id="order-modal-customer-postal-code"></td>
+                                        <td id="order-modal-customer-postal-code"
+                                            class="selectable"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -814,29 +821,57 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <th>Order Number</th>
-                                <td id="order-modal-order-id"></td>
+                                <th style="width: 160px;">Order Number</th>
+                                <td id="order-modal-order-id"
+                                    class="selectable"></td>
                             </tr>
                             <tr>
                                 <th>Order Date</th>
-                                <td id="order-modal-order-date"></td>
+                                <td id="order-modal-order-date"
+                                    class="selectable"></td>
                             </tr>
                             <tr>
                                 <th>Total</th>
-                                <td id="order-modal-order-total"></td>
+                                <td id="order-modal-order-total"
+                                    class="selectable"></td>
                             </tr>
                             <tr>
                                 <th>Deposit Slip</th>
-                                <td id="order-modal-deposit-slip"></td>
+                                <td id="order-modal-deposit-slip"
+                                    class="d-flex align-items-center">
+                                    <button id="open-deposit-slip-link"
+                                            class="btn btn-link mr-auto p-0"></button>
+                                    <button id="mark-as-verified-button"
+                                            class="btn btn-outline-success">Mark as Verified
+                                    </button>
+
+                                    <p id="no-deposit-slip-message"
+                                       class='text-muted mb-0'>The customer has not uploaded a deposit slip.
+                                    </p>
+
+                                    <span id="payment-verified-message"
+                                          class="text-success"><b>✓</b> Verified</span>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Order Status</th>
-                                <td id="order-modal-order-status"></td>
+                                <td class="d-flex flex-row align-items-center">
+                                    <span id="order-modal-order-status"
+                                          class="mr-auto"></span>
+                                    <button id="mark-as-shipped-button"
+                                            class="btn btn-outline-success ml-auto"
+                                            data-toggle="modal"
+                                            data-target="#mark-as-shipped-modal">Mark as Shipped
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr id="store-notes-row">
+                                <th>Store Notes</th>
+                                <td id="store-notes"></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-
                     <div>
                         <h3 class="mt-5 mb-4">Order Products</h3>
                         <table class="table">
@@ -857,7 +892,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -897,6 +931,46 @@
             </div>
         </div>
     </div>
+</div>
+
+<!--Mark Shipped Modal-->
+<div class="modal fade"
+     id="mark-as-shipped-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Mark Order As Shipped</h5>
+                <button type="button"
+                        class="close text-white"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <label class="text-dark">Store Notes (Optional):</label>
+                <textarea class="form-control text-input"
+                          placeholder="Store Notes"
+                          id="store-notes-input"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button id="confirm-mark-as-shipped-button"
+                        type="button"
+                        class="btn btn-success"
+                        data-dismiss="modal">
+                    Mark as Shipped
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!--React Scripts-->
