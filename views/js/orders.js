@@ -376,7 +376,7 @@ class OrderRow extends React.Component {
                 data-toggle="modal"
                 data-target="#order-modal"
                 onClick={this.props.onOrderRowClick}>
-                <td>{this.props.order.id}</td>
+                <th>{this.props.order.id}</th>
                 <td>₱{this.props.order.total_price}</td>
                 <td>{this.date()}</td>
                 <td>{this.status()}</td>

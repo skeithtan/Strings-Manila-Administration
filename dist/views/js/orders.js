@@ -584,7 +584,7 @@ var OrderRow = function (_React$Component4) {
                     'data-target': '#order-modal',
                     onClick: this.props.onOrderRowClick },
                 _react2.default.createElement(
-                    'td',
+                    'th',
                     null,
                     this.props.order.id
                 ),
