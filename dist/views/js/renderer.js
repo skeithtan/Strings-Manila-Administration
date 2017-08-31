@@ -5,4 +5,9 @@
 // All of the Node.js APIs are available in this process.
 
 window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+
+//Disallow zooming
+var webFrame = require('electron').webFrame;
+webFrame.setVisualZoomLevelLimits(1, 1);
+webFrame.setLayoutZoomLevelLimits(0, 0);
 //# sourceMappingURL=renderer.js.map
