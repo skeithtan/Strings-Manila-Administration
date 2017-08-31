@@ -77,9 +77,9 @@ var Orders = function (_React$Component) {
         _this.onDateChange = _this.onDateChange.bind(_this);
         _this.refreshState = _this.refreshState.bind(_this);
         _this.filteredOrders = _this.filteredOrders.bind(_this);
-        _this.onOrderRowClick = _this.onOrderRowClick.bind(_this);
         _this.onStatusFilterChange = _this.onStatusFilterChange.bind(_this);
         _this.onRefreshButtonClick = _this.onRefreshButtonClick.bind(_this);
+        refreshOrders = _this.refreshState;
 
         _this.refreshState();
         return _this;
@@ -154,11 +154,14 @@ var Orders = function (_React$Component) {
         key: 'filteredOrders',
         value: function filteredOrders() {
             var statusFilter = this.state.statusFilter;
+
+            var orders = this.state.orders;
+
             if (statusFilter === null) {
-                return this.state.orders;
+                return orders;
             }
 
-            return this.state.orders.filter(function (order) {
+            return orders.filter(function (order) {
                 return order.status === statusFilter;
             });
         }
@@ -177,11 +180,6 @@ var Orders = function (_React$Component) {
             this.refreshState(toastID);
         }
     }, {
-        key: 'onOrderRowClick',
-        value: function onOrderRowClick(orderID) {
-            (0, _modals.fillOutOrderModal)(orderID, this.refreshState);
-        }
-    }, {
         key: 'render',
         value: function render() {
             var filteredOrders = this.filteredOrders();
@@ -196,8 +194,7 @@ var Orders = function (_React$Component) {
                     onStatusFilterChange: this.onStatusFilterChange
                 }),
                 _react2.default.createElement(OrderTable, { orders: filteredOrders,
-                    hasFilter: this.state.statusFilter !== null,
-                    onOrderRowClick: this.onOrderRowClick })
+                    hasFilter: this.state.statusFilter !== null })
             );
         }
     }]);
@@ -422,13 +419,11 @@ var OrderTable = function (_React$Component3) {
     _createClass(OrderTable, [{
         key: 'rows',
         value: function rows() {
-            var _this6 = this;
-
             return this.props.orders.map(function (order) {
                 return _react2.default.createElement(OrderRow, { key: order.id,
                     order: order,
                     onOrderRowClick: function onOrderRowClick() {
-                        return _this6.props.onOrderRowClick(order.id);
+                        return (0, _modals.fillOutOrderModal)(order.id);
                     } });
             });
         }
@@ -530,12 +525,12 @@ var OrderRow = function (_React$Component4) {
     function OrderRow(props) {
         _classCallCheck(this, OrderRow);
 
-        var _this7 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
+        var _this6 = _possibleConstructorReturn(this, (OrderRow.__proto__ || Object.getPrototypeOf(OrderRow)).call(this, props));
 
-        _this7.date = _this7.date.bind(_this7);
-        _this7.status = _this7.status.bind(_this7);
-        _this7.rowClass = _this7.rowClass.bind(_this7);
-        return _this7;
+        _this6.date = _this6.date.bind(_this6);
+        _this6.status = _this6.status.bind(_this6);
+        _this6.rowClass = _this6.rowClass.bind(_this6);
+        return _this6;
     }
 
     _createClass(OrderRow, [{
@@ -622,12 +617,12 @@ var OrderTableFooter = function (_React$Component5) {
     function OrderTableFooter(props) {
         _classCallCheck(this, OrderTableFooter);
 
-        var _this8 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (OrderTableFooter.__proto__ || Object.getPrototypeOf(OrderTableFooter)).call(this, props));
 
-        _this8.statistics = _this8.statistics.bind(_this8);
-        _this8.totalItems = _this8.totalItems.bind(_this8);
-        _this8.totalForStatus = _this8.totalForStatus.bind(_this8);
-        return _this8;
+        _this7.statistics = _this7.statistics.bind(_this7);
+        _this7.totalItems = _this7.totalItems.bind(_this7);
+        _this7.totalForStatus = _this7.totalForStatus.bind(_this7);
+        return _this7;
     }
 
     _createClass(OrderTableFooter, [{
@@ -661,13 +656,12 @@ var OrderTableFooter = function (_React$Component5) {
     }, {
         key: 'render',
         value: function render() {
-
             return _react2.default.createElement(
                 'div',
                 { className: 'table-footer bg-light d-flex align-items-center justify-content-center w-100' },
                 _react2.default.createElement(
                     'small',
-                    { className: 'mb-0' },
+                    { className: 'mb-0 text-dark' },
                     this.statistics()
                 )
             );

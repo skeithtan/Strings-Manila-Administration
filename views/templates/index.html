@@ -27,6 +27,7 @@
      class="container-fluid p-0 m-0 h-100">
 </div>
 
+
 <!--Modals-->
 
 <!--Add Stall Modal-->
@@ -121,7 +122,7 @@
     </div>
 </div>
 
-<!--Delete stall modal-->
+<!--Discontinue stall modal-->
 <div class="modal fade"
      id="delete-stall-modal"
      tabindex="-1"
@@ -579,7 +580,7 @@
     </div>
 </div>
 
-<!--Delete Product Modal-->
+<!--Discontinue Product Modal-->
 <div class="modal fade"
      id="delete-product-modal"
      tabindex="-1"
@@ -619,6 +620,7 @@
         </div>
     </div>
 </div>
+
 
 <!--Restock Modal-->
 <div class="modal fade"
@@ -726,6 +728,8 @@
 
 </div>
 
+
+<!--Order Detail Modal-->
 <div class="modal fade"
      id="order-modal"
      tabindex="-1"
@@ -751,7 +755,8 @@
                     <h3 class="mb-0">Loading...</h3>
                 </div>
 
-                <div id="order-modal-information" class="p-4">
+                <div id="order-modal-information"
+                     class="p-4">
                     <div>
                         <h3 class="mb-4">Customer Information</h3>
                         <div class="d-flex flex-row">
@@ -797,7 +802,15 @@
                     </div>
 
                     <div>
-                        <h3 class="mt-5 mb-4">Order Details</h3>
+                        <div class="d-flex align-items-center mb-4 mt-5">
+                            <h3 class="m-0 mr-auto">Order Details</h3>
+                            <button id="cancel-order-button"
+                                    class="btn btn-outline-danger"
+                                    data-toggle="modal"
+                                    data-target="#cancel-order-modal">Cancel this order
+                            </button>
+                        </div>
+
                         <table class="table">
                             <tbody>
                             <tr>
@@ -828,16 +841,16 @@
                         <h3 class="mt-5 mb-4">Order Products</h3>
                         <table class="table">
                             <thead class="thead-default">
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Tier</th>
-                                    <th>Quantity</th>
-                                </tr>
-                                <tr id="order-modal-line-item-clone">
-                                    <td id="order-modal-product-name">Sunlit Youth Vinyl</td>
-                                    <td id="order-modal-tier-name">N/A</td>
-                                    <th id="order-modal-quantity">1</th>
-                                </tr>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Tier</th>
+                                <th>Quantity</th>
+                            </tr>
+                            <tr id="order-modal-line-item-clone">
+                                <td id="order-modal-product-name">Sunlit Youth Vinyl</td>
+                                <td id="order-modal-tier-name">N/A</td>
+                                <th id="order-modal-quantity">1</th>
+                            </tr>
                             </thead>
                             <tbody id="order-modal-line-items">
                             </tbody>
@@ -849,6 +862,45 @@
         </div>
     </div>
 </div>
+
+<!--Confirm Cancel Order Modal-->
+<div class="modal fade"
+     id="cancel-order-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content border-danger">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">Are you sure you want to cancel this order?</h5>
+                <button type="button"
+                        class="close text-white"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <p>This cannot be undone.</p>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="confirm-cancel-order-button"
+                        type="button"
+                        class="btn btn-danger"
+                        data-dismiss="modal">Confirm Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <!--React Scripts-->
 <script>
@@ -875,6 +927,7 @@
     var refreshStalls;
     var refreshProducts;
     var refreshStockInventory;
+    var refreshOrders;
 
     require('../../dist/views/js/index.js');
     require('../../dist/views/js/modals.js');

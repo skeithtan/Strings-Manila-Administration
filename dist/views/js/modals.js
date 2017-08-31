@@ -69,6 +69,16 @@ $(function () {
         $('#order-modal-loading').show();
         $('#order-modal-information').hide();
     });
+    $('#cancel-order-button').click(function () {
+        $('#order-modal').css('z-index', '1040');
+    });
+    $('#cancel-order-modal').on('hidden.bs.modal', function () {
+        // Show modal again, make scrollable
+        $('#order-modal').css({
+            "z-index": 1050,
+            "overflow": "scroll"
+        });
+    });
 });
 
 //MARK: - Stalls
@@ -572,7 +582,6 @@ function onRestockButtonClick() {
     });
 }
 
-//Fill Out
 function fillOutRestockModal(tier) {
     $('#restock-tier-id').val(tier.id);
     $('#restock-modal-product-name').text(tier.productDescription.name);
@@ -596,9 +605,9 @@ function fillOutRestockModal(tier) {
 }
 
 //MARK: - Orders
-function fillOutOrderModal(orderID, refreshState) {
+function fillOutOrderModal(orderID) {
 
-    function orderStatus(statusCode) {
+    function orderStatusCodeToString(statusCode) {
         switch (statusCode) {
             case 'U':
                 return 'Unpaid';
@@ -615,11 +624,93 @@ function fillOutOrderModal(orderID, refreshState) {
         return statusCode;
     }
 
-    function fetchOrder(completionHandler) {
+    function onConfirmCancelOrderButtonClick(orderID) {
+        $.post({
+            url: baseURL + '/api/orders/' + orderID + '/cancel/',
+            beforeSend: authorizeXHR,
+            success: function success() {
+                refreshOrders();
+                fetchOrder();
+            },
+            error: function error(response) {
+                return console.log(response);
+            }
+        });
+    }
+
+    function fillOutModal(order) {
+        $('#order-modal-loading').hide();
+        $('#order-modal-information').show();
+
+        $('#order-modal-customer-name').text(order.profile.customer_name);
+        $('#order-modal-customer-phone').text(order.profile.phone);
+        $('#order-modal-customer-email').text(order.profile.email);
+
+        $('#order-modal-customer-city').text(order.profile.city);
+        $('#order-modal-customer-address').text(order.profile.address);
+        $('#order-modal-customer-postal-code').text(order.profile.postal_code);
+
+        var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
+
+        $('#order-modal-order-id').text(order.id);
+        $('#order-modal-order-date').text(dateString);
+        $('#order-modal-order-total').text("₱" + order.total_price);
+        //FIXME: Show actual deposit slip
+        $('#order-modal-deposit-slip').html("<small class='text-muted'>The customer has not deposited yet.</small>");
+        showActionsForStatus(order.status);
+        showOrderStatus(order.status);
+
+        $('#order-modal-line-items').text('');
+        order.line_items.forEach(appendLineItem);
+
+        var confirmCancelButton = $('#confirm-cancel-order-button');
+        confirmCancelButton.off(); //Unbind everything
+        confirmCancelButton.click(function () {
+            return onConfirmCancelOrderButtonClick(order.id);
+        });
+    }
+
+    function showOrderStatus(status) {
+        var orderStatus = $('#order-modal-order-status');
+        orderStatus.removeAttr('class');
+
+        orderStatus.text(orderStatusCodeToString(status));
+        switch (status) {
+            case 'U':
+                return '';
+            case 'V':
+                orderStatus.addClass('text-warning');
+                return;
+            case 'P':
+                orderStatus.addClass('text-primary');
+                return;
+            case 'S':
+                orderStatus.addClass('text-success');
+                return;
+            case 'C':
+                orderStatus.addClass('text-danger');
+                return;
+        }
+    }
+
+    function showActionsForStatus(status) {
+        var cancelOrderButton = $('#cancel-order-button');
+
+        switch (status) {
+            case 'U':
+                cancelOrderButton.show();
+                return;
+            case 'C':
+                cancelOrderButton.hide();
+                return;
+        }
+    }
+
+    function fetchOrder() {
         $.get({
             url: baseURL + '/api/orders/' + orderID + '/',
             beforeSend: authorizeXHR,
-            success: completionHandler,
+            success: fillOutModal,
             error: function error(response) {
                 return console.log(response);
             }
@@ -650,30 +741,7 @@ function fillOutOrderModal(orderID, refreshState) {
         $('#order-modal-line-items').append(clone);
     }
 
-    fetchOrder(function (order) {
-        $('#order-modal-loading').hide();
-        $('#order-modal-information').show();
-
-        $('#order-modal-customer-name').text(order.profile.customer_name);
-        $('#order-modal-customer-phone').text(order.profile.phone);
-        $('#order-modal-customer-email').text(order.profile.email);
-
-        $('#order-modal-customer-city').text(order.profile.city);
-        $('#order-modal-customer-address').text(order.profile.address);
-        $('#order-modal-customer-postal-code').text(order.profile.postal_code);
-
-        var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
-
-        $('#order-modal-order-id').text(order.id);
-        $('#order-modal-order-date').text(dateString);
-        $('#order-modal-order-total').text("₱" + order.total_price);
-        //FIXME: Show actual deposit slip
-        $('#order-modal-deposit-slip').html("<small>The customer has not deposited yet.</small>");
-        $('#order-modal-order-status').text(orderStatus(order.status));
-
-        $('#order-modal-line-items').text('');
-        order.line_items.forEach(appendLineItem);
-    });
+    fetchOrder();
 }
 
 //MARK: - XHR Authorization

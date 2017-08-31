@@ -42,9 +42,9 @@ class Orders extends React.Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.refreshState = this.refreshState.bind(this);
         this.filteredOrders = this.filteredOrders.bind(this);
-        this.onOrderRowClick = this.onOrderRowClick.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.onRefreshButtonClick = this.onRefreshButtonClick.bind(this);
+        refreshOrders = this.refreshState;
 
         this.refreshState();
     }
@@ -109,11 +109,14 @@ class Orders extends React.Component {
 
     filteredOrders() {
         const statusFilter = this.state.statusFilter;
+
+        const orders = this.state.orders;
+
         if (statusFilter === null) {
-            return this.state.orders;
+            return orders;
         }
 
-        return this.state.orders.filter(order => order.status === statusFilter);
+        return orders.filter(order => order.status === statusFilter);
     }
 
     onRefreshButtonClick() {
@@ -129,10 +132,6 @@ class Orders extends React.Component {
         this.refreshState(toastID);
     }
 
-    onOrderRowClick(orderID) {
-        fillOutOrderModal(orderID, this.refreshState);
-    }
-
     render() {
         const filteredOrders = this.filteredOrders();
 
@@ -145,8 +144,7 @@ class Orders extends React.Component {
                            onStatusFilterChange={this.onStatusFilterChange}
                 />
                 <OrderTable orders={filteredOrders}
-                            hasFilter={this.state.statusFilter !== null}
-                            onOrderRowClick={this.onOrderRowClick}/>
+                            hasFilter={this.state.statusFilter !== null} />
             </div>
         );
     }
@@ -289,7 +287,7 @@ class OrderTable extends React.Component {
     rows() {
         return this.props.orders.map(order => <OrderRow key={order.id}
                                                         order={order}
-                                                        onOrderRowClick={() => this.props.onOrderRowClick(order.id)}/>
+                                                        onOrderRowClick={() => fillOutOrderModal(order.id)}/>
         )
     }
 
@@ -422,10 +420,9 @@ class OrderTableFooter extends React.Component {
     }
 
     render() {
-
         return (
             <div className="table-footer bg-light d-flex align-items-center justify-content-center w-100">
-                <small className="mb-0">{this.statistics()}</small>
+                <small className="mb-0 text-dark">{this.statistics()}</small>
             </div>
         )
     }
