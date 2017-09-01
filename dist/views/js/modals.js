@@ -795,6 +795,7 @@ function fillOutOrderModal(orderID) {
             markAsShippedButton.show();
 
             var confirmMarkAsShippedButton = $('#confirm-mark-as-shipped-button');
+            confirmMarkAsShippedButton.off(); //Unbind previous bindings
             confirmMarkAsShippedButton.click(function () {
                 return onMarkAsShippedButtonClick(order.id);
             });
