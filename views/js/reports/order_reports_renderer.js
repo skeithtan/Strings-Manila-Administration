@@ -7,7 +7,9 @@ const ipc = electron.ipcRenderer;
 ipc.on('message', (event, message) => {
     $('.date-generated').each((index, object) => $(object).text(message.dateGenerated));
     $('.start-date').each((index, object) => $(object).text(message.startDate));
+    $('.filter').each((index, object) => $(object).text(statusString(message.filter)));
     $('.end-date').each((index, object) => $(object).text(message.endDate));
+
 
     const orderTableBody = $('#order-table-body');
     const rowClone = $('#order-row-clone');
@@ -38,11 +40,9 @@ function statusString(statusCode) {
             return 'Shipped';
         case 'C':
             return 'Cancelled';
+        case null:
+            return 'None';
     }
 
     return statusCode;
 }
-
-$(() => {
-
-});

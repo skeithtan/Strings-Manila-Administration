@@ -23,6 +23,9 @@ ipc.on('message', function (event, message) {
     (0, _jquery2.default)('.start-date').each(function (index, object) {
         return (0, _jquery2.default)(object).text(message.startDate);
     });
+    (0, _jquery2.default)('.filter').each(function (index, object) {
+        return (0, _jquery2.default)(object).text(statusString(message.filter));
+    });
     (0, _jquery2.default)('.end-date').each(function (index, object) {
         return (0, _jquery2.default)(object).text(message.endDate);
     });
@@ -56,10 +59,10 @@ function statusString(statusCode) {
             return 'Shipped';
         case 'C':
             return 'Cancelled';
+        case null:
+            return 'None';
     }
 
     return statusCode;
 }
-
-(0, _jquery2.default)(function () {});
 //# sourceMappingURL=order_reports_renderer.js.map

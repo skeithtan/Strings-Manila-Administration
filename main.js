@@ -70,7 +70,7 @@ function loadOrdersReportWindow(reportData) {
         height: 900,
         title: "Orders Report",
         minWidth: 1000,
-        minHeight: 500
+        minHeight: 500,
     });
 
     window.loadURL(url.format({
