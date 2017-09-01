@@ -68,4 +68,27 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+function loadOrdersReportWindow(reportData) {
+    var window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Orders Report",
+        minWidth: 1000,
+        minHeight: 500
+    });
+
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/order-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', function () {
+        window.webContents.send('message', reportData);
+    });
+}
+
+ipcMain.on('generate-report', function (event, arg) {
+    loadOrdersReportWindow(arg);
+});
 //# sourceMappingURL=main.js.map

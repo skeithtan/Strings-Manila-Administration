@@ -37,6 +37,7 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+
 }
 
 // This method will be called when Electron has finished
@@ -63,3 +64,26 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+function loadOrdersReportWindow(reportData) {
+    let window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Orders Report",
+        minWidth: 1000,
+        minHeight: 500
+    });
+
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/order-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', () => {
+        window.webContents.send('message', reportData);
+    });
+}
+
+ipcMain.on('generate-report', (event, arg) => {
+   loadOrdersReportWindow(arg);
+});

@@ -1,0 +1,31 @@
+#company-logo {
+    text-transform : uppercase;
+    font-weight    : 700;
+    letter-spacing : 0.1em;
+}
+
+* {
+    font-family : -apple-system, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif !important;
+}
+
+@font-face {
+    font-family : "San Francisco";
+    font-weight : 400;
+    src         : url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
+.table td, .table th {
+    padding : 0.5rem;
+}
+
+@media print {
+
+    #print-button {
+        display: none;
+    }
+
+    /*This makes the printout have the same size as the html rendering*/
+    * {
+        font-size : 97% !important;
+    }
+}

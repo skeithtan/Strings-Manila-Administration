@@ -3,6 +3,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import randomString from './random';
 import {fillOutOrderModal} from "./modals";
+import electron from 'electron';
 
 // Fetch data
 function fetchOrders(object) {
@@ -33,6 +34,7 @@ class Orders extends React.Component {
         this.state = {
             orders: null,
             statusFilter: null,
+            lastFetch: null,
             dates: {
                 startDate: dateLastWeek,
                 endDate: dateToday,
@@ -41,6 +43,7 @@ class Orders extends React.Component {
 
         this.onDateChange = this.onDateChange.bind(this);
         this.refreshState = this.refreshState.bind(this);
+        this.generateReport = this.generateReport.bind(this);
         this.filteredOrders = this.filteredOrders.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.onRefreshButtonClick = this.onRefreshButtonClick.bind(this);
@@ -89,7 +92,8 @@ class Orders extends React.Component {
                 });
 
                 this.setState({
-                    orders: orders
+                    orders: orders,
+                    lastFetch: moment() //Time now
                 });
 
                 if (toastID) {
@@ -105,6 +109,19 @@ class Orders extends React.Component {
                 }
             }
         })
+    }
+
+    generateReport() {
+        const reportData = {
+            orders: this.filteredOrders(),
+            filter: this.state.statusFilter,
+            startDate: this.state.dates.startDate.format("LL"),
+            endDate: this.state.dates.endDate.format("LL"),
+            dateGenerated: this.state.lastFetch.format("LL")
+        };
+
+        const ipcRenderer = electron.ipcRenderer;
+        ipcRenderer.send('generate-report', reportData);
     }
 
     filteredOrders() {
@@ -142,9 +159,10 @@ class Orders extends React.Component {
                            refreshData={this.onRefreshButtonClick}
                            onDateChange={this.onDateChange}
                            onStatusFilterChange={this.onStatusFilterChange}
+                           generateReport={this.generateReport}
                 />
                 <OrderTable orders={filteredOrders}
-                            hasFilter={this.state.statusFilter !== null} />
+                            hasFilter={this.state.statusFilter !== null}/>
             </div>
         );
     }
@@ -189,7 +207,9 @@ class OrderHead extends React.Component {
                         <button className="btn btn-sm btn-outline-primary mr-1"
                                 onClick={this.props.refreshData}>Refresh Data
                         </button>
-                        <button className="btn btn-sm btn-outline-primary">Generate Report</button>
+                        <button className="btn btn-sm btn-outline-primary"
+                                onClick={this.props.generateReport}>Generate Report
+                        </button>
                     </div>
                 </div>
 
