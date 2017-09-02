@@ -185,7 +185,7 @@ class OrderHead extends React.Component {
             })
         } else {
             this.props.onDateChange({
-                startDate: this.props.dates.endDate,
+                startDate: this.props.dates.startDate,
                 endDate: value
             })
         }

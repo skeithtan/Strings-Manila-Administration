@@ -248,7 +248,7 @@ var OrderHead = function (_React$Component2) {
                 });
             } else {
                 this.props.onDateChange({
-                    startDate: this.props.dates.endDate,
+                    startDate: this.props.dates.startDate,
                     endDate: value
                 });
             }

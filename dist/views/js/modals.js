@@ -655,7 +655,7 @@ function fillOutOrderModal(orderID) {
         fillOutOrderProducts(order);
     }
 
-    function onConfirmCancelOrderButtonClick(orderID) {
+    function submitCancelOrder(orderID) {
         $.post({
             url: baseURL + '/api/orders/' + orderID + '/cancel/',
             beforeSend: authorizeXHR,
@@ -677,7 +677,7 @@ function fillOutOrderModal(orderID) {
         });
     }
 
-    function onMarkAsVerifiedButtonClick(orderID) {
+    function submitMarkAsVerified(orderID) {
         $.post({
             url: baseURL + '/api/orders/' + orderID + '/verify/',
             beforeSend: authorizeXHR,
@@ -699,7 +699,7 @@ function fillOutOrderModal(orderID) {
         });
     }
 
-    function onMarkAsShippedButtonClick(orderID) {
+    function submitMarkAsShipped(orderID) {
         var storeNotes = $('#store-notes-input').val().trim();
         if (storeNotes.length === 0) {
             storeNotes = null;
@@ -765,7 +765,8 @@ function fillOutOrderModal(orderID) {
             var confirmCancelButton = $('#confirm-cancel-order-button');
             confirmCancelButton.off(); //Unbind everything
             confirmCancelButton.click(function () {
-                return onConfirmCancelOrderButtonClick(order.id);
+                $('#order-modal').modal('hide');
+                submitCancelOrder(order.id);
             });
         } else {
             cancelOrderButton.hide();
@@ -776,7 +777,8 @@ function fillOutOrderModal(orderID) {
             markAsVerifiedButton.show();
             markAsVerifiedButton.off(); //Unbind
             markAsVerifiedButton.click(function () {
-                return onMarkAsVerifiedButtonClick(order.id);
+                submitMarkAsVerified(order.id);
+                $('#order-modal').hide();
             });
         } else {
             markAsVerifiedButton.hide();
@@ -797,7 +799,8 @@ function fillOutOrderModal(orderID) {
             var confirmMarkAsShippedButton = $('#confirm-mark-as-shipped-button');
             confirmMarkAsShippedButton.off(); //Unbind previous bindings
             confirmMarkAsShippedButton.click(function () {
-                return onMarkAsShippedButtonClick(order.id);
+                submitMarkAsShipped(order.id);
+                $('#order-modal').hide();
             });
         } else {
             markAsShippedButton.hide();
