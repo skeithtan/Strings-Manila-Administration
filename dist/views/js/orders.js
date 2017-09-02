@@ -239,16 +239,16 @@ var OrderHead = function (_React$Component2) {
     _createClass(OrderHead, [{
         key: 'onDateChange',
         value: function onDateChange(event, isStartDate) {
-            var value = event.target.value;
+            var value = (0, _moment2.default)(event.target.value);
 
             if (isStartDate) {
                 this.props.onDateChange({
                     startDate: value,
-                    endDate: endDate
+                    endDate: this.props.dates.endDate
                 });
             } else {
                 this.props.onDateChange({
-                    startDate: startDate,
+                    startDate: this.props.dates.endDate,
                     endDate: value
                 });
             }
