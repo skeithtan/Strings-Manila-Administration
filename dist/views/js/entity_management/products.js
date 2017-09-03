@@ -139,7 +139,6 @@ var ProductList = function (_React$Component2) {
                     key: product.id });
             });
 
-            //TODO: Product cards
             return _react2.default.createElement(
                 "div",
                 { id: "product-list",

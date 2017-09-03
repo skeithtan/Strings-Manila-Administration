@@ -881,6 +881,40 @@ function fillOutOrderModal(orderID) {
 }
 
 
+//MARK: - Sales
+function fillOutSalesModal(stallSales) {
+    $('#sales-modal-stall-name').text(stallSales.name);
+    $('#sales-modal-total-quantity').text(stallSales.quantity);
+    $('#sales-modal-total-sales').text("₱" + stallSales.sales);
+
+    const tableBody = $('#sales-modal-table-body');
+    const template = $('#sales-row-template').clone();
+    tableBody.html('');
+    tableBody.append(template);
+
+    stallSales.product_sales.forEach(productSale => {
+        productSale.tier_sales.forEach(tierSale => {
+            const clone = $('#sales-row-template').clone();
+            clone.removeAttr('id');
+
+            $(clone.find('#sales-row-product')[0]).text(productSale.name);
+            $(clone.find('#sales-row-quantity')[0]).text(tierSale.quantity);
+            $(clone.find('#sales-row-sales')[0]).text("₱" + tierSale.sales);
+
+            const isSingular = productSale.is_singular;
+
+            if (isSingular) {
+                $(clone.find('#sales-row-tier')[0]).html('<small class="text-muted">N/A</small>');
+            } else {
+                $(clone.find('#sales-row-tier')[0]).text(tierSale.name);
+            }
+
+            tableBody.append(clone);
+        })
+    });
+}
+
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token)
@@ -896,4 +930,6 @@ export {
     fillOutDiscontinueStallModal,
     fillOutRenameStallModal,
     fillOutOrderModal,
+    fillOutSalesModal,
+    authorizeXHR
 }

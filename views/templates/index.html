@@ -742,7 +742,8 @@
             <div class="modal-header">
                 <h5 class="modal-title">Order Details</h5>
                 <button id="generate-order-detail-report-button"
-                        class="btn btn-outline-primary">Generate Report</button>
+                        class="btn btn-outline-primary">Generate Report
+                </button>
             </div>
 
             <!--Modal body-->
@@ -968,6 +969,59 @@
     </div>
 
 </div>
+
+
+<!--Sales Drill Down Modal-->
+<div class="modal fade"
+     id="sales-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog modal-lg"
+         role="document">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title"><span id="sales-modal-stall-name">Stall</span> Sales</h5>
+                <button id="generate-sales-detail-report-button"
+                        class="btn btn-outline-primary">Generate Report
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body p-0">
+                <table class="table mb-0 rounded">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Tier</th>
+                        <th class="text-right">Total Quantity</th>
+                        <th class="text-right">Total Sales</th>
+                    </tr>
+                    </thead>
+                    <tbody id="sales-modal-table-body">
+                    <tr id="sales-row-template">
+                        <td id="sales-row-product"></td>
+                        <td id="sales-row-tier"></td>
+                        <td id="sales-row-quantity" class="financial-number"></td>
+                        <td id="sales-row-sales" class="financial-number"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot class="bg-light">
+                    <tr>
+                        <th>Total</th>
+                        <th></th>
+                        <th id="sales-modal-total-quantity"
+                            class="financial-number"></th>
+                        <th id="sales-modal-total-sales"
+                            class="financial-number"></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--React Scripts-->
 <script>

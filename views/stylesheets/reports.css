@@ -26,6 +26,10 @@
 
     /*This makes the printout have the same size as the html rendering*/
     * {
-        font-size : 97% !important;
+        font-size : 98% !important;
+    }
+
+    small {
+        font-size: 80% !important;
     }
 }

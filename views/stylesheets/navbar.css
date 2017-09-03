@@ -55,9 +55,20 @@ table.page-table td:first-child {
     padding-left : 30px;
 }
 
+table.page-table th:last-child,
+table.page-table td:last-child {
+    padding-right : 30px;
+}
+
 table.page-table thead,
 table.page-table tbody {
     display : block
+}
+
+.financial-number {
+    font-family    : "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing : 0.05rem;
+    text-align     : right;
 }
 
 /*Navigation*/
@@ -201,4 +212,37 @@ table.page-table tbody {
 
 #store-notes-input {
     height : 200px;
+}
+
+/* Sales */
+#sales table th,
+#sales table td {
+    width : 33.33vw;
+}
+
+#sales table tbody {
+    margin-bottom : 50px;
+}
+
+#sales table tfoot {
+    position : fixed;
+    bottom   : 0;
+}
+
+#sales-modal table {
+    overflow : hidden;
+}
+
+#sales-modal table th:first-child,
+#sales-modal table td:first-child {
+    padding-left : 20px;
+}
+
+#sales-modal table th:last-child,
+#sales-modal table td:last-child {
+    padding-right : 20px;
+}
+
+#sales-row-template {
+    display : none !important;
 }

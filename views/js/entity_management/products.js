@@ -115,7 +115,6 @@ class ProductList extends React.Component {
                                 key={product.id}/>
         });
 
-        //TODO: Product cards
         return (
             <div id="product-list"
                  className="p-4 bg-light">

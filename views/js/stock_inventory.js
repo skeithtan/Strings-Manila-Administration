@@ -43,7 +43,6 @@ class StockInventory extends React.Component {
 
     refreshState(showSuccessAlert = false) {
         fetchStocks(result => {
-
             function ascending(tierA, tierB) {
                 return tierA.quantity - tierB.quantity // Lowest first
             }
@@ -242,7 +241,6 @@ class StockTable extends React.Component {
                     <tbody>
                     {this.rows()}
                     </tbody>
-
                 </table>
             </div>
         );

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
+exports.authorizeXHR = exports.fillOutSalesModal = exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
 var _random = require('./random');
 
@@ -889,6 +889,39 @@ function fillOutOrderModal(orderID) {
     fetchOrder();
 }
 
+//MARK: - Sales
+function fillOutSalesModal(stallSales) {
+    $('#sales-modal-stall-name').text(stallSales.name);
+    $('#sales-modal-total-quantity').text(stallSales.quantity);
+    $('#sales-modal-total-sales').text("₱" + stallSales.sales);
+
+    var tableBody = $('#sales-modal-table-body');
+    var template = $('#sales-row-template').clone();
+    tableBody.html('');
+    tableBody.append(template);
+
+    stallSales.product_sales.forEach(function (productSale) {
+        productSale.tier_sales.forEach(function (tierSale) {
+            var clone = $('#sales-row-template').clone();
+            clone.removeAttr('id');
+
+            $(clone.find('#sales-row-product')[0]).text(productSale.name);
+            $(clone.find('#sales-row-quantity')[0]).text(tierSale.quantity);
+            $(clone.find('#sales-row-sales')[0]).text("₱" + tierSale.sales);
+
+            var isSingular = productSale.is_singular;
+
+            if (isSingular) {
+                $(clone.find('#sales-row-tier')[0]).html('<small class="text-muted">N/A</small>');
+            } else {
+                $(clone.find('#sales-row-tier')[0]).text(tierSale.name);
+            }
+
+            tableBody.append(clone);
+        });
+    });
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
@@ -903,4 +936,6 @@ exports.fillOutAddProductModal = fillOutAddProductModal;
 exports.fillOutDiscontinueStallModal = fillOutDiscontinueStallModal;
 exports.fillOutRenameStallModal = fillOutRenameStallModal;
 exports.fillOutOrderModal = fillOutOrderModal;
+exports.fillOutSalesModal = fillOutSalesModal;
+exports.authorizeXHR = authorizeXHR;
 //# sourceMappingURL=modals.js.map

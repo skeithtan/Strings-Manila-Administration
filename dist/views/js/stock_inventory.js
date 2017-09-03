@@ -62,7 +62,6 @@ var StockInventory = function (_React$Component) {
             var showSuccessAlert = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
             fetchStocks(function (result) {
-
                 function ascending(tierA, tierB) {
                     return tierA.quantity - tierB.quantity; // Lowest first
                 }

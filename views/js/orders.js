@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
 import randomString from './random';
-import {fillOutOrderModal} from "./modals";
+import {fillOutOrderModal, authorizeXHR} from "./modals";
 import electron from 'electron';
 
 // Fetch data
@@ -17,10 +17,6 @@ function fetchOrders(object) {
         success: object.completionHandler,
         error: response => console.log(response)
     });
-}
-
-function authorizeXHR(xhr) {
-    xhr.setRequestHeader("Authorization", `Token ${localStorage.token}`);
 }
 
 // React
@@ -61,8 +57,8 @@ class Orders extends React.Component {
 
         dates.startDate = toDate(dates.startDate);
         dates.endDate = toDate(dates.endDate);
-
         this.state.dates = dates;
+
         this.refreshState();
     }
 
@@ -84,8 +80,6 @@ class Orders extends React.Component {
             startDate: startDate,
             endDate: endDate,
             completionHandler: result => {
-                //TODO: Sort by date
-
                 let orders = result.map(order => {
                     order.date_ordered = moment(order.date_ordered);
                     return order;
@@ -263,24 +257,20 @@ class OrderHead extends React.Component {
                     <div className="mt-auto ml-2 row ">
                         <div className="mr-2">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">Start Date</small>
-                            <div className="input-group">
-                                <input className="form-control"
-                                       type="date"
-                                       placeholder="Start Date"
-                                       value={startDate}
-                                       onChange={event => this.onDateChange(event, true)}/>
-                            </div>
+                            <input className="form-control"
+                                   type="date"
+                                   placeholder="Start Date"
+                                   value={startDate}
+                                   onChange={event => this.onDateChange(event, true)}/>
                         </div>
                         <div className="mr-2">
                             <small className="text-muted mt-auto mb-2 mr-3 d-block">End Date</small>
                             <div className="input-group mb-2 mb-sm-0">
-                                <div className="input-group">
-                                    <input className="form-control"
-                                           type="date"
-                                           placeholder="End Date"
-                                           value={endDate}
-                                           onChange={event => this.onDateChange(event, false)}/>
-                                </div>
+                                <input className="form-control"
+                                       type="date"
+                                       placeholder="End Date"
+                                       value={endDate}
+                                       onChange={event => this.onDateChange(event, false)}/>
                             </div>
                         </div>
                     </div>
@@ -321,7 +311,6 @@ class OrderTable extends React.Component {
     }
 
     render() {
-
         if (this.props.orders === null) {
             return OrderTable.loadingState();
         }

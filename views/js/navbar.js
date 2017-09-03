@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import EntityManagement from './entity_management/entity_management';
 import StockInventory from './stock_inventory';
 import Orders from './orders';
+import Sales from './sales';
 
 function currentTab() {
     return document.getElementById('current-tab');
@@ -22,12 +23,12 @@ const navbarItems = [
     {
         name: "Orders",
         isActive: false,
-        tab: <Orders/> //TODO
+        tab: <Orders/>
     },
     {
         name: "Sales",
         isActive: false,
-        tab: null //TODO
+        tab: <Sales/>
     },
 
 ];

@@ -26,6 +26,10 @@ var _orders = require('./orders');
 
 var _orders2 = _interopRequireDefault(_orders);
 
+var _sales = require('./sales');
+
+var _sales2 = _interopRequireDefault(_sales);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49,11 +53,11 @@ var navbarItems = [{
 }, {
     name: "Orders",
     isActive: false,
-    tab: _react2.default.createElement(_orders2.default, null) //TODO
+    tab: _react2.default.createElement(_orders2.default, null)
 }, {
     name: "Sales",
     isActive: false,
-    tab: null //TODO
+    tab: _react2.default.createElement(_sales2.default, null)
 }];
 
 var Navbar = function (_React$Component) {

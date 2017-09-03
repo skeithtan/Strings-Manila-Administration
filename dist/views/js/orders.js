@@ -40,7 +40,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function fetchOrders(object) {
     _jquery2.default.get({
         url: baseURL + '/api/orders/',
-        beforeSend: authorizeXHR,
+        beforeSend: _modals.authorizeXHR,
         data: {
             "start-date": object.startDate,
             "end-date": object.endDate
@@ -50,10 +50,6 @@ function fetchOrders(object) {
             return console.log(response);
         }
     });
-}
-
-function authorizeXHR(xhr) {
-    xhr.setRequestHeader("Authorization", 'Token ' + localStorage.token);
 }
 
 // React
@@ -102,8 +98,8 @@ var Orders = function (_React$Component) {
 
             dates.startDate = toDate(dates.startDate);
             dates.endDate = toDate(dates.endDate);
-
             this.state.dates = dates;
+
             this.refreshState();
         }
     }, {
@@ -131,8 +127,6 @@ var Orders = function (_React$Component) {
                 startDate: startDate,
                 endDate: endDate,
                 completionHandler: function completionHandler(result) {
-                    //TODO: Sort by date
-
                     var orders = result.map(function (order) {
                         order.date_ordered = (0, _moment2.default)(order.date_ordered);
                         return order;
@@ -391,17 +385,13 @@ var OrderHead = function (_React$Component2) {
                                 { className: 'text-muted mt-auto mb-2 mr-3 d-block' },
                                 'Start Date'
                             ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'input-group' },
-                                _react2.default.createElement('input', { className: 'form-control',
-                                    type: 'date',
-                                    placeholder: 'Start Date',
-                                    value: startDate,
-                                    onChange: function onChange(event) {
-                                        return _this4.onDateChange(event, true);
-                                    } })
-                            )
+                            _react2.default.createElement('input', { className: 'form-control',
+                                type: 'date',
+                                placeholder: 'Start Date',
+                                value: startDate,
+                                onChange: function onChange(event) {
+                                    return _this4.onDateChange(event, true);
+                                } })
                         ),
                         _react2.default.createElement(
                             'div',
@@ -414,17 +404,13 @@ var OrderHead = function (_React$Component2) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'input-group mb-2 mb-sm-0' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'input-group' },
-                                    _react2.default.createElement('input', { className: 'form-control',
-                                        type: 'date',
-                                        placeholder: 'End Date',
-                                        value: endDate,
-                                        onChange: function onChange(event) {
-                                            return _this4.onDateChange(event, false);
-                                        } })
-                                )
+                                _react2.default.createElement('input', { className: 'form-control',
+                                    type: 'date',
+                                    placeholder: 'End Date',
+                                    value: endDate,
+                                    onChange: function onChange(event) {
+                                        return _this4.onDateChange(event, false);
+                                    } })
                             )
                         )
                     )
@@ -462,7 +448,6 @@ var OrderTable = function (_React$Component3) {
     }, {
         key: 'render',
         value: function render() {
-
             if (this.props.orders === null) {
                 return OrderTable.loadingState();
             }
