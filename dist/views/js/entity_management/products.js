@@ -67,12 +67,11 @@ var Products = function (_React$Component) {
 function ProductListHeader(props) {
     return _react2.default.createElement(
         "div",
-        { id: "product-list-header",
-            className: "container-fluid d-flex flex-row p-3 pt-5 bg-light" },
+        { className: "container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center" },
         _react2.default.createElement(
             "h4",
             { id: "active-stall-name",
-                className: "mr-auto mb-auto" },
+                className: "mr-auto mb-0" },
             props.activeStall.name
         ),
         _react2.default.createElement(

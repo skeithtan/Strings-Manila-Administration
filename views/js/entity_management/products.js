@@ -39,10 +39,9 @@ class Products extends React.Component {
 
 function ProductListHeader(props) {
     return (
-        <div id="product-list-header"
-             className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
+        <div className="container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center">
             <h4 id="active-stall-name"
-                className="mr-auto mb-auto">{props.activeStall.name}</h4>
+                className="mr-auto mb-0">{props.activeStall.name}</h4>
             <div>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"

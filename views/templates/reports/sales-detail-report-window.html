@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Report</title>
+
+    <!--Stylesheets-->
+    <link href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="../../stylesheets/reports.css">
+
+</head>
+<body>
+<button id="print-button"
+        class="btn btn-primary rounded-0 text-white w-100 p-3 fixed-bottom"
+        onclick="print()">Print this document
+</button>
+
+<div class="container p-5">
+    <div class="d-flex flex-column align-items-center mt-3">
+        <h6 id="company-logo"
+            class="">Strings Manila</h6>
+        <h4>Sales Report</h4>
+    </div>
+
+    <div class="mt-5">
+        <table class="table table-bordered">
+            <tr>
+                <th>Date Generated</th>
+                <td class="date-generated"></td>
+
+                <th>Start Date</th>
+                <td class="start-date"></td>
+            </tr>
+            <tr>
+                <th>End Date</th>
+                <td class="end-date"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mt-5">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Order Total</th>
+                <th>Order Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="order-table-body">
+            <tr id="order-row-clone">
+                <td id="order-row-number"></td>
+                <td id="order-row-total"></td>
+                <td id="order-row-date"></td>
+                <td id="order-row-status"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center w-100 mt-3">
+        <small class="text-muted font-weight-bold">END OF REPORT</small>
+    </div>
+</div>
+
+<script>
+    require('../../../dist/views/js/reports/sales_report_detail_renderer.js');
+</script>
+
+</body>
+</html>

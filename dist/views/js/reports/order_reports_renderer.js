@@ -26,7 +26,7 @@ ipc.on('message', function (event, orders) {
     fillOutClass('.date-generated', orders.fetchDate);
     fillOutClass('.start-date', orders.startDate);
     fillOutClass('.filter', statusString(orders.filter));
-    fillOutClass('.end-date', statusString(orders.endDate));
+    fillOutClass('.end-date', orders.endDate);
 
     var orderTableBody = (0, _jquery2.default)('#order-table-body');
     var rowClone = (0, _jquery2.default)('#order-row-clone');
@@ -36,10 +36,10 @@ ipc.on('message', function (event, orders) {
         var row = rowClone.clone();
         var orderDate = (0, _moment2.default)(order.date_ordered._d).format("LL");
 
-        (0, _jquery2.default)(row.find('#order-row-number').removeAttr('id').text(order.id));
-        (0, _jquery2.default)(row.find('#order-row-total').removeAttr('id').text("₱" + order.total_price));
-        (0, _jquery2.default)(row.find('#order-row-date')).removeAttr('id').text(orderDate);
-        (0, _jquery2.default)(row.find('#order-row-status').removeAttr('id').text(statusString(order.status)));
+        row.find('#order-row-number').removeAttr('id').text(order.id);
+        row.find('#order-row-total').removeAttr('id').text("₱" + order.total_price);
+        row.find('#order-row-date').removeAttr('id').text(orderDate);
+        row.find('#order-row-status').removeAttr('id').text(statusString(order.status));
 
         orderTableBody.append(row);
     });

@@ -68,7 +68,7 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-function loadOrdersReportWindow(reportData) {
+function loadOrdersReportWindow(orders) {
     var window = new BrowserWindow({
         width: 1000,
         height: 900,
@@ -78,13 +78,13 @@ function loadOrdersReportWindow(reportData) {
     });
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, '/views/templates/order-report-window.html'),
+        pathname: path.join(__dirname, '/views/templates/reports/order-report-window.html'),
         protocol: 'file:',
         slashes: true
     }));
 
     window.webContents.on('did-finish-load', function () {
-        window.webContents.send('message', reportData);
+        window.webContents.send('message', orders);
     });
 }
 
@@ -98,7 +98,7 @@ function loadOrderDetailReportWindow(order) {
     });
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, '/views/templates/order-report-detail-window.html'),
+        pathname: path.join(__dirname, '/views/templates/reports/order-report-detail-window.html'),
         protocol: 'file:',
         slashes: true
     }));
@@ -108,11 +108,56 @@ function loadOrderDetailReportWindow(order) {
     });
 }
 
-ipcMain.on('generate-orders-report', function (event, arg) {
-    loadOrdersReportWindow(arg);
-});
+function loadSalesReportWindow(sales) {
+    var window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Sales Report",
+        minWidth: 1000,
+        minHeight: 500
+    });
 
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/reports/sales-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', function () {
+        window.webContents.send('message', sales);
+    });
+}
+
+function loadSalesDetailReportWindow(sales) {
+    var window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Sales Report",
+        minWidth: 1000,
+        minHeight: 500
+    });
+
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/reports/sales-detail-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', function () {
+        window.webContents.send('message', sales);
+    });
+}
+
+ipcMain.on('generate-orders-report', function (event, arg) {
+    return loadOrdersReportWindow(arg);
+});
 ipcMain.on('generate-order-detail-report', function (event, arg) {
-    loadOrderDetailReportWindow(arg);
+    return loadOrderDetailReportWindow(arg);
+});
+ipcMain.on('generate-sales-report', function (event, arg) {
+    return loadSalesReportWindow(arg);
+});
+ipcMain.on('generate-sales-detail-report', function (event, arg) {
+    return loadSalesDetailReportWindow(arg);
 });
 //# sourceMappingURL=main.js.map

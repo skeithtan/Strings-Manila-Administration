@@ -24,6 +24,10 @@ var _random2 = _interopRequireDefault(_random);
 
 var _modals = require('./modals');
 
+var _electron = require('electron');
+
+var _electron2 = _interopRequireDefault(_electron);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63,8 +67,8 @@ var Sales = function (_React$Component) {
 
         _this.state = {
             stalls: null,
-            total_sales: null,
-            total_quantity: null,
+            totalSales: null,
+            totalQuantity: null,
             dates: {
                 startDate: dateLastWeek,
                 endDate: dateToday
@@ -73,6 +77,7 @@ var Sales = function (_React$Component) {
 
         _this.refreshState = _this.refreshState.bind(_this);
         _this.onDateChange = _this.onDateChange.bind(_this);
+        _this.generateReport = _this.generateReport.bind(_this);
         _this.onRefreshButtonClick = _this.onRefreshButtonClick.bind(_this);
 
         _this.refreshState();
@@ -106,7 +111,8 @@ var Sales = function (_React$Component) {
                     _this2.setState({
                         stalls: salesPerStalls,
                         totalSales: result.total_sales,
-                        totalQuantity: result.total_quantity
+                        totalQuantity: result.total_quantity,
+                        lastFetch: (0, _moment2.default)() //Time now
                     });
 
                     if (toastID) {
@@ -128,8 +134,8 @@ var Sales = function (_React$Component) {
         value: function onDateChange(dates) {
             this.setState({
                 stalls: null,
-                total_sales: null,
-                total_quantity: null
+                totalSales: null,
+                totalQuantity: null
             });
 
             function toDate(dateString) {
@@ -155,6 +161,21 @@ var Sales = function (_React$Component) {
             this.refreshState(toastID);
         }
     }, {
+        key: 'generateReport',
+        value: function generateReport() {
+            var reportData = {
+                stalls: this.state.stalls,
+                startDate: this.state.dates.startDate.format("LL"),
+                endDate: this.state.dates.endDate.format("LL"),
+                totalSales: this.state.totalSales,
+                totalProducts: this.state.totalQuantity,
+                fetchDate: this.state.lastFetch.format("LL")
+            };
+
+            var ipcRenderer = _electron2.default.ipcRenderer;
+            ipcRenderer.send('generate-sales-report', reportData);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -163,6 +184,7 @@ var Sales = function (_React$Component) {
                     className: 'container-fluid m-0 p-0 h-100 w-100 d-flex flex-column' },
                 _react2.default.createElement(SalesHead, { dates: this.state.dates,
                     onDateChange: this.onDateChange,
+                    generateReport: this.generateReport,
                     refreshData: this.onRefreshButtonClick }),
                 _react2.default.createElement(SalesTable, { stalls: this.state.stalls,
                     totalQuantity: this.state.totalQuantity,
@@ -237,7 +259,8 @@ var SalesHead = function (_React$Component2) {
                         ),
                         _react2.default.createElement(
                             'button',
-                            { className: 'btn btn-sm btn-outline-primary' },
+                            { className: 'btn btn-sm btn-outline-primary',
+                                onClick: this.props.generateReport },
                             'Generate Report'
                         )
                     )
@@ -337,12 +360,12 @@ var SalesTable = function (_React$Component3) {
                             _react2.default.createElement(
                                 'th',
                                 { className: 'text-right' },
-                                'Total Quantity Sold'
+                                'Products Sold'
                             ),
                             _react2.default.createElement(
                                 'th',
                                 { className: 'text-right' },
-                                'Total Sales'
+                                'Sales'
                             )
                         )
                     ),

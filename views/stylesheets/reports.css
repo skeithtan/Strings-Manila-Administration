@@ -18,6 +18,12 @@
     padding : 0.5rem;
 }
 
+.financial-number {
+    font-family    : "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    letter-spacing : 0.05rem;
+    text-align     : right;
+}
+
 @media print {
 
     #print-button {

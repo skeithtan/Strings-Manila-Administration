@@ -64,7 +64,7 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-function loadOrdersReportWindow(reportData) {
+function loadOrdersReportWindow(orders) {
     let window = new BrowserWindow({
         width: 1000,
         height: 900,
@@ -74,13 +74,13 @@ function loadOrdersReportWindow(reportData) {
     });
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, '/views/templates/order-report-window.html'),
+        pathname: path.join(__dirname, '/views/templates/reports/order-report-window.html'),
         protocol: 'file:',
         slashes: true
     }));
 
     window.webContents.on('did-finish-load', () => {
-        window.webContents.send('message', reportData);
+        window.webContents.send('message', orders);
     });
 }
 
@@ -94,7 +94,7 @@ function loadOrderDetailReportWindow(order) {
     });
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, '/views/templates/order-report-detail-window.html'),
+        pathname: path.join(__dirname, '/views/templates/reports/order-report-detail-window.html'),
         protocol: 'file:',
         slashes: true
     }));
@@ -104,10 +104,47 @@ function loadOrderDetailReportWindow(order) {
     });
 }
 
-ipcMain.on('generate-orders-report', (event, arg) => {
-    loadOrdersReportWindow(arg);
-});
+function loadSalesReportWindow(sales) {
+    let window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Sales Report",
+        minWidth: 1000,
+        minHeight: 500,
+    });
 
-ipcMain.on('generate-order-detail-report', (event, arg) => {
-    loadOrderDetailReportWindow(arg);
-});
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/reports/sales-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', () => {
+        window.webContents.send('message', sales);
+    });
+}
+
+function loadSalesDetailReportWindow(sales) {
+    let window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: "Sales Report",
+        minWidth: 1000,
+        minHeight: 500,
+    });
+
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/reports/sales-detail-report-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', () => {
+        window.webContents.send('message', sales);
+    });
+}
+
+ipcMain.on('generate-orders-report', (event, arg) => loadOrdersReportWindow(arg));
+ipcMain.on('generate-order-detail-report', (event, arg) => loadOrderDetailReportWindow(arg));
+ipcMain.on('generate-sales-report', (event, arg) => loadSalesReportWindow(arg));
+ipcMain.on('generate-sales-detail-report', (event, arg) => loadSalesDetailReportWindow(arg));

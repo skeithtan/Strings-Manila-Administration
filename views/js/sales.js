@@ -3,6 +3,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import randomString from './random';
 import {fillOutSalesModal, authorizeXHR} from "./modals";
+import electron from 'electron';
 
 // Fetch data
 function fetchSales(object) {
@@ -28,8 +29,8 @@ class Sales extends React.Component {
 
         this.state = {
             stalls: null,
-            total_sales: null,
-            total_quantity: null,
+            totalSales: null,
+            totalQuantity: null,
             dates: {
                 startDate: dateLastWeek,
                 endDate: dateToday,
@@ -38,6 +39,7 @@ class Sales extends React.Component {
 
         this.refreshState = this.refreshState.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
+        this.generateReport = this.generateReport.bind(this);
         this.onRefreshButtonClick = this.onRefreshButtonClick.bind(this);
 
         this.refreshState();
@@ -64,7 +66,8 @@ class Sales extends React.Component {
                 this.setState({
                     stalls: salesPerStalls,
                     totalSales: result.total_sales,
-                    totalQuantity: result.total_quantity
+                    totalQuantity: result.total_quantity,
+                    lastFetch: moment() //Time now
                 });
 
                 if (toastID) {
@@ -85,8 +88,8 @@ class Sales extends React.Component {
     onDateChange(dates) {
         this.setState({
             stalls: null,
-            total_sales: null,
-            total_quantity: null
+            totalSales: null,
+            totalQuantity: null
         });
 
         function toDate(dateString) {
@@ -111,12 +114,27 @@ class Sales extends React.Component {
         this.refreshState(toastID);
     }
 
+    generateReport() {
+        const reportData = {
+            stalls: this.state.stalls,
+            startDate: this.state.dates.startDate.format("LL"),
+            endDate: this.state.dates.endDate.format("LL"),
+            totalSales: this.state.totalSales,
+            totalProducts: this.state.totalQuantity,
+            fetchDate: this.state.lastFetch.format("LL")
+        };
+
+        const ipcRenderer = electron.ipcRenderer;
+        ipcRenderer.send('generate-sales-report', reportData);
+    }
+
     render() {
         return (
             <div id="sales"
                  className="container-fluid m-0 p-0 h-100 w-100 d-flex flex-column">
                 <SalesHead dates={this.state.dates}
                            onDateChange={this.onDateChange}
+                           generateReport={this.generateReport}
                            refreshData={this.onRefreshButtonClick}/>
                 <SalesTable stalls={this.state.stalls}
                             totalQuantity={this.state.totalQuantity}
@@ -164,7 +182,9 @@ class SalesHead extends React.Component {
                         <button className="btn btn-sm btn-outline-primary mr-1"
                                 onClick={this.props.refreshData}>Refresh Data
                         </button>
-                        <button className="btn btn-sm btn-outline-primary">Generate Report</button>
+                        <button className="btn btn-sm btn-outline-primary"
+                                onClick={this.props.generateReport}>Generate Report
+                        </button>
                     </div>
                 </div>
                 <div className="row mb-2 ml-2 pt-3 mr-3">
@@ -235,8 +255,8 @@ class SalesTable extends React.Component {
                     <thead className="thead-default">
                     <tr>
                         <th>Stall Name</th>
-                        <th className="text-right">Total Quantity Sold</th>
-                        <th className="text-right">Total Sales</th>
+                        <th className="text-right">Products Sold</th>
+                        <th className="text-right">Sales</th>
                     </tr>
                     </thead>
                     <tbody>

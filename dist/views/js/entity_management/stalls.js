@@ -48,8 +48,7 @@ var Stalls = function (_React$Component) {
 function StallListHeader() {
     return _react2.default.createElement(
         "div",
-        { id: "stall-list-header",
-            className: "container-fluid d-flex flex-row p-3 pt-5 bg-light" },
+        { className: "container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center" },
         _react2.default.createElement(
             "h4",
             { className: "mb-0 mr-auto" },

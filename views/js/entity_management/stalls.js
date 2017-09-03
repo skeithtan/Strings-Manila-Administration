@@ -20,8 +20,7 @@ class Stalls extends React.Component {
 
 function StallListHeader() {
     return (
-        <div id="stall-list-header"
-             className="container-fluid d-flex flex-row p-3 pt-5 bg-light">
+        <div className="container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center">
             <h4 className="mb-0 mr-auto">Stalls</h4>
             <div>
                 <button type="button"
