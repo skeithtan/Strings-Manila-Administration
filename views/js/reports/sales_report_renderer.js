@@ -1,5 +1,4 @@
 import electron from 'electron';
-import moment from 'moment';
 import $ from 'jquery';
 
 const ipc = electron.ipcRenderer;

@@ -4,10 +4,6 @@ var _electron = require('electron');
 
 var _electron2 = _interopRequireDefault(_electron);
 
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
 var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);

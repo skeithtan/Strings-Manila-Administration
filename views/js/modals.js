@@ -892,6 +892,14 @@ function fillOutSalesModal(stallSales) {
     tableBody.html('');
     tableBody.append(template);
 
+
+    const generateReportButton = $('#generate-sales-detail-report-button');
+    generateReportButton.off();
+    generateReportButton.click(() => {
+        const ipcRenderer = electron.ipcRenderer;
+        ipcRenderer.send('generate-sales-detail-report', stallSales);
+    });
+
     stallSales.product_sales.forEach(productSale => {
         productSale.tier_sales.forEach(tierSale => {
             const clone = $('#sales-row-template').clone();

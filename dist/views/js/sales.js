@@ -188,7 +188,8 @@ var Sales = function (_React$Component) {
                     refreshData: this.onRefreshButtonClick }),
                 _react2.default.createElement(SalesTable, { stalls: this.state.stalls,
                     totalQuantity: this.state.totalQuantity,
-                    totalSales: this.state.totalSales })
+                    totalSales: this.state.totalSales,
+                    lastFetch: this.state.lastFetch })
             );
         }
     }]);
@@ -323,15 +324,17 @@ var SalesTable = function (_React$Component3) {
     _createClass(SalesTable, [{
         key: 'rows',
         value: function rows() {
+            var _this6 = this;
+
             return this.props.stalls.map(function (stall) {
                 return _react2.default.createElement(SalesRow, { key: stall.id,
-                    stall: stall });
+                    stall: stall,
+                    lastFetch: _this6.props.lastFetch });
             });
         }
     }, {
         key: 'render',
         value: function render() {
-
             if (this.props.stalls === null) {
                 return SalesTable.loadingState();
             }
@@ -443,20 +446,23 @@ var SalesRow = function (_React$Component4) {
     function SalesRow(props) {
         _classCallCheck(this, SalesRow);
 
-        return _possibleConstructorReturn(this, (SalesRow.__proto__ || Object.getPrototypeOf(SalesRow)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (SalesRow.__proto__ || Object.getPrototypeOf(SalesRow)).call(this, props));
+
+        _this7.props.stall.lastFetch = _this7.props.lastFetch.format("LL");
+        return _this7;
     }
 
     _createClass(SalesRow, [{
         key: 'render',
         value: function render() {
-            var _this7 = this;
+            var _this8 = this;
 
             return _react2.default.createElement(
                 'tr',
                 { 'data-toggle': 'modal',
                     'data-target': '#sales-modal',
                     onClick: function onClick() {
-                        return (0, _modals.fillOutSalesModal)(_this7.props.stall);
+                        return (0, _modals.fillOutSalesModal)(_this8.props.stall);
                     } },
                 _react2.default.createElement(
                     'td',

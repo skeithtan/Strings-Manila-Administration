@@ -900,6 +900,13 @@ function fillOutSalesModal(stallSales) {
     tableBody.html('');
     tableBody.append(template);
 
+    var generateReportButton = $('#generate-sales-detail-report-button');
+    generateReportButton.off();
+    generateReportButton.click(function () {
+        var ipcRenderer = _electron2.default.ipcRenderer;
+        ipcRenderer.send('generate-sales-detail-report', stallSales);
+    });
+
     stallSales.product_sales.forEach(function (productSale) {
         productSale.tier_sales.forEach(function (tierSale) {
             var clone = $('#sales-row-template').clone();

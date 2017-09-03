@@ -138,7 +138,8 @@ class Sales extends React.Component {
                            refreshData={this.onRefreshButtonClick}/>
                 <SalesTable stalls={this.state.stalls}
                             totalQuantity={this.state.totalQuantity}
-                            totalSales={this.state.totalSales}/>
+                            totalSales={this.state.totalSales}
+                            lastFetch={this.state.lastFetch}/>
             </div>
         )
     }
@@ -236,11 +237,11 @@ class SalesTable extends React.Component {
 
     rows() {
         return this.props.stalls.map(stall => <SalesRow key={stall.id}
-                                                        stall={stall}/>)
+                                                        stall={stall}
+                                                        lastFetch={this.props.lastFetch}/>)
     }
 
     render() {
-
         if (this.props.stalls === null) {
             return SalesTable.loadingState();
         }
@@ -278,6 +279,7 @@ class SalesTable extends React.Component {
 class SalesRow extends React.Component {
     constructor(props) {
         super(props);
+        this.props.stall.lastFetch = this.props.lastFetch.format("LL");
     }
 
     render() {
