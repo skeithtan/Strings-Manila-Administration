@@ -86,10 +86,19 @@ class Orders extends React.Component {
             completionHandler: result => {
                 //TODO: Sort by date
 
-                const orders = result.map(order => {
+                let orders = result.map(order => {
                     order.date_ordered = moment(order.date_ordered);
                     return order;
                 });
+
+                function descending(orderA, orderB) {
+                    const aTime = orderA.date_ordered;
+                    const bTime = orderB.date_ordered;
+
+                    return bTime.diff(aTime);
+                }
+
+                orders = orders.sort(descending);
 
                 this.setState({
                     orders: orders,
@@ -117,11 +126,11 @@ class Orders extends React.Component {
             filter: this.state.statusFilter,
             startDate: this.state.dates.startDate.format("LL"),
             endDate: this.state.dates.endDate.format("LL"),
-            dateGenerated: this.state.lastFetch.format("LL")
+            fetchDate: this.state.lastFetch.format("LL")
         };
 
         const ipcRenderer = electron.ipcRenderer;
-        ipcRenderer.send('generate-report', reportData);
+        ipcRenderer.send('generate-orders-report', reportData);
     }
 
     filteredOrders() {

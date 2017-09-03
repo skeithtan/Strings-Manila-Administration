@@ -15,6 +15,8 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _electron = require('electron');
 
+var _electron2 = _interopRequireDefault(_electron);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(function () {
@@ -647,6 +649,8 @@ function fillOutOrderModal(orderID) {
     }
 
     function fillOutModal(order) {
+        order.fetchDate = (0, _moment2.default)();
+
         $('#order-modal-loading').hide();
         $('#order-modal-information').show();
 
@@ -731,6 +735,14 @@ function fillOutOrderModal(orderID) {
 
     function fillOutOrderDetails(order) {
         var dateString = (0, _moment2.default)(order.date_ordered).format('LLLL');
+
+        var generateReportButton = $('#generate-order-detail-report-button');
+        generateReportButton.show();
+        generateReportButton.off();
+        generateReportButton.click(function () {
+            var ipcRenderer = _electron2.default.ipcRenderer;
+            ipcRenderer.send('generate-order-detail-report', order);
+        });
 
         $('#order-modal-order-id').text(order.id);
         $('#order-modal-order-date').text(dateString);
@@ -820,21 +832,17 @@ function fillOutOrderModal(orderID) {
             var clone = $('#order-modal-line-item-clone').clone();
             clone.removeAttr('id');
 
-            var lineItemProductName = $(clone.find('#order-modal-product-name')[0]);
-            var lineItemQuantity = $(clone.find('#order-modal-quantity')[0]);
+            $(clone.find('#order-modal-product-name')[0]).removeAttr('id').text(lineItem.product);
+
+            $(clone.find('#order-modal-quantity')[0]).removeAttr('id').text(lineItem.quantity);
+
             var lineItemTierName = $(clone.find('#order-modal-tier-name')[0]);
-
-            lineItemProductName.removeAttr('id');
-            lineItemQuantity.removeAttr('id');
             lineItemTierName.removeAttr('id');
-
-            lineItemProductName.text(lineItem.product);
-            lineItemQuantity.text(lineItem.quantity);
 
             if (lineItem.is_singular) {
                 lineItemTierName.html('<small class="text-muted">N/A</small>');
             } else {
-                lineItemTierName.text(lineItem.product);
+                lineItemTierName.text(lineItem.tier_name);
             }
 
             $('#order-modal-line-items').append(clone);
@@ -877,7 +885,7 @@ function fillOutOrderModal(orderID) {
             }
         });
     }
-
+    $('#generate-order-detail-report-button').hide();
     fetchOrder();
 }
 

@@ -4,24 +4,27 @@ import $ from 'jquery';
 
 const ipc = electron.ipcRenderer;
 
-ipc.on('message', (event, message) => {
-    $('.date-generated').each((index, object) => $(object).text(message.dateGenerated));
-    $('.start-date').each((index, object) => $(object).text(message.startDate));
-    $('.filter').each((index, object) => $(object).text(statusString(message.filter)));
-    $('.end-date').each((index, object) => $(object).text(message.endDate));
+function fillOutClass(className, text) {
+    $(className).each((index, object) => $(object).text(text));
+}
 
+ipc.on('message', (event, orders) => {
+    fillOutClass('.date-generated', orders.fetchDate);
+    fillOutClass('.start-date', orders.startDate);
+    fillOutClass('.filter', statusString(orders.filter));
+    fillOutClass('.end-date', statusString(orders.endDate));
 
     const orderTableBody = $('#order-table-body');
     const rowClone = $('#order-row-clone');
     rowClone.remove();
 
-    message.orders.forEach(order => {
+    orders.orders.forEach(order => {
         const row = rowClone.clone();
-        const order_date = moment(order.date_ordered._d).format("LL");
+        const orderDate = moment(order.date_ordered._d).format("LL");
 
         $(row.find('#order-row-number').removeAttr('id').text(order.id));
         $(row.find('#order-row-total').removeAttr('id').text("₱" + order.total_price));
-        $(row.find('#order-row-date')).removeAttr('id').text(order_date);
+        $(row.find('#order-row-date')).removeAttr('id').text(orderDate);
         $(row.find('#order-row-status').removeAttr('id').text(statusString(order.status)));
 
         orderTableBody.append(row);

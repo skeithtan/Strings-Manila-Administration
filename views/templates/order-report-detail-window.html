@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail Report</title>
+
+    <!--Stylesheets-->
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="../stylesheets/reports.css">
+</head>
+<body>
+
+<button id="print-button"
+        class="btn btn-primary rounded-0 text-white w-100 p-3 fixed-bottom"
+        onclick="print()">Print this document
+</button>
+
+<div class="container p-5">
+    <div class="d-flex flex-column align-items-center mt-3">
+        <h6 id="company-logo"
+            class="">Strings Manila</h6>
+        <h4>Order Detail Report</h4>
+    </div>
+
+    <div class="mt-5">
+        <table class="table table-bordered">
+            <tr>
+                <th>Report Date Generated</th>
+                <td class="date-generated"></td>
+                <th>Order Date</th>
+                <td class="order-date"></td>
+            </tr>
+            <tr>
+                <th>Order Number</th>
+                <td class="order-number"></td>
+                <th>Order Total</th>
+                <td class="order-total"></td>
+            </tr>
+            <tr>
+                <th>Order Status</th>
+                <td class="order-status"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mt-5">
+        <h5 class="mb-3">Customer Details</h5>
+        <table class="table table-bordered">
+            <tr>
+                <th>Name</th>
+                <td class="customer-name"></td>
+                <th>City</th>
+                <td class="address-city"></td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td class="customer-phone"></td>
+                <th>Address</th>
+                <td class="full-address"></td>
+            </tr>
+            <tr>
+                <th>Email Address</th>
+                <td class="customer-email"></td>
+                <th>Postal Code</th>
+                <td class="address-postal"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mt-5">
+        <h5 class="mb-3">Products</h5>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Tier</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody id="order-products-table-body">
+            <tr id="order-products-row-template">
+                <td id="order-row-product-name"></td>
+                <td id="order-row-tier"></td>
+                <td id="order-row-quantity"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    require('../../dist/views/js/reports/order_report_detail_renderer.js');
+</script>
+
+</body>
+</html>

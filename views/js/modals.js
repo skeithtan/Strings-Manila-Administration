@@ -1,6 +1,7 @@
 import randomString from './random';
 import moment from 'moment';
 import {shell} from 'electron';
+import electron from 'electron';
 
 
 $(() => {
@@ -639,6 +640,8 @@ function fillOutOrderModal(orderID) {
     }
 
     function fillOutModal(order) {
+        order.fetchDate = moment();
+
         $('#order-modal-loading').hide();
         $('#order-modal-information').show();
 
@@ -723,6 +726,14 @@ function fillOutOrderModal(orderID) {
 
     function fillOutOrderDetails(order) {
         const dateString = moment(order.date_ordered).format('LLLL');
+
+        const generateReportButton = $('#generate-order-detail-report-button');
+        generateReportButton.show();
+        generateReportButton.off();
+        generateReportButton.click(() => {
+            const ipcRenderer = electron.ipcRenderer;
+            ipcRenderer.send('generate-order-detail-report', order);
+        });
 
         $('#order-modal-order-id').text(order.id);
         $('#order-modal-order-date').text(dateString);
@@ -810,21 +821,21 @@ function fillOutOrderModal(orderID) {
             const clone = $('#order-modal-line-item-clone').clone();
             clone.removeAttr('id');
 
-            const lineItemProductName = $(clone.find('#order-modal-product-name')[0]);
-            const lineItemQuantity = $(clone.find('#order-modal-quantity')[0]);
+            $(clone.find('#order-modal-product-name')[0])
+                .removeAttr('id')
+                .text(lineItem.product);
+
+            $(clone.find('#order-modal-quantity')[0])
+                .removeAttr('id')
+                .text(lineItem.quantity);
+
             const lineItemTierName = $(clone.find('#order-modal-tier-name')[0]);
-
-            lineItemProductName.removeAttr('id');
-            lineItemQuantity.removeAttr('id');
             lineItemTierName.removeAttr('id');
-
-            lineItemProductName.text(lineItem.product);
-            lineItemQuantity.text(lineItem.quantity);
 
             if (lineItem.is_singular) {
                 lineItemTierName.html('<small class="text-muted">N/A</small>');
             } else {
-                lineItemTierName.text(lineItem.product);
+                lineItemTierName.text(lineItem.tier_name);
             }
 
             $('#order-modal-line-items').append(clone);
@@ -865,7 +876,7 @@ function fillOutOrderModal(orderID) {
             error: response => console.log(response)
         });
     }
-
+    $('#generate-order-detail-report-button').hide();
     fetchOrder();
 }
 

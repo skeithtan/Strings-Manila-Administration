@@ -138,6 +138,15 @@ var Orders = function (_React$Component) {
                         return order;
                     });
 
+                    function descending(orderA, orderB) {
+                        var aTime = orderA.date_ordered;
+                        var bTime = orderB.date_ordered;
+
+                        return bTime.diff(aTime);
+                    }
+
+                    orders = orders.sort(descending);
+
                     _this2.setState({
                         orders: orders,
                         lastFetch: (0, _moment2.default)() //Time now
@@ -165,11 +174,11 @@ var Orders = function (_React$Component) {
                 filter: this.state.statusFilter,
                 startDate: this.state.dates.startDate.format("LL"),
                 endDate: this.state.dates.endDate.format("LL"),
-                dateGenerated: this.state.lastFetch.format("LL")
+                fetchDate: this.state.lastFetch.format("LL")
             };
 
             var ipcRenderer = _electron2.default.ipcRenderer;
-            ipcRenderer.send('generate-report', reportData);
+            ipcRenderer.send('generate-orders-report', reportData);
         }
     }, {
         key: 'filteredOrders',

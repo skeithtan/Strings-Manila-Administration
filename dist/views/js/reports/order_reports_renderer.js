@@ -16,31 +16,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ipc = _electron2.default.ipcRenderer;
 
-ipc.on('message', function (event, message) {
-    (0, _jquery2.default)('.date-generated').each(function (index, object) {
-        return (0, _jquery2.default)(object).text(message.dateGenerated);
+function fillOutClass(className, text) {
+    (0, _jquery2.default)(className).each(function (index, object) {
+        return (0, _jquery2.default)(object).text(text);
     });
-    (0, _jquery2.default)('.start-date').each(function (index, object) {
-        return (0, _jquery2.default)(object).text(message.startDate);
-    });
-    (0, _jquery2.default)('.filter').each(function (index, object) {
-        return (0, _jquery2.default)(object).text(statusString(message.filter));
-    });
-    (0, _jquery2.default)('.end-date').each(function (index, object) {
-        return (0, _jquery2.default)(object).text(message.endDate);
-    });
+}
+
+ipc.on('message', function (event, orders) {
+    fillOutClass('.date-generated', orders.fetchDate);
+    fillOutClass('.start-date', orders.startDate);
+    fillOutClass('.filter', statusString(orders.filter));
+    fillOutClass('.end-date', statusString(orders.endDate));
 
     var orderTableBody = (0, _jquery2.default)('#order-table-body');
     var rowClone = (0, _jquery2.default)('#order-row-clone');
     rowClone.remove();
 
-    message.orders.forEach(function (order) {
+    orders.orders.forEach(function (order) {
         var row = rowClone.clone();
-        var order_date = (0, _moment2.default)(order.date_ordered._d).format("LL");
+        var orderDate = (0, _moment2.default)(order.date_ordered._d).format("LL");
 
         (0, _jquery2.default)(row.find('#order-row-number').removeAttr('id').text(order.id));
         (0, _jquery2.default)(row.find('#order-row-total').removeAttr('id').text("₱" + order.total_price));
-        (0, _jquery2.default)(row.find('#order-row-date')).removeAttr('id').text(order_date);
+        (0, _jquery2.default)(row.find('#order-row-date')).removeAttr('id').text(orderDate);
         (0, _jquery2.default)(row.find('#order-row-status').removeAttr('id').text(statusString(order.status)));
 
         orderTableBody.append(row);

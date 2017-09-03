@@ -84,6 +84,30 @@ function loadOrdersReportWindow(reportData) {
     });
 }
 
-ipcMain.on('generate-report', (event, arg) => {
-   loadOrdersReportWindow(arg);
+function loadOrderDetailReportWindow(order) {
+    let window = new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: `Order ${order.id} Detail Report`,
+        minWidth: 1000,
+        minHeight: 500,
+    });
+
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, '/views/templates/order-report-detail-window.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    window.webContents.on('did-finish-load', () => {
+        window.webContents.send('message', order);
+    });
+}
+
+ipcMain.on('generate-orders-report', (event, arg) => {
+    loadOrdersReportWindow(arg);
+});
+
+ipcMain.on('generate-order-detail-report', (event, arg) => {
+    loadOrderDetailReportWindow(arg);
 });
