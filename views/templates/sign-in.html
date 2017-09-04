@@ -12,17 +12,24 @@
     <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../stylesheets/general.css" rel="stylesheet">
 </head>
-<body class="h-100 d-flex justify-content-center align-items-center" style="-webkit-app-region: drag">
+
+<style>
+    ::-webkit-input-placeholder {
+        color: white !important;
+    }
+</style>
+<body class="h-100 d-flex justify-content-center align-items-center bg-dark text-white " style="-webkit-app-region: drag">
 <div class="container-fluid">
-    <h1 class="text-center mb-4">Strings Manila Administration</h1>
+    <h5 class="text-center mb-2 font-weight-bold" style="text-transform: uppercase; letter-spacing: 0.1em; color: #bbb;">Strings Manila </h5>
+    <h2 class="text-center mb-3">Administration</h2>
 
     <div class="container col-4 p-4 pl-5 pr-5" style="-webkit-app-region: no-drag">
-        <div id="error-message" class="text-danger mb-2 text-center "></div>
-        <input id="username-field" type="email" class="form-control mb-2" aria-describedby="emailHelp"
+        <div id="error-message" class="text-warning mb-2 text-center "> </div>
+        <input id="username-field" type="email" class="form-control mb-2 bg-secondary text-white" aria-describedby="emailHelp"
                placeholder="Username">
-        <input id="password-field" type="password" class="form-control mb-3" id="exampleInputPassword1" placeholder="Password">
+        <input id="password-field" type="password" class="form-control mb-3 bg-secondary text-white" placeholder="Password">
 
-        <button id="sign-in-button" class="btn btn-outline-primary w-100">Sign In</button>
+        <button id="sign-in-button" class="btn btn-dark border-white w-100">Sign In</button>
     </div>
 
 </div>

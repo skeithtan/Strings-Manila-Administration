@@ -2,7 +2,7 @@ let token = "";
 const serverURL = "http://localhost:8000/";
 
 $(() => {
-    $("#sign-in-button").click(() => {
+    function signIn() {
         const username = $('#username-field').val();
         const password = $('#password-field').val();
 
@@ -33,5 +33,12 @@ $(() => {
                 }
             }
         });
+    }
+
+    $('#password-field').on('keypress', event => {
+        if (event.keyCode === 13) {
+            signIn();
+        }
     });
+    $("#sign-in-button").click(signIn);
 });

@@ -1,7 +1,4 @@
 const electron = require('electron');
-
-let {app, BrowserWindow, ipcMain} = electron;
-
 const path = require('path');
 const url = require('url');
 
@@ -9,15 +6,23 @@ const url = require('url');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+let {app, BrowserWindow, ipcMain} = electron;
+
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 1400,
-        height: 800,
-        minHeight: 600,
+        width: 1200,
+        height: 600,
         minWidth: 1200,
+        minHeight: 600,
         titleBarStyle: "hiddenInset",
-        frame: false
+        frame: false,
+        show: false
+    });
+
+    mainWindow.on('ready-to-show', () => {
+        mainWindow.show();
+        mainWindow.focus();
     });
 
     // and load the index.html of the app.
@@ -47,11 +52,11 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
+    mainWindow.webContents.session.clearStorageData({
+        storages: ["localStorage", "cookies"]
+    }, () => {
         app.quit();
-    }
+    });
 });
 
 app.on('activate', function () {

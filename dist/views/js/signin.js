@@ -4,7 +4,7 @@ var token = "";
 var serverURL = "http://localhost:8000/";
 
 $(function () {
-    $("#sign-in-button").click(function () {
+    function signIn() {
         var username = $('#username-field').val();
         var password = $('#password-field').val();
 
@@ -34,6 +34,13 @@ $(function () {
                 }
             }
         });
+    }
+
+    $('#password-field').on('keypress', function (event) {
+        if (event.keyCode === 13) {
+            signIn();
+        }
     });
+    $("#sign-in-button").click(signIn);
 });
 //# sourceMappingURL=signin.js.map
