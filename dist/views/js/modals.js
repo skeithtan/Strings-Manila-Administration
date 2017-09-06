@@ -36,34 +36,10 @@ $(function () {
     $('#modify-singular-product-button').click(onModifySingularProductButtonClick);
     $('#modify-tiered-product-button').click(onModifyTieredProductButtonClick);
     $('#delete-product-button').click(onDeleteProductButtonClick);
-    $('#add-product-modal').on('hidden.bs.modal', function () {
-        var modal = $('#add-product-modal');
-        modal.find('input').each(function (index, input) {
-            $(input).val('');
-        });
-
-        modal.find('textarea').each(function (index, textarea) {
-            $(textarea).val('');
-        });
-
-        modal.find('.extra-tier-row').each(function (index, tierRow) {
-            $(tierRow).remove();
-        });
-    });
-    $('#modify-product-modal').on('hidden.bs.modal', function () {
-        var modal = $('#add-product-modal');
-        modal.find('input').each(function (index, input) {
-            $(input).val('');
-        });
-
-        modal.find('textarea').each(function (index, textarea) {
-            $(textarea).val('');
-        });
-
-        modal.find('.extra-tier-row').each(function (index, tierRow) {
-            $(tierRow).remove();
-        });
-    });
+    var addProductModal = $('#add-product-modal');
+    var modifyProductModal = $('#modify-product-modal');
+    addProductModal.on('hidden.bs.modal', clearProductModal(addProductModal));
+    modifyProductModal.on('hidden.bs.modal', clearProductModal(modifyProductModal));
 
     //Restock
     $('#restock-button').click(onRestockButtonClick);
@@ -179,6 +155,20 @@ function fillOutDiscontinueStallModal(activeStall) {
 }
 
 //MARK: - Products
+function clearProductModal(modal) {
+    modal.find('input').each(function (index, input) {
+        $(input).val('');
+    });
+
+    modal.find('textarea').each(function (index, textarea) {
+        $(textarea).val('');
+    });
+
+    modal.find('.extra-tier-row').each(function (index, tierRow) {
+        $(tierRow).remove();
+    });
+}
+
 function setUpAddProductModal() {
     $('#add-tiered-product-card').hide();
 
@@ -385,7 +375,7 @@ function onAddTieredProductButtonClick() {
         tiers: []
     };
 
-    var imageInput = $('#add-singular-product-image-input')[0].files;
+    var imageInput = $('#add-tiered-product-image-input')[0].files;
     var stallID = $('#add-product-stall-id').val();
 
     $('#tiers-set').find('.tier-row').each(function (index, item) {
