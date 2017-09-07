@@ -63,7 +63,7 @@ function onAddStallButtonClick() {
     var stallName = $('#add-stall-name-input').val();
 
     $.post({
-        url: baseURL + 'stalls/',
+        url: baseURL + '/stalls/',
         data: {
             name: stallName
         },
