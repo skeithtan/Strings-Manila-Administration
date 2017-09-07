@@ -767,6 +767,7 @@ function fillOutOrderModal(orderID) {
             var confirmCancelButton = $('#confirm-cancel-order-button');
             confirmCancelButton.off(); //Unbind everything
             confirmCancelButton.click(function () {
+                $('.modal-backdrop').remove();
                 $('#order-modal').modal('hide');
                 submitCancelOrder(order.id);
             });
@@ -801,6 +802,7 @@ function fillOutOrderModal(orderID) {
             var confirmMarkAsShippedButton = $('#confirm-mark-as-shipped-button');
             confirmMarkAsShippedButton.off(); //Unbind previous bindings
             confirmMarkAsShippedButton.click(function () {
+                $('.modal-backdrop').remove();
                 submitMarkAsShipped(order.id);
                 $('#order-modal').hide();
             });
