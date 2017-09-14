@@ -914,6 +914,7 @@ function fillOutSalesModal(stallSales) {
     });
 }
 
+//MARK: - Settings
 
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {

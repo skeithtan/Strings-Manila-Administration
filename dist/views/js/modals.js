@@ -921,6 +921,8 @@ function fillOutSalesModal(stallSales) {
     });
 }
 
+//MARK: - Settings
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
