@@ -4,6 +4,7 @@ import EntityManagement from './entity_management/entity_management';
 import StockInventory from './stock_inventory';
 import Orders from './orders';
 import Sales from './sales';
+import Settings from './settings';
 
 function currentTab() {
     return document.getElementById('current-tab');
@@ -30,7 +31,11 @@ const navbarItems = [
         isActive: false,
         tab: <Sales/>
     },
-
+    {
+        name: "Settings",
+        isActive: false,
+        tab: <Settings/>
+    },
 ];
 
 class Navbar extends React.Component {

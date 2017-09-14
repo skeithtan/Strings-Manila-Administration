@@ -1,7 +1,6 @@
 import React from 'react';
 import Stalls from './stalls';
 import Products from './products';
-import {}
 
 //Fetch data
 function fetchStalls(completionHandler) {
