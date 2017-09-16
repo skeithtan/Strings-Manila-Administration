@@ -13,7 +13,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1200,
         height: 600,
-        minWidth: 1200,
+        minWidth: 1050,
         minHeight: 600,
         titleBarStyle: "hiddenInset",
         frame: false,
@@ -67,16 +67,21 @@ app.on('activate', function () {
     }
 });
 
+function makeReportWindow(windowTitle) {
+    return new BrowserWindow({
+        width: 1000,
+        height: 900,
+        title: windowTitle,
+        minWidth: 1000,
+        minHeight: 500,
+        maxWidth: 1000
+    });
+}
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 function loadOrdersReportWindow(orders) {
-    let window = new BrowserWindow({
-        width: 1000,
-        height: 900,
-        title: "Orders Report",
-        minWidth: 1000,
-        minHeight: 500,
-    });
+    let window = makeReportWindow("Orders Report");
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, '/views/templates/reports/order-report-window.html'),
@@ -90,13 +95,7 @@ function loadOrdersReportWindow(orders) {
 }
 
 function loadOrderDetailReportWindow(order) {
-    let window = new BrowserWindow({
-        width: 1000,
-        height: 900,
-        title: `Order ${order.id} Detail Report`,
-        minWidth: 1000,
-        minHeight: 500,
-    });
+    let window = makeReportWindow(`Order ${order.id} Detail Report`);
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, '/views/templates/reports/order-report-detail-window.html'),
@@ -110,13 +109,7 @@ function loadOrderDetailReportWindow(order) {
 }
 
 function loadSalesReportWindow(sales) {
-    let window = new BrowserWindow({
-        width: 1000,
-        height: 900,
-        title: "Sales Report",
-        minWidth: 1000,
-        minHeight: 500,
-    });
+    let window = makeReportWindow("Sales Report");
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, '/views/templates/reports/sales-report-window.html'),
@@ -130,13 +123,7 @@ function loadSalesReportWindow(sales) {
 }
 
 function loadSalesDetailReportWindow(sales) {
-    let window = new BrowserWindow({
-        width: 1000,
-        height: 900,
-        title: "Sales Report",
-        minWidth: 1000,
-        minHeight: 500,
-    });
+    let window = makeReportWindow("Sales Report");
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, '/views/templates/reports/sales-detail-report-window.html'),

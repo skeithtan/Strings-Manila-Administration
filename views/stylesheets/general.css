@@ -71,6 +71,17 @@ table.page-table tbody {
     text-align     : right;
 }
 
+/*Modal size overrides*/
+@media (min-width : 1000px) {
+    .modal-dialog {
+        max-width : 560px;
+    }
+
+    .modal-lg {
+        max-width : 1000px;
+    }
+}
+
 /*Navigation*/
 #main-navigation.navbar {
     background         : linear-gradient(to bottom, #e6e6e6 0%, #cfcfcf 100%);
@@ -269,7 +280,7 @@ table.page-table tbody {
 
 #product-list .card-deck .card {
     max-width  : 350px;
-    min-width  : 260px;
+    min-width  : 270px;
     min-height : 100%;
 }
 
@@ -377,12 +388,12 @@ table.page-table tbody {
 }
 
 #settings-body {
-    height      : 100%;
-    overflow-y  : scroll !important;
+    height     : 100%;
+    overflow-y : scroll !important;
 }
 
 #settings-list > .setting-row {
-    padding       : 30px;
+    padding : 30px;
 }
 
 #settings-list .setting-row:not(:last-child) {

@@ -19,14 +19,17 @@ var _electron2 = _interopRequireDefault(_electron);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var modalHide = 'hidden.bs.modal';
+
 $(function () {
-    //MARK: - Entity Management
+    //Entity Management
     //Stalls
     $('#add-stall-button').click(onAddStallButtonClick);
     $('#rename-stall-button').click(onRenameStallButtonClick);
     $('#delete-stall-button').click(onDeleteStallButtonClick);
-    $('#add-stall-modal').on('hidden.bs.modal', function () {
+    $('#add-stall-modal').on(modalHide, function () {
         $('#add-stall-name-input').val('');
+        $('#add-stall-button').attr('disabled', 'true');
     });
 
     //Products
@@ -36,25 +39,39 @@ $(function () {
     $('#modify-singular-product-button').click(onModifySingularProductButtonClick);
     $('#modify-tiered-product-button').click(onModifyTieredProductButtonClick);
     $('#delete-product-button').click(onDeleteProductButtonClick);
+
     var addProductModal = $('#add-product-modal');
     var modifyProductModal = $('#modify-product-modal');
-    addProductModal.on('hidden.bs.modal', clearProductModal(addProductModal));
-    modifyProductModal.on('hidden.bs.modal', clearProductModal(modifyProductModal));
+    addProductModal.on(modalHide, function () {
+        return clearProductModal(addProductModal);
+    });
+    modifyProductModal.on(modalHide, function () {
+        return clearProductModal(modifyProductModal);
+    });
 
     //Restock
     $('#restock-button').click(onRestockButtonClick);
+    //TODO: On hide
 
     //Order Details
-    $('#order-modal').on('hidden.bs.modal', function () {
+    $('#order-modal').on(modalHide, function () {
         $('#order-modal-loading').show();
         $('#order-modal-information').hide();
     });
     $('#cancel-order-button').click(sendOrderModalToBack);
-    $('#cancel-order-modal').on('hidden.bs.modal', restoreOrderModal);
+    $('#cancel-order-modal').on(modalHide, restoreOrderModal);
     $('#mark-as-shipped-button').click(sendOrderModalToBack);
-    $('#mark-as-shipped-modal').on('hidden.bs.modal', function () {
+    $('#mark-as-shipped-modal').on(modalHide, function () {
         restoreOrderModal();
         $('#store-notes-input').val('');
+    });
+
+    //Bank Account
+    $('#add-bank-account-button').click(onAddBankAccountButtonClick);
+    $('#add-bank-account-modal').on(modalHide, function () {
+        $('#bank-name-input').val('');
+        $('#account-holder-name-input').val('');
+        $('#account-number-input').val('');
     });
 });
 
@@ -70,8 +87,8 @@ function onAddStallButtonClick() {
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
-                title: 'Added',
-                message: 'Successfully added stall.'
+                title: "Added",
+                message: "Successfully added stall."
             });
 
             refreshStalls();
@@ -79,8 +96,8 @@ function onAddStallButtonClick() {
         error: function error(response) {
             console.log(response);
             iziToast.error({
-                title: 'Error',
-                message: 'Unable to add stall.'
+                title: "Error",
+                message: "Unable to add stall."
             });
         }
     });
@@ -167,6 +184,9 @@ function clearProductModal(modal) {
     modal.find('.extra-tier-row').each(function (index, tierRow) {
         $(tierRow).remove();
     });
+
+    $('#add-singular-product-button').attr('disabled', true);
+    $('#add-tiered-product-button').attr('disabled', true);
 }
 
 function setUpAddProductModal() {
@@ -877,6 +897,7 @@ function fillOutOrderModal(orderID) {
             }
         });
     }
+
     $('#generate-order-detail-report-button').hide();
     fetchOrder();
 }
@@ -922,6 +943,35 @@ function fillOutSalesModal(stallSales) {
 }
 
 //MARK: - Settings
+function onAddBankAccountButtonClick() {
+    var bankName = $('#bank-name-input').val();
+    var accountHolder = $('#account-holder-name-input').val();
+    var accountNumber = $('#account-number-input').val();
+
+    $.post({
+        url: baseURL + '/api/settings/bank-accounts/',
+        data: {
+            bank_name: bankName,
+            account_holder_name: accountHolder,
+            account_number: accountNumber
+        },
+        beforeSend: authorizeXHR,
+        success: function success() {
+            refreshSettings();
+            iziToast.success({
+                title: "Added",
+                message: "Successfully added bank account."
+            });
+        },
+        error: function error(response) {
+            console.log(response);
+            iziToast.error({
+                title: "Error",
+                message: "Unable to add bank account."
+            });
+        }
+    });
+}
 
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {

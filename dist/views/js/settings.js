@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -6,11 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _modals = require('./modals');
+var _modals = require("./modals");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,9 +26,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // Fetch Data
 function fetchSettings(completionHandler) {
-    $.get({
-        url: baseURL + '/api/settings/overview',
-        dataType: 'json',
+    _jquery2.default.get({
+        url: baseURL + "/api/settings/overview",
         beforeSend: _modals.authorizeXHR,
         success: completionHandler,
         error: function error(response) {
@@ -42,32 +45,36 @@ var Settings = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
         _this.state = null;
-
-        fetchSettings(function (result) {
-            console.log(result);
-            _this.setState({
-                onMaintenance: result.on_maintenance,
-                currentUser: result.current_user
-            });
-        });
-
         _this.setMaintenanceMode = _this.setMaintenanceMode.bind(_this);
+
+        refreshSettings = function refreshSettings() {
+            return fetchSettings(function (result) {
+                console.log(result);
+                _this.setState({
+                    accounts: result.accounts,
+                    onMaintenance: result.on_maintenance,
+                    currentUser: result.current_user
+                });
+            });
+        };
+
+        refreshSettings();
         return _this;
     }
 
     _createClass(Settings, [{
-        key: 'setMaintenanceMode',
+        key: "setMaintenanceMode",
         value: function setMaintenanceMode(onMaintenance) {
             var _this2 = this;
 
-            var url = baseURL + '/api/settings/maintenance-mode/' + (onMaintenance ? "enable" : "disable") + '/';
+            var url = baseURL + "/api/settings/maintenance-mode/" + (onMaintenance ? "enable" : "disable") + "/";
             var onSuccess = function onSuccess() {
                 return _this2.setState({
                     onMaintenance: onMaintenance
                 });
             };
 
-            $.post({
+            _jquery2.default.post({
                 url: url,
                 beforeSend: function beforeSend(xhr) {
                     return xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
@@ -79,11 +86,11 @@ var Settings = function (_React$Component) {
             });
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                { className: 'd-flex flex-column h-100' },
+                "div",
+                { className: "d-flex flex-column h-100" },
                 _react2.default.createElement(SettingsHead, null),
                 _react2.default.createElement(SettingsBody, { settings: this.state,
                     setMaintenanceMode: this.setMaintenanceMode })
@@ -104,18 +111,18 @@ var SettingsHead = function (_React$Component2) {
     }
 
     _createClass(SettingsHead, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid row ml-auto mr-auto bg-light page-head' },
+                "div",
+                { className: "container-fluid row ml-auto mr-auto bg-light page-head" },
                 _react2.default.createElement(
-                    'div',
-                    { id: 'settings-title-wrapper' },
+                    "div",
+                    { id: "settings-title-wrapper" },
                     _react2.default.createElement(
-                        'h4',
-                        { className: 'pt-5 pl-5 mb-0' },
-                        'Settings'
+                        "h4",
+                        { className: "pt-5 pl-5 mb-0" },
+                        "Settings"
                     )
                 )
             );
@@ -131,11 +138,16 @@ var SettingsBody = function (_React$Component3) {
     function SettingsBody(props) {
         _classCallCheck(this, SettingsBody);
 
-        return _possibleConstructorReturn(this, (SettingsBody.__proto__ || Object.getPrototypeOf(SettingsBody)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (SettingsBody.__proto__ || Object.getPrototypeOf(SettingsBody)).call(this, props));
+
+        _this4.maintenanceToggle = _this4.maintenanceToggle.bind(_this4);
+        _this4.currentUserActions = _this4.currentUserActions.bind(_this4);
+        _this4.bankDepositAccounts = _this4.bankDepositAccounts.bind(_this4);
+        return _this4;
     }
 
     _createClass(SettingsBody, [{
-        key: 'maintenanceToggle',
+        key: "maintenanceToggle",
         value: function maintenanceToggle() {
             var _this5 = this;
 
@@ -148,50 +160,100 @@ var SettingsBody = function (_React$Component3) {
                 return _this5.props.setMaintenanceMode(!onMaintenance);
             }; // Inverse of current value
 
-            return _react2.default.createElement(
-                'div',
-                { className: 'setting-row d-flex flex-row align-items-center' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'mr-auto' },
+            // Toggle when you can turn maintenance mode on and off
+            function enabledToggle() {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "setting-row d-flex flex-row align-items-center" },
                     _react2.default.createElement(
-                        'h5',
-                        { className: headingClass },
-                        heading
+                        "div",
+                        { className: "mr-auto" },
+                        _react2.default.createElement(
+                            "h5",
+                            { className: headingClass },
+                            heading
+                        ),
+                        _react2.default.createElement(
+                            "p",
+                            { className: "text-muted setting-description" },
+                            description
+                        )
                     ),
                     _react2.default.createElement(
-                        'p',
-                        { className: 'text-muted setting-description' },
-                        description
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'ml-5',
-                        style: { width: "100px" } },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'toggle' },
-                        _react2.default.createElement('input', { type: 'checkbox',
-                            name: 'checkbox1',
-                            id: 'checkbox1',
-                            className: 'ios-toggle',
-                            defaultChecked: !onMaintenance,
-                            onChange: onToggle }),
+                        "div",
+                        { className: "ml-5",
+                            style: { width: "100px" } },
                         _react2.default.createElement(
-                            'label',
-                            { htmlFor: 'checkbox1',
-                                className: 'checkbox-label',
-                                'data-off': 'offline',
-                                'data-on': 'online' },
-                            ' '
+                            "div",
+                            { className: "toggle ml-5" },
+                            _react2.default.createElement("input", { type: "checkbox",
+                                name: "checkbox1",
+                                id: "checkbox1",
+                                className: "ios-toggle",
+                                defaultChecked: !onMaintenance,
+                                onChange: onToggle }),
+                            _react2.default.createElement(
+                                "label",
+                                { htmlFor: "checkbox1",
+                                    className: "checkbox-label",
+                                    "data-off": "offline",
+                                    "data-on": "online" },
+                                " "
+                            )
                         )
                     )
-                )
-            );
+                );
+            }
+
+            // Dummy toggle when you can't flip the switch because of a reason (possibly because there are no bank accounts)
+            function disabledToggle() {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "setting-row d-flex flex-row align-items-center" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "mr-auto" },
+                        _react2.default.createElement(
+                            "h5",
+                            { className: headingClass },
+                            heading
+                        ),
+                        _react2.default.createElement(
+                            "p",
+                            { className: "text-muted setting-description" },
+                            "Customers currently cannot view or purchase products. You cannot set the store online until at least one payment method is present."
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "ml-5",
+                            style: { width: "100px", opacity: 0.7 } },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "toggle ml-5" },
+                            _react2.default.createElement("input", { type: "checkbox",
+                                name: "checkbox1",
+                                id: "checkbox1",
+                                className: "ios-toggle",
+                                disabled: true }),
+                            _react2.default.createElement(
+                                "label",
+                                { htmlFor: "checkbox1",
+                                    className: "checkbox-label",
+                                    "data-off": "offline",
+                                    "data-on": "online" },
+                                " "
+                            )
+                        )
+                    )
+                );
+            }
+
+            var noAccounts = this.props.settings.accounts.length === 0;
+            return noAccounts ? disabledToggle() : enabledToggle();
         }
     }, {
-        key: 'currentUserActions',
+        key: "currentUserActions",
         value: function currentUserActions() {
             function signOut() {
                 localStorage.clear();
@@ -199,167 +261,212 @@ var SettingsBody = function (_React$Component3) {
             }
 
             return _react2.default.createElement(
-                'div',
-                { className: 'setting-row' },
+                "div",
+                { className: "setting-row" },
                 _react2.default.createElement(
-                    'div',
-                    { className: 'd-flex flex-row align-items-center' },
+                    "div",
+                    { className: "d-flex flex-row align-items-center" },
                     _react2.default.createElement(
-                        'h5',
-                        { className: 'mr-auto mb-0' },
-                        'Signed in as ',
+                        "h5",
+                        { className: "mr-auto mb-0" },
+                        "Signed in as ",
                         this.props.settings.currentUser
                     ),
                     _react2.default.createElement(
-                        'button',
-                        { className: 'btn btn-outline-primary', onClick: signOut },
-                        'Sign out'
+                        "button",
+                        { className: "btn btn-outline-primary",
+                            onClick: signOut },
+                        "Sign out"
                     )
                 )
             );
         }
     }, {
-        key: 'render',
+        key: "bankDepositAccounts",
+        value: function bankDepositAccounts() {
+            return _react2.default.createElement(
+                "div",
+                { className: "setting-row" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "d-flex flex-row w-100 mb-4 align-items-center" },
+                    _react2.default.createElement(
+                        "h5",
+                        { className: "setting-name mr-auto mb-0" },
+                        "Bank Deposit Payment Accounts"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { className: "btn btn-outline-primary",
+                            "data-toggle": "modal",
+                            "data-target": "#add-bank-account-modal" },
+                        "Add"
+                    )
+                ),
+                _react2.default.createElement(BankAccountsTable, { accounts: this.props.settings.accounts })
+            );
+        }
+    }, {
+        key: "render",
         value: function render() {
             if (this.props.settings === null) {
                 return SettingsBody.loadingState();
             }
 
             return _react2.default.createElement(
-                'div',
-                { id: 'settings-body',
-                    className: 'page-content pl-5 pr-5 pt-2 pb-3' },
+                "div",
+                { id: "settings-body",
+                    className: "page-content pl-5 pr-5 pt-2 pb-3" },
                 _react2.default.createElement(
-                    'div',
-                    { id: 'settings-list' },
+                    "div",
+                    { id: "settings-list" },
                     this.maintenanceToggle(),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'setting-row' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'd-flex flex-row w-100 mb-4 align-items-center' },
-                            _react2.default.createElement(
-                                'h5',
-                                { className: 'setting-name mr-auto mb-0' },
-                                'Bank Deposit Payment Accounts'
-                            ),
-                            _react2.default.createElement(
-                                'button',
-                                { className: 'btn btn-outline-primary' },
-                                'Add'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'table',
-                            { className: 'table table-hover bg-light rounded',
-                                style: { overflow: "hidden" } },
-                            _react2.default.createElement(
-                                'thead',
-                                null,
-                                _react2.default.createElement(
-                                    'tr',
-                                    null,
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'Bank name'
-                                    ),
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'Account holder name'
-                                    ),
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'Account number'
-                                    )
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'tbody',
-                                null,
-                                _react2.default.createElement(
-                                    'tr',
-                                    null,
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'BPI'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        'Paulina Ramos'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        '9182391823619'
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'tr',
-                                    null,
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'BDO'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        'Paulina Ramos'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        '9182391823619'
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'tr',
-                                    null,
-                                    _react2.default.createElement(
-                                        'th',
-                                        null,
-                                        'Allied Bank'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        'Paulina Ramos'
-                                    ),
-                                    _react2.default.createElement(
-                                        'td',
-                                        null,
-                                        '9182391823619'
-                                    )
-                                )
-                            )
-                        )
-                    ),
+                    this.bankDepositAccounts(),
                     this.currentUserActions()
                 )
             );
         }
     }], [{
-        key: 'loadingState',
+        key: "loadingState",
         value: function loadingState() {
             return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid d-flex flex-column justify-content-center align-items-center h-100' },
+                "div",
+                { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100" },
                 _react2.default.createElement(
-                    'h3',
+                    "h3",
                     null,
-                    'Loading...'
+                    "Loading..."
                 )
             );
         }
     }]);
 
     return SettingsBody;
+}(_react2.default.Component);
+
+var BankAccountsTable = function (_React$Component4) {
+    _inherits(BankAccountsTable, _React$Component4);
+
+    function BankAccountsTable(props) {
+        _classCallCheck(this, BankAccountsTable);
+
+        return _possibleConstructorReturn(this, (BankAccountsTable.__proto__ || Object.getPrototypeOf(BankAccountsTable)).call(this, props));
+    }
+
+    _createClass(BankAccountsTable, [{
+        key: "rows",
+        value: function rows() {
+            return this.props.accounts.map(function (account) {
+                return _react2.default.createElement(BankAccountRow, { key: account.id, account: account });
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            if (this.props.accounts.length === 0) {
+                return BankAccountsTable.emptyState();
+            }
+
+            return _react2.default.createElement(
+                "table",
+                { className: "table table-hover bg-light rounded",
+                    style: { overflow: "hidden" } },
+                _react2.default.createElement(
+                    "thead",
+                    null,
+                    _react2.default.createElement(
+                        "tr",
+                        null,
+                        _react2.default.createElement(
+                            "th",
+                            null,
+                            "Bank name"
+                        ),
+                        _react2.default.createElement(
+                            "th",
+                            null,
+                            "Account holder name"
+                        ),
+                        _react2.default.createElement(
+                            "th",
+                            null,
+                            "Account number"
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    "tbody",
+                    null,
+                    this.rows()
+                )
+            );
+        }
+    }], [{
+        key: "emptyState",
+        value: function emptyState() {
+            return _react2.default.createElement(
+                "div",
+                { className: "p-5 alert alert-danger rounded d-flex flex-column align-items-center justify-content-center text-center" },
+                _react2.default.createElement(
+                    "h4",
+                    null,
+                    "There's nothing here."
+                ),
+                _react2.default.createElement(
+                    "p",
+                    { className: "col-6 mb-4" },
+                    "Customers will not be able send payments without an account to deposit to."
+                ),
+                _react2.default.createElement(
+                    "button",
+                    { className: "btn btn-danger",
+                        "data-toggle": "modal",
+                        "data-target": "#add-bank-account-modal" },
+                    "Add a bank account"
+                )
+            );
+        }
+    }]);
+
+    return BankAccountsTable;
+}(_react2.default.Component);
+
+var BankAccountRow = function (_React$Component5) {
+    _inherits(BankAccountRow, _React$Component5);
+
+    function BankAccountRow(props) {
+        _classCallCheck(this, BankAccountRow);
+
+        return _possibleConstructorReturn(this, (BankAccountRow.__proto__ || Object.getPrototypeOf(BankAccountRow)).call(this, props));
+    }
+
+    _createClass(BankAccountRow, [{
+        key: "render",
+        value: function render() {
+            //TODO: Onclick
+            return _react2.default.createElement(
+                "tr",
+                null,
+                _react2.default.createElement(
+                    "th",
+                    null,
+                    this.props.account.bank_name
+                ),
+                _react2.default.createElement(
+                    "td",
+                    null,
+                    this.props.account.account_holder_name
+                ),
+                _react2.default.createElement(
+                    "td",
+                    null,
+                    this.props.account.account_number
+                )
+            );
+        }
+    }]);
+
+    return BankAccountRow;
 }(_react2.default.Component);
 
 exports.default = Settings;

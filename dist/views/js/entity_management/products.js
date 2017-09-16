@@ -55,7 +55,7 @@ var Products = function (_React$Component) {
                 _react2.default.createElement(
                     "h4",
                     null,
-                    "Select a stall from the left to see its products"
+                    "Select a stall to see its products"
                 )
             );
         }

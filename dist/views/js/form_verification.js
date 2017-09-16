@@ -31,6 +31,11 @@ $(function () {
         inputs: $('#restock-modal').find('.text-input'),
         button: $('#restock-button')
     });
+
+    addValidation({
+        inputs: $('#add-bank-account-modal').find('.text-input'),
+        button: $('#add-bank-account-button')
+    });
 });
 
 /*
