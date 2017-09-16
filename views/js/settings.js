@@ -19,7 +19,7 @@ class Settings extends React.Component {
         this.state = null;
 
         fetchSettings(result => {
-            result = JSON.parse(result);
+            console.log(result);
             this.setState({
                 onMaintenance: result.on_maintenance,
                 currentUser: result.current_user
@@ -63,7 +63,7 @@ class SettingsHead extends React.Component {
         return (
             <div className="container-fluid row ml-auto mr-auto bg-light page-head">
                 <div id="settings-title-wrapper">
-                    <h4 className="mr-auto row pt-5">Settings</h4>
+                    <h4 className="pt-5 pl-5 mb-0">Settings</h4>
                 </div>
             </div>
         )
@@ -117,11 +117,16 @@ class SettingsBody extends React.Component {
     }
 
     currentUserActions() {
+        function signOut() {
+            localStorage.clear();
+            window.location = '../templates/sign-in.html';
+        }
+
         return (
             <div className="setting-row">
                 <div className="d-flex flex-row align-items-center">
                     <h5 className="mr-auto mb-0">Signed in as {this.props.settings.currentUser}</h5>
-                    <button className="btn btn-outline-primary">Sign out</button>
+                    <button className="btn btn-outline-primary" onClick={signOut}>Sign out</button>
                 </div>
             </div>
         )
@@ -134,13 +139,12 @@ class SettingsBody extends React.Component {
 
         return (
             <div id="settings-body"
-                 className="page-content">
-                <div id="settings-list"
-                     className="pt-3 pb-5">
+                 className="page-content pl-5 pr-5 pt-2 pb-3">
+                <div id="settings-list">
                     {this.maintenanceToggle()}
                     <div className="setting-row">
                         <div className="d-flex flex-row w-100 mb-4 align-items-center">
-                            <h5 className="setting-name mr-auto mb-0">Payment Methods</h5>
+                            <h5 className="setting-name mr-auto mb-0">Bank Deposit Payment Accounts</h5>
                             <button className="btn btn-outline-primary">Add</button>
                         </div>
                         <table className="table table-hover bg-light rounded"

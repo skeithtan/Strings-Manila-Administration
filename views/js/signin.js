@@ -24,7 +24,6 @@ $(() => {
                 }
             },
             error: response => {
-
                 if (response.responseJSON === undefined) {
                     $('#error-message').text("Not connected to the server");
 

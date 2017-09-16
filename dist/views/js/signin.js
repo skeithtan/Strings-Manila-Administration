@@ -26,7 +26,6 @@ $(function () {
                 }
             },
             error: function error(response) {
-
                 if (response.responseJSON === undefined) {
                     $('#error-message').text("Not connected to the server");
                 } else if (response.responseJSON.error) {

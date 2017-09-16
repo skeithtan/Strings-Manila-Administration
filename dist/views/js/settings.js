@@ -44,7 +44,7 @@ var Settings = function (_React$Component) {
         _this.state = null;
 
         fetchSettings(function (result) {
-            result = JSON.parse(result);
+            console.log(result);
             _this.setState({
                 onMaintenance: result.on_maintenance,
                 currentUser: result.current_user
@@ -114,7 +114,7 @@ var SettingsHead = function (_React$Component2) {
                     { id: 'settings-title-wrapper' },
                     _react2.default.createElement(
                         'h4',
-                        { className: 'mr-auto row pt-5' },
+                        { className: 'pt-5 pl-5 mb-0' },
                         'Settings'
                     )
                 )
@@ -193,6 +193,11 @@ var SettingsBody = function (_React$Component3) {
     }, {
         key: 'currentUserActions',
         value: function currentUserActions() {
+            function signOut() {
+                localStorage.clear();
+                window.location = '../templates/sign-in.html';
+            }
+
             return _react2.default.createElement(
                 'div',
                 { className: 'setting-row' },
@@ -207,7 +212,7 @@ var SettingsBody = function (_React$Component3) {
                     ),
                     _react2.default.createElement(
                         'button',
-                        { className: 'btn btn-outline-primary' },
+                        { className: 'btn btn-outline-primary', onClick: signOut },
                         'Sign out'
                     )
                 )
@@ -223,11 +228,10 @@ var SettingsBody = function (_React$Component3) {
             return _react2.default.createElement(
                 'div',
                 { id: 'settings-body',
-                    className: 'page-content' },
+                    className: 'page-content pl-5 pr-5 pt-2 pb-3' },
                 _react2.default.createElement(
                     'div',
-                    { id: 'settings-list',
-                        className: 'pt-3 pb-5' },
+                    { id: 'settings-list' },
                     this.maintenanceToggle(),
                     _react2.default.createElement(
                         'div',
@@ -238,7 +242,7 @@ var SettingsBody = function (_React$Component3) {
                             _react2.default.createElement(
                                 'h5',
                                 { className: 'setting-name mr-auto mb-0' },
-                                'Payment Methods'
+                                'Bank Deposit Payment Accounts'
                             ),
                             _react2.default.createElement(
                                 'button',

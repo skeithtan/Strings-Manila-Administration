@@ -371,17 +371,20 @@ table.page-table tbody {
 /* Settings */
 #settings-body,
 #settings-title-wrapper {
-    width        : 800px;
+    width        : 1000px;
     margin-left  : auto;
     margin-right : auto;
 }
 
 #settings-body {
-    height     : 100%;
-    overflow-y : scroll !important;
+    height      : 100%;
+    overflow-y  : scroll !important;
 }
 
 #settings-list > .setting-row {
     padding       : 30px;
+}
+
+#settings-list .setting-row:not(:last-child) {
     border-bottom : 1px solid #e5e5e5;
 }
