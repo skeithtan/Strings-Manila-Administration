@@ -15,7 +15,7 @@ class Products extends React.Component {
     static selectStallState() {
         return (
             <div className="container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center">
-                <h4>Select a stall to see its products</h4>
+                <h3 className="text-muted">Select a stall to see its products</h3>
             </div>
         )
     }

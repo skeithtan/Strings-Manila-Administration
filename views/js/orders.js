@@ -289,7 +289,7 @@ class OrderTable extends React.Component {
     static emptyState() {
         return (
             <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-light">
-                <h3>There's nothing here.</h3>
+                <h3 className="text-muted">There's nothing here.</h3>
                 <p className="text-muted">Refine your filters and try again.</p>
             </div>
         )

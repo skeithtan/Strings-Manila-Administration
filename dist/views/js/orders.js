@@ -508,7 +508,7 @@ var OrderTable = function (_React$Component3) {
                 { className: 'container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-light' },
                 _react2.default.createElement(
                     'h3',
-                    null,
+                    { className: 'text-muted' },
                     'There\'s nothing here.'
                 ),
                 _react2.default.createElement(

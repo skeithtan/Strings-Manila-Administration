@@ -53,8 +53,8 @@ var Products = function (_React$Component) {
                 "div",
                 { className: "container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center" },
                 _react2.default.createElement(
-                    "h4",
-                    null,
+                    "h3",
+                    { className: "text-muted" },
                     "Select a stall to see its products"
                 )
             );
