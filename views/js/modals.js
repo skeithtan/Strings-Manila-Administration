@@ -931,9 +931,9 @@ function fillOutSalesModal(stallSales) {
 
 //MARK: - Settings
 function onAddBankAccountButtonClick() {
-    const bankName = $('#bank-name-input').val();
-    const accountHolder = $('#account-holder-name-input').val();
-    const accountNumber = $('#account-number-input').val();
+    const bankName = $("#bank-name-input").val();
+    const accountHolder = $("#account-holder-name-input").val();
+    const accountNumber = $("#account-number-input").val();
 
     $.post({
         url: `${baseURL}/api/settings/bank-accounts/`,
@@ -960,6 +960,78 @@ function onAddBankAccountButtonClick() {
     });
 }
 
+function fillOutModifyBankAccountDetails(account) {
+    const bankName = $("#modify-bank-name-input");
+    const accountHolder = $("#modify-account-holder-name-input");
+    const accountNumber = $("#modify-account-number-input");
+
+    bankName.val(account.bank_name);
+    accountHolder.val(account.account_holder_name);
+    accountNumber.val(account.account_number);
+
+    const modifyButton = $('#modify-bank-account-button');
+    modifyButton.off(); // Unbind previous bindings
+    modifyButton.attr("disabled", false);
+    modifyButton.click(() => {
+        $.ajax({
+            url: `${baseURL}/api/settings/bank-accounts/${account.id}/`,
+            method: "PUT",
+            beforeSend: authorizeXHR,
+            data: {
+                bank_name: bankName.val(),
+                account_holder_name: accountHolder.val(),
+                account_number: accountNumber.val()
+            },
+            success: () => {
+                iziToast.success({
+                    title: "Added",
+                    message: "Successfully modified bank account"
+                });
+
+                refreshSettings();
+            },
+            error: response => {
+                console.log(response);
+                iziToast.error({
+                    title: "Error",
+                    message: "Unable to modify bank account"
+                })
+            }
+        })
+    });
+}
+
+function fillOutDeleteBankAccount(account) {
+    $("#remove-bank-account-modal-bank-name").text(account.bank_name);
+    $("#remove-bank-account-modal-account-holder").text(account.account_holder_name);
+    $("#remove-bank-account-modal-account-number").text(account.account_number);
+
+    const confirmDeleteButton = $('#delete-bank-account-button');
+    confirmDeleteButton.off();
+    confirmDeleteButton.click(() => {
+        $.ajax({
+            url: `${baseURL}/api/settings/bank-accounts/${account.id}/`,
+            method: "DELETE",
+            beforeSend: authorizeXHR,
+            success: () => {
+                iziToast.success({
+                    title: "Deleted",
+                    message: "Successfully deleted bank account"
+                });
+
+                refreshSettings();
+            },
+            error: response => {
+                console.log(response);
+                iziToast.error({
+                    title: "Error",
+                    message: "Unable to delete bank account"
+                });
+            }
+        });
+    })
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token)
@@ -976,5 +1048,7 @@ export {
     fillOutRenameStallModal,
     fillOutOrderModal,
     fillOutSalesModal,
+    fillOutModifyBankAccountDetails,
+    fillOutDeleteBankAccount,
     authorizeXHR
 }

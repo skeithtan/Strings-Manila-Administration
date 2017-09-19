@@ -49,7 +49,6 @@ var Settings = function (_React$Component) {
 
         refreshSettings = function refreshSettings() {
             return fetchSettings(function (result) {
-                console.log(result);
                 _this.setState({
                     accounts: result.accounts,
                     onMaintenance: result.on_maintenance,
@@ -357,7 +356,8 @@ var BankAccountsTable = function (_React$Component4) {
         key: "rows",
         value: function rows() {
             return this.props.accounts.map(function (account) {
-                return _react2.default.createElement(BankAccountRow, { key: account.id, account: account });
+                return _react2.default.createElement(BankAccountRow, { key: account.id,
+                    account: account });
             });
         }
     }, {
@@ -369,11 +369,11 @@ var BankAccountsTable = function (_React$Component4) {
 
             return _react2.default.createElement(
                 "table",
-                { className: "table table-hover bg-light rounded",
+                { className: "table bg-light rounded",
                     style: { overflow: "hidden" } },
                 _react2.default.createElement(
                     "thead",
-                    null,
+                    { className: "thead-default" },
                     _react2.default.createElement(
                         "tr",
                         null,
@@ -391,6 +391,11 @@ var BankAccountsTable = function (_React$Component4) {
                             "th",
                             null,
                             "Account number"
+                        ),
+                        _react2.default.createElement(
+                            "th",
+                            null,
+                            " "
                         )
                     )
                 ),
@@ -443,7 +448,8 @@ var BankAccountRow = function (_React$Component5) {
     _createClass(BankAccountRow, [{
         key: "render",
         value: function render() {
-            //TODO: Onclick
+            var _this8 = this;
+
             return _react2.default.createElement(
                 "tr",
                 null,
@@ -461,6 +467,30 @@ var BankAccountRow = function (_React$Component5) {
                     "td",
                     null,
                     this.props.account.account_number
+                ),
+                _react2.default.createElement(
+                    "td",
+                    { className: "d-flex flex-row justify-content-center" },
+                    _react2.default.createElement(
+                        "button",
+                        { className: "btn btn-outline-primary btn-sm mr-2",
+                            "data-toggle": "modal",
+                            "data-target": "#modify-bank-account-modal",
+                            onClick: function onClick() {
+                                return (0, _modals.fillOutModifyBankAccountDetails)(_this8.props.account);
+                            } },
+                        "Modify"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { className: "btn btn-outline-danger btn-sm",
+                            "data-toggle": "modal",
+                            "data-target": "#delete-bank-account-modal",
+                            onClick: function onClick() {
+                                return (0, _modals.fillOutDeleteBankAccount)(_this8.props.account);
+                            } },
+                        "Remove"
+                    )
                 )
             );
         }

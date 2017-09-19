@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.authorizeXHR = exports.fillOutSalesModal = exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
+exports.authorizeXHR = exports.fillOutDeleteBankAccount = exports.fillOutModifyBankAccountDetails = exports.fillOutSalesModal = exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
 var _random = require('./random');
 
@@ -944,9 +944,9 @@ function fillOutSalesModal(stallSales) {
 
 //MARK: - Settings
 function onAddBankAccountButtonClick() {
-    var bankName = $('#bank-name-input').val();
-    var accountHolder = $('#account-holder-name-input').val();
-    var accountNumber = $('#account-number-input').val();
+    var bankName = $("#bank-name-input").val();
+    var accountHolder = $("#account-holder-name-input").val();
+    var accountNumber = $("#account-number-input").val();
 
     $.post({
         url: baseURL + '/api/settings/bank-accounts/',
@@ -973,6 +973,78 @@ function onAddBankAccountButtonClick() {
     });
 }
 
+function fillOutModifyBankAccountDetails(account) {
+    var bankName = $("#modify-bank-name-input");
+    var accountHolder = $("#modify-account-holder-name-input");
+    var accountNumber = $("#modify-account-number-input");
+
+    bankName.val(account.bank_name);
+    accountHolder.val(account.account_holder_name);
+    accountNumber.val(account.account_number);
+
+    var modifyButton = $('#modify-bank-account-button');
+    modifyButton.off(); // Unbind previous bindings
+    modifyButton.attr("disabled", false);
+    modifyButton.click(function () {
+        $.ajax({
+            url: baseURL + '/api/settings/bank-accounts/' + account.id + '/',
+            method: "PUT",
+            beforeSend: authorizeXHR,
+            data: {
+                bank_name: bankName.val(),
+                account_holder_name: accountHolder.val(),
+                account_number: accountNumber.val()
+            },
+            success: function success() {
+                iziToast.success({
+                    title: "Added",
+                    message: "Successfully modified bank account"
+                });
+
+                refreshSettings();
+            },
+            error: function error(response) {
+                console.log(response);
+                iziToast.error({
+                    title: "Error",
+                    message: "Unable to modify bank account"
+                });
+            }
+        });
+    });
+}
+
+function fillOutDeleteBankAccount(account) {
+    $("#remove-bank-account-modal-bank-name").text(account.bank_name);
+    $("#remove-bank-account-modal-account-holder").text(account.account_holder_name);
+    $("#remove-bank-account-modal-account-number").text(account.account_number);
+
+    var confirmDeleteButton = $('#delete-bank-account-button');
+    confirmDeleteButton.off();
+    confirmDeleteButton.click(function () {
+        $.ajax({
+            url: baseURL + '/api/settings/bank-accounts/' + account.id + '/',
+            method: "DELETE",
+            beforeSend: authorizeXHR,
+            success: function success() {
+                iziToast.success({
+                    title: "Deleted",
+                    message: "Successfully deleted bank account"
+                });
+
+                refreshSettings();
+            },
+            error: function error(response) {
+                console.log(response);
+                iziToast.error({
+                    title: "Error",
+                    message: "Unable to delete bank account"
+                });
+            }
+        });
+    });
+}
+
 //MARK: - XHR Authorization
 function authorizeXHR(xhr) {
     xhr.setRequestHeader("Authorization", "Token " + localStorage.token);
@@ -988,5 +1060,7 @@ exports.fillOutDiscontinueStallModal = fillOutDiscontinueStallModal;
 exports.fillOutRenameStallModal = fillOutRenameStallModal;
 exports.fillOutOrderModal = fillOutOrderModal;
 exports.fillOutSalesModal = fillOutSalesModal;
+exports.fillOutModifyBankAccountDetails = fillOutModifyBankAccountDetails;
+exports.fillOutDeleteBankAccount = fillOutDeleteBankAccount;
 exports.authorizeXHR = authorizeXHR;
 //# sourceMappingURL=modals.js.map

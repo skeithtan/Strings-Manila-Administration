@@ -1,6 +1,10 @@
 import $ from "jquery";
 import React from "react";
-import {authorizeXHR} from "./modals";
+import {
+    fillOutModifyBankAccountDetails,
+    fillOutDeleteBankAccount,
+    authorizeXHR
+} from "./modals";
 
 // Fetch Data
 function fetchSettings(completionHandler) {
@@ -19,7 +23,6 @@ class Settings extends React.Component {
         this.setMaintenanceMode = this.setMaintenanceMode.bind(this);
 
         refreshSettings = () => fetchSettings(result => {
-            console.log(result);
             this.setState({
                 accounts: result.accounts,
                 onMaintenance: result.on_maintenance,
@@ -227,7 +230,8 @@ class BankAccountsTable extends React.Component {
 
     rows() {
         return this.props.accounts.map(account => {
-            return <BankAccountRow key={account.id} account={account}/>
+            return <BankAccountRow key={account.id}
+                                   account={account}/>
         });
     }
 
@@ -237,13 +241,14 @@ class BankAccountsTable extends React.Component {
         }
 
         return (
-            <table className="table table-hover bg-light rounded"
+            <table className="table bg-light rounded"
                    style={{overflow: "hidden"}}>
-                <thead>
+                <thead className="thead-default">
                 <tr>
                     <th>Bank name</th>
                     <th>Account holder name</th>
                     <th>Account number</th>
+                    <th> </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -260,12 +265,23 @@ class BankAccountRow extends React.Component {
     }
 
     render() {
-        //TODO: Onclick
         return (
             <tr>
                 <th>{this.props.account.bank_name}</th>
                 <td>{this.props.account.account_holder_name}</td>
                 <td>{this.props.account.account_number}</td>
+                <td className="d-flex flex-row justify-content-center">
+                    <button className="btn btn-outline-primary btn-sm mr-2"
+                            data-toggle="modal"
+                            data-target="#modify-bank-account-modal"
+                            onClick={() => fillOutModifyBankAccountDetails(this.props.account)}>Modify
+                    </button>
+                    <button className="btn btn-outline-danger btn-sm"
+                            data-toggle="modal"
+                            data-target="#delete-bank-account-modal"
+                            onClick={() => fillOutDeleteBankAccount(this.props.account)}>Remove
+                    </button>
+                </td>
             </tr>
         );
     }

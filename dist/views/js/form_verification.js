@@ -1,40 +1,45 @@
-'use strict';
+"use strict";
 
 $(function () {
 
     addValidation({
-        inputs: $('#add-stall-modal').find('.text-input'),
-        button: $('#add-stall-button')
+        inputs: $("#add-stall-modal").find(".text-input"),
+        button: $("#add-stall-button")
     });
 
     addValidation({
-        inputs: $('#rename-stall-modal').find('.text-input'),
-        button: $('#rename-stall-button')
+        inputs: $("#rename-stall-modal").find(".text-input"),
+        button: $("#rename-stall-button")
     });
 
     addValidation({
-        inputs: $('#add-singular-product-card').find('.text-input'),
-        button: $('#add-singular-product-button')
+        inputs: $("#add-singular-product-card").find(".text-input"),
+        button: $("#add-singular-product-button")
     });
 
     addValidation({
-        inputs: $('#add-tiered-product-card').find('.text-input'),
-        button: $('#add-tiered-product-button')
+        inputs: $("#add-tiered-product-card").find(".text-input"),
+        button: $("#add-tiered-product-button")
     });
 
     addValidation({
-        inputs: $('#modify-singular-product-body').find('.text-input'),
-        button: $('#modify-singular-product-button')
+        inputs: $("#modify-singular-product-body").find(".text-input"),
+        button: $("#modify-singular-product-button")
     });
 
     addValidation({
-        inputs: $('#restock-modal').find('.text-input'),
-        button: $('#restock-button')
+        inputs: $("#restock-modal").find(".text-input"),
+        button: $("#restock-button")
     });
 
     addValidation({
-        inputs: $('#add-bank-account-modal').find('.text-input'),
-        button: $('#add-bank-account-button')
+        inputs: $("#add-bank-account-modal").find(".text-input"),
+        button: $("#add-bank-account-button")
+    });
+
+    addValidation({
+        inputs: $("#modify-bank-account-modal").find(".text-input"),
+        button: $("#modify-bank-account-button")
     });
 });
 
@@ -55,10 +60,10 @@ function addValidation(object) {
             }
         });
 
-        button.attr('disabled', disable);
+        button.attr("disabled", disable);
     }
 
-    inputs.on('input', validateInputs);
+    inputs.on("input", validateInputs);
 
     validateInputs();
 }

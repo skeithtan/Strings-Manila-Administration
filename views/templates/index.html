@@ -1026,7 +1026,7 @@
 </div>
 
 
-<!--Bank Deposit Account Modal-->
+<!--Add Bank Deposit Account Modal-->
 <div class="modal fade"
      id="add-bank-account-modal"
      tabindex="-1"
@@ -1077,6 +1077,111 @@
         </div>
     </div>
 </div>
+
+<!--Modify Bank Deposit Account Modal-->
+<div class="modal fade"
+     id="modify-bank-account-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Modify Bank Deposit Account</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="modify-bank-name-input"
+                           class="col-form-label col-lg-5">Bank Name</label>
+                    <input id="modify-bank-name-input"
+                           class="form-control text-input col-lg-6">
+                </div>
+                <div class="form-group row">
+                    <label for="modify-account-holder-name-input"
+                           class="col-form-label col-lg-5">Account Holder Name</label>
+                    <input id="modify-account-holder-name-input"
+                           class="form-control text-input col-lg-6">
+                </div>
+                <div class="form-group row">
+                    <label for="modify-account-number-input"
+                           class="col-form-label col-lg-5">Account Number</label>
+                    <input id="modify-account-number-input"
+                           class="form-control text-input col-lg-6">
+                </div>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button class="btn btn-primary"
+                        id="modify-bank-account-button"
+                        data-dismiss="modal">Modify
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Discontinue stall modal-->
+<div class="modal fade"
+     id="delete-bank-account-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content border-danger">
+            <!--Modal header-->
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">Are you sure you want to remove this bank account?</h5>
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="modal-body">
+                <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Bank name</th>
+                    <td id="remove-bank-account-modal-bank-name"></td>
+                </tr>
+                <tr>
+                    <th>Account holder name</th>
+                    <td id="remove-bank-account-modal-account-holder"></td>
+                </tr>
+                <tr>
+                    <th>Account number</th>
+                    <td id="remove-bank-account-modal-account-number"></td>
+                </tr>
+                </tbody>
+                </table>
+                <p>Once removed, customers can no longer see this account among the payment options. This cannot be undone.</p>
+            </div>
+
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <button id="delete-bank-account-button"
+                        type="button"
+                        class="btn btn-danger"
+                        data-dismiss="modal">Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--React Scripts-->
 <script>
