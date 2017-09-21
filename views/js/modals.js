@@ -7,13 +7,13 @@ const modalHide = 'hidden.bs.modal';
 
 $(() => {
     //Entity Management
-    //Stalls
-    $('#add-stall-button').click(onAddStallButtonClick);
-    $('#rename-stall-button').click(onRenameStallButtonClick);
-    $('#delete-stall-button').click(onDeleteStallButtonClick);
-    $('#add-stall-modal').on(modalHide, () => {
-        $('#add-stall-name-input').val('');
-        $('#add-stall-button').attr('disabled', 'true');
+    //Collections
+    $('#add-collection-button').click(onAddCollectionButtonClick);
+    $('#rename-collection-button').click(onRenameCollectionButtonClick);
+    $('#delete-collection-button').click(onDeleteCollectionButtonClick);
+    $('#add-collection-modal').on(modalHide, () => {
+        $('#add-collection-name-input').val('');
+        $('#add-collection-button').attr('disabled', 'true');
     });
 
     //Products
@@ -55,84 +55,84 @@ $(() => {
     })
 });
 
-//MARK: - Stalls
-function onAddStallButtonClick() {
-    const stallName = $('#add-stall-name-input').val();
+//MARK: - Collections
+function onAddCollectionButtonClick() {
+    const collectionName = $('#add-collection-name-input').val();
 
     $.post({
-        url: baseURL + '/stalls/',
+        url: baseURL + '/collections/',
         data: {
-            name: stallName
+            name: collectionName
         },
         beforeSend: authorizeXHR,
         success: () => {
             iziToast.success({
                 title: "Added",
-                message: "Successfully added stall."
+                message: "Successfully added collection."
             });
 
-            refreshStalls();
+            refreshCollections();
         },
         error: response => {
             console.log(response);
             iziToast.error({
                 title: "Error",
-                message: "Unable to add stall."
+                message: "Unable to add collection."
             })
         },
     });
 }
 
-function onRenameStallButtonClick() {
-    const stallNameInput = $('#rename-stall-name-input');
-    const stallName = stallNameInput.val();
-    const stallID = $('#rename-stall-id').val();
-    stallNameInput.val('');
+function onRenameCollectionButtonClick() {
+    const collectionNameInput = $('#rename-collection-name-input');
+    const collectionName = collectionNameInput.val();
+    const collectionID = $('#rename-collection-id').val();
+    collectionNameInput.val('');
 
     $.ajax({
-        url: `${baseURL}/stalls/${stallID}/`,
+        url: `${baseURL}/collections/${collectionID}/`,
         method: 'PUT',
         data: {
-            name: stallName
+            name: collectionName
         },
         beforeSend: authorizeXHR,
         success: () => {
             iziToast.success({
                 title: 'Renamed',
-                message: 'Successfully renamed stall.'
+                message: 'Successfully renamed collection.'
             });
 
-            refreshStalls();
+            refreshCollections();
         },
         error: response => {
             console.log(response);
             iziToast.error({
                 title: 'Error',
                 id: 'uploading-image-toast',
-                message: 'Unable to rename stall.'
+                message: 'Unable to rename collection.'
             })
         },
     });
 }
 
-function onDeleteStallButtonClick() {
-    const stallID = $('#delete-stall-id').val();
+function onDeleteCollectionButtonClick() {
+    const collectionID = $('#delete-collection-id').val();
     $.ajax({
-        url: `${baseURL}/stalls/${stallID}/`,
+        url: `${baseURL}/collections/${collectionID}/`,
         method: 'DELETE',
         beforeSend: authorizeXHR,
         success: () => {
             iziToast.success({
                 title: 'Discontinued',
-                message: 'Stall is now discontinued.'
+                message: 'Collection is now discontinued.'
             });
-            refreshStalls();
+            refreshCollections();
         },
         error: response => {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Unable to discontinue stall.'
+                message: 'Unable to discontinue collection.'
             })
         },
     })
@@ -140,15 +140,15 @@ function onDeleteStallButtonClick() {
 
 //Fill outs
 
-function fillOutRenameStallModal(activeStall) {
-    $('#rename-stall-id').val(activeStall.id);
-    $('#rename-stall-name-input').val(activeStall.name);
-    $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
+function fillOutRenameCollectionModal(activeCollection) {
+    $('#rename-collection-id').val(activeCollection.id);
+    $('#rename-collection-name-input').val(activeCollection.name);
+    $('#rename-collection-button').attr('disabled', false); //Form is already filled out, do not disable submit button
 }
 
-function fillOutDiscontinueStallModal(activeStall) {
-    $('#delete-stall-id').val(activeStall.id);
-    $('span.delete-stall-name').text(activeStall.name);
+function fillOutDiscontinueCollectionModal(activeCollection) {
+    $('#delete-collection-id').val(activeCollection.id);
+    $('span.delete-collection-name').text(activeCollection.name);
 }
 
 
@@ -230,10 +230,10 @@ function hideUploadingToast(id) {
     iziToast.hide({}, document.getElementById(id));
 }
 
-function submitAddProduct(product, stallID, image) {
+function submitAddProduct(product, collectionID, image) {
     function submit(product) {
         $.ajax({
-            url: `${baseURL}/stalls/${stallID}/products/`,
+            url: `${baseURL}/collections/${collectionID}/products/`,
             method: 'POST',
             data: JSON.stringify(product),
             contentType: 'application/json; charset=utf-8',
@@ -352,7 +352,7 @@ function uploadImage(data) {
 function onAddSingularProductButtonClick() {
     const name = $('#add-singular-product-name-input').val();
     const imageInput = $('#add-singular-product-image-input')[0].files;
-    const stallID = $('#add-product-stall-id').val();
+    const collectionID = $('#add-product-collection-id').val();
 
     let product = {
         name: name,
@@ -365,9 +365,9 @@ function onAddSingularProductButtonClick() {
 
     if (imageInput.length) {
         const image = imageInput[0];
-        submitAddProduct(product, stallID, image);
+        submitAddProduct(product, collectionID, image);
     } else {
-        submitAddProduct(product, stallID, null);
+        submitAddProduct(product, collectionID, null);
     }
 }
 
@@ -379,7 +379,7 @@ function onAddTieredProductButtonClick() {
     };
 
     const imageInput = $('#add-tiered-product-image-input')[0].files;
-    const stallID = $('#add-product-stall-id').val();
+    const collectionID = $('#add-product-collection-id').val();
 
     $('#tiers-set').find('.tier-row').each((index, item) => {
         const tierRow = $(item);
@@ -393,9 +393,9 @@ function onAddTieredProductButtonClick() {
 
     if (imageInput.length) {
         const image = imageInput[0];
-        submitAddProduct(product, stallID, image);
+        submitAddProduct(product, collectionID, image);
     } else {
-        submitAddProduct(product, stallID, null);
+        submitAddProduct(product, collectionID, null);
     }
 }
 
@@ -536,8 +536,8 @@ function fillOutModifyProductModal(product) {
     }
 }
 
-function fillOutAddProductModal(activeStall) {
-    $('#add-product-stall-id').val(activeStall.id);
+function fillOutAddProductModal(activeCollection) {
+    $('#add-product-collection-id').val(activeCollection.id);
 }
 
 function fillOutDiscontinueProductModal(product) {
@@ -889,10 +889,10 @@ function fillOutOrderModal(orderID) {
 
 
 //MARK: - Sales
-function fillOutSalesModal(stallSales) {
-    $('#sales-modal-stall-name').text(stallSales.name);
-    $('#sales-modal-total-quantity').text(stallSales.quantity);
-    $('#sales-modal-total-sales').text("₱" + stallSales.sales);
+function fillOutSalesModal(collectionSales) {
+    $('#sales-modal-collection-name').text(collectionSales.name);
+    $('#sales-modal-total-quantity').text(collectionSales.quantity);
+    $('#sales-modal-total-sales').text("₱" + collectionSales.sales);
 
     const tableBody = $('#sales-modal-table-body');
     const template = $('#sales-row-template').clone();
@@ -904,10 +904,10 @@ function fillOutSalesModal(stallSales) {
     generateReportButton.off();
     generateReportButton.click(() => {
         const ipcRenderer = electron.ipcRenderer;
-        ipcRenderer.send('generate-sales-detail-report', stallSales);
+        ipcRenderer.send('generate-sales-detail-report', collectionSales);
     });
 
-    stallSales.product_sales.forEach(productSale => {
+    collectionSales.product_sales.forEach(productSale => {
         productSale.tier_sales.forEach(tierSale => {
             const clone = $('#sales-row-template').clone();
             clone.removeAttr('id');
@@ -1044,8 +1044,8 @@ export {
     fillOutDiscontinueProductModal,
     fillOutModifyProductModal,
     fillOutAddProductModal,
-    fillOutDiscontinueStallModal,
-    fillOutRenameStallModal,
+    fillOutDiscontinueCollectionModal,
+    fillOutRenameCollectionModal,
     fillOutOrderModal,
     fillOutSalesModal,
     fillOutModifyBankAccountDetails,

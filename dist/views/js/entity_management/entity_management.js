@@ -10,9 +10,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _stalls = require('./stalls');
+var _collections = require('./collections');
 
-var _stalls2 = _interopRequireDefault(_stalls);
+var _collections2 = _interopRequireDefault(_collections);
 
 var _products = require('./products');
 
@@ -27,16 +27,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //Fetch data
-function fetchStalls(completionHandler) {
+function fetchCollections(completionHandler) {
     graphQL({
-        query: '{\n                    stalls {\n                        id\n                        name\n                    }\n                }',
+        query: '{\n                    collections {\n                        id\n                        name\n                    }\n                }',
         response: completionHandler
     });
 }
 
-function fetchProducts(stallID, completionHandler) {
+function fetchProducts(collectionID, completionHandler) {
     graphQL({
-        query: '{\n                  stall(id:' + stallID + '){\n                    activeProducts {\n                      id\n                      name\n                      description\n                      image\n                      tiers {\n                        id\n                        name\n                        currentPrice\n                      }\n                    }\n                  }\n                }',
+        query: '{\n                  collection(id:' + collectionID + '){\n                    activeProducts {\n                      id\n                      name\n                      description\n                      image\n                      tiers {\n                        id\n                        name\n                        currentPrice\n                      }\n                    }\n                  }\n                }',
         response: completionHandler
     });
 }
@@ -52,34 +52,34 @@ var EntityManagement = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (EntityManagement.__proto__ || Object.getPrototypeOf(EntityManagement)).call(this, props));
 
         _this.state = {
-            activeStall: null,
-            stalls: null,
+            activeCollection: null,
+            collections: null,
             products: null
         };
 
-        refreshStalls = function refreshStalls() {
-            fetchStalls(function (result) {
+        refreshCollections = function refreshCollections() {
+            fetchCollections(function (result) {
                 _this.setState({
-                    stalls: result.stalls
+                    collections: result.collections
                 });
 
-                //Update activeStall too
-                var activeStall = _this.state.activeStall;
+                //Update activeCollection too
+                var activeCollection = _this.state.activeCollection;
 
-                if (activeStall !== null) {
-                    //Get the product because the stalls don't come with them
-                    var products = activeStall.products;
+                if (activeCollection !== null) {
+                    //Get the product because the collections don't come with them
+                    var products = activeCollection.products;
 
                     _this.setState({
-                        activeStall: null //In case it is deleted
+                        activeCollection: null //In case it is deleted
                     });
 
-                    result.stalls.forEach(function (stall) {
-                        if (stall.id === activeStall.id) {
-                            //Add the product to the new stall
-                            stall.products = products;
+                    result.collections.forEach(function (collection) {
+                        if (collection.id === activeCollection.id) {
+                            //Add the product to the new collection
+                            collection.products = products;
                             _this.setState({
-                                activeStall: stall //Make it active
+                                activeCollection: collection //Make it active
                             });
                         }
                     });
@@ -87,30 +87,30 @@ var EntityManagement = function (_React$Component) {
             });
         };
 
-        refreshStalls();
+        refreshCollections();
 
-        _this.setActiveStall = _this.setActiveStall.bind(_this);
+        _this.setActiveCollection = _this.setActiveCollection.bind(_this);
         return _this;
     }
 
     _createClass(EntityManagement, [{
-        key: 'setActiveStall',
-        value: function setActiveStall(stall) {
+        key: 'setActiveCollection',
+        value: function setActiveCollection(collection) {
             var _this2 = this;
 
-            stall.products = null;
+            collection.products = null;
 
             this.setState({
-                activeStall: stall
+                activeCollection: collection
             });
 
             refreshProducts = function refreshProducts() {
-                fetchProducts(stall.id, function (result) {
-                    var activeStall = _this2.state.activeStall;
-                    activeStall.products = result.stall.activeProducts;
+                fetchProducts(collection.id, function (result) {
+                    var activeCollection = _this2.state.activeCollection;
+                    activeCollection.products = result.collection.activeProducts;
 
                     _this2.setState({
-                        activeStall: activeStall
+                        activeCollection: activeCollection
                     });
                 });
             };
@@ -124,10 +124,10 @@ var EntityManagement = function (_React$Component) {
                 'div',
                 { id: 'entity-management-frame',
                     className: 'container-fluid d-flex flex-row m-0 p-0 h-100 w-100' },
-                _react2.default.createElement(_stalls2.default, { stalls: this.state.stalls,
-                    activeStall: this.state.activeStall,
-                    setActiveStall: this.setActiveStall }),
-                _react2.default.createElement(_products2.default, { activeStall: this.state.activeStall })
+                _react2.default.createElement(_collections2.default, { collections: this.state.collections,
+                    activeCollection: this.state.activeCollection,
+                    setActiveCollection: this.setActiveCollection }),
+                _react2.default.createElement(_products2.default, { activeCollection: this.state.activeCollection })
             );
         }
     }]);

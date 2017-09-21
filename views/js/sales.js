@@ -28,7 +28,7 @@ class Sales extends React.Component {
         const dateLastWeek = moment().subtract(7, 'days');
 
         this.state = {
-            stalls: null,
+            collections: null,
             totalSales: null,
             totalQuantity: null,
             dates: {
@@ -57,14 +57,14 @@ class Sales extends React.Component {
             startDate: startDate,
             endDate: endDate,
             completionHandler: result => {
-                function descending(stallA, stallB) {
-                    return stallB.sales - stallA.sales;
+                function descending(collectionA, collectionB) {
+                    return collectionB.sales - collectionA.sales;
                 }
 
-                const salesPerStalls = result.stall_sales.sort(descending);
+                const salesPerCollections = result.collection_sales.sort(descending);
 
                 this.setState({
-                    stalls: salesPerStalls,
+                    collections: salesPerCollections,
                     totalSales: result.total_sales,
                     totalQuantity: result.total_quantity,
                     lastFetch: moment() //Time now
@@ -87,7 +87,7 @@ class Sales extends React.Component {
 
     onDateChange(dates) {
         this.setState({
-            stalls: null,
+            collections: null,
             totalSales: null,
             totalQuantity: null
         });
@@ -116,7 +116,7 @@ class Sales extends React.Component {
 
     generateReport() {
         const reportData = {
-            stalls: this.state.stalls,
+            collections: this.state.collections,
             startDate: this.state.dates.startDate.format("LL"),
             endDate: this.state.dates.endDate.format("LL"),
             totalSales: this.state.totalSales,
@@ -136,7 +136,7 @@ class Sales extends React.Component {
                            onDateChange={this.onDateChange}
                            generateReport={this.generateReport}
                            refreshData={this.onRefreshButtonClick}/>
-                <SalesTable stalls={this.state.stalls}
+                <SalesTable collections={this.state.collections}
                             totalQuantity={this.state.totalQuantity}
                             totalSales={this.state.totalSales}
                             lastFetch={this.state.lastFetch}/>
@@ -236,17 +236,17 @@ class SalesTable extends React.Component {
     }
 
     rows() {
-        return this.props.stalls.map(stall => <SalesRow key={stall.id}
-                                                        stall={stall}
+        return this.props.collections.map(collection => <SalesRow key={collection.id}
+                                                        collection={collection}
                                                         lastFetch={this.props.lastFetch}/>)
     }
 
     render() {
-        if (this.props.stalls === null) {
+        if (this.props.collections === null) {
             return SalesTable.loadingState();
         }
 
-        if (this.props.stalls.length === 0) {
+        if (this.props.collections.length === 0) {
             return SalesTable.emptyState();
         }
 
@@ -255,7 +255,7 @@ class SalesTable extends React.Component {
                 <table className="table table-hover page-table d-flex flex-column mb-0">
                     <thead className="thead-default">
                     <tr>
-                        <th>Stall Name</th>
+                        <th>Collection Name</th>
                         <th className="text-right">Products Sold</th>
                         <th className="text-right">Sales</th>
                     </tr>
@@ -279,17 +279,17 @@ class SalesTable extends React.Component {
 class SalesRow extends React.Component {
     constructor(props) {
         super(props);
-        this.props.stall.lastFetch = this.props.lastFetch.format("LL");
+        this.props.collection.lastFetch = this.props.lastFetch.format("LL");
     }
 
     render() {
         return (
             <tr data-toggle="modal"
                 data-target="#sales-modal"
-                onClick={() => fillOutSalesModal(this.props.stall)}>
-                <td>{this.props.stall.name}</td>
-                <td className="financial-number">{this.props.stall.quantity}</td>
-                <td className="financial-number">₱{this.props.stall.sales}</td>
+                onClick={() => fillOutSalesModal(this.props.collection)}>
+                <td>{this.props.collection.name}</td>
+                <td className="financial-number">{this.props.collection.quantity}</td>
+                <td className="financial-number">₱{this.props.collection.sales}</td>
             </tr>
         )
     }

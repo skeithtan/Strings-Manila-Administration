@@ -23,7 +23,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //Fetch data
 function fetchStocks(completionHandler) {
     graphQL({
-        query: "{\n                  tiers {\n                    id\n                    name\n                    quantity\n                    productDescription {\n                      isSingular\n                      name\n                      stall {\n                        name\n                      }\n                    }\n                  }\n                }",
+        query: "{\n                  tiers {\n                    id\n                    name\n                    quantity\n                    productDescription {\n                      isSingular\n                      name\n                      collection {\n                        name\n                      }\n                    }\n                  }\n                }",
         response: completionHandler
     });
 }
@@ -342,7 +342,7 @@ var StockTable = function (_React$Component3) {
                             _react2.default.createElement(
                                 "th",
                                 null,
-                                "Stall"
+                                "Collection"
                             ),
                             _react2.default.createElement(
                                 "th",
@@ -420,7 +420,7 @@ var StockRow = function (_React$Component4) {
                 _react2.default.createElement(
                     "td",
                     null,
-                    tier.productDescription.stall.name
+                    tier.productDescription.collection.name
                 ),
                 _react2.default.createElement(
                     "td",

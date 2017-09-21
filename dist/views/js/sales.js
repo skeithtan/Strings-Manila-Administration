@@ -66,7 +66,7 @@ var Sales = function (_React$Component) {
         var dateLastWeek = (0, _moment2.default)().subtract(7, 'days');
 
         _this.state = {
-            stalls: null,
+            collections: null,
             totalSales: null,
             totalQuantity: null,
             dates: {
@@ -102,14 +102,14 @@ var Sales = function (_React$Component) {
                 startDate: startDate,
                 endDate: endDate,
                 completionHandler: function completionHandler(result) {
-                    function descending(stallA, stallB) {
-                        return stallB.sales - stallA.sales;
+                    function descending(collectionA, collectionB) {
+                        return collectionB.sales - collectionA.sales;
                     }
 
-                    var salesPerStalls = result.stall_sales.sort(descending);
+                    var salesPerCollections = result.collection_sales.sort(descending);
 
                     _this2.setState({
-                        stalls: salesPerStalls,
+                        collections: salesPerCollections,
                         totalSales: result.total_sales,
                         totalQuantity: result.total_quantity,
                         lastFetch: (0, _moment2.default)() //Time now
@@ -133,7 +133,7 @@ var Sales = function (_React$Component) {
         key: 'onDateChange',
         value: function onDateChange(dates) {
             this.setState({
-                stalls: null,
+                collections: null,
                 totalSales: null,
                 totalQuantity: null
             });
@@ -164,7 +164,7 @@ var Sales = function (_React$Component) {
         key: 'generateReport',
         value: function generateReport() {
             var reportData = {
-                stalls: this.state.stalls,
+                collections: this.state.collections,
                 startDate: this.state.dates.startDate.format("LL"),
                 endDate: this.state.dates.endDate.format("LL"),
                 totalSales: this.state.totalSales,
@@ -186,7 +186,7 @@ var Sales = function (_React$Component) {
                     onDateChange: this.onDateChange,
                     generateReport: this.generateReport,
                     refreshData: this.onRefreshButtonClick }),
-                _react2.default.createElement(SalesTable, { stalls: this.state.stalls,
+                _react2.default.createElement(SalesTable, { collections: this.state.collections,
                     totalQuantity: this.state.totalQuantity,
                     totalSales: this.state.totalSales,
                     lastFetch: this.state.lastFetch })
@@ -326,20 +326,20 @@ var SalesTable = function (_React$Component3) {
         value: function rows() {
             var _this6 = this;
 
-            return this.props.stalls.map(function (stall) {
-                return _react2.default.createElement(SalesRow, { key: stall.id,
-                    stall: stall,
+            return this.props.collections.map(function (collection) {
+                return _react2.default.createElement(SalesRow, { key: collection.id,
+                    collection: collection,
                     lastFetch: _this6.props.lastFetch });
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            if (this.props.stalls === null) {
+            if (this.props.collections === null) {
                 return SalesTable.loadingState();
             }
 
-            if (this.props.stalls.length === 0) {
+            if (this.props.collections.length === 0) {
                 return SalesTable.emptyState();
             }
 
@@ -358,7 +358,7 @@ var SalesTable = function (_React$Component3) {
                             _react2.default.createElement(
                                 'th',
                                 null,
-                                'Stall Name'
+                                'Collection Name'
                             ),
                             _react2.default.createElement(
                                 'th',
@@ -448,7 +448,7 @@ var SalesRow = function (_React$Component4) {
 
         var _this7 = _possibleConstructorReturn(this, (SalesRow.__proto__ || Object.getPrototypeOf(SalesRow)).call(this, props));
 
-        _this7.props.stall.lastFetch = _this7.props.lastFetch.format("LL");
+        _this7.props.collection.lastFetch = _this7.props.lastFetch.format("LL");
         return _this7;
     }
 
@@ -462,23 +462,23 @@ var SalesRow = function (_React$Component4) {
                 { 'data-toggle': 'modal',
                     'data-target': '#sales-modal',
                     onClick: function onClick() {
-                        return (0, _modals.fillOutSalesModal)(_this8.props.stall);
+                        return (0, _modals.fillOutSalesModal)(_this8.props.collection);
                     } },
                 _react2.default.createElement(
                     'td',
                     null,
-                    this.props.stall.name
+                    this.props.collection.name
                 ),
                 _react2.default.createElement(
                     'td',
                     { className: 'financial-number' },
-                    this.props.stall.quantity
+                    this.props.collection.quantity
                 ),
                 _react2.default.createElement(
                     'td',
                     { className: 'financial-number' },
                     '\u20B1',
-                    this.props.stall.sales
+                    this.props.collection.sales
                 )
             );
         }

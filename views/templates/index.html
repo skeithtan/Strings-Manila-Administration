@@ -31,9 +31,9 @@
 <!--Modals-->
 
 
-<!--Add Stall Modal-->
+<!--Add Collection Modal-->
 <div class="modal fade"
-     id="add-stall-modal"
+     id="add-collection-modal"
      tabindex="-1"
      role="dialog">
     <div class="modal-dialog"
@@ -41,7 +41,7 @@
         <div class="modal-content">
             <!--Modal header-->
             <div class="modal-header">
-                <h5 class="modal-title">Add stall</h5>
+                <h5 class="modal-title">Add collection</h5>
                 <button type="button"
                         class="close"
                         data-dismiss="modal"
@@ -53,19 +53,19 @@
             <!--Modal body-->
             <div class="modal-body">
                 <div class="form-group row">
-                    <label for="add-stall-name-input"
+                    <label for="add-collection-name-input"
                            class="col-sm-3 col-form-label">Name</label>
                     <div class="col-sm-9">
-                        <input id="add-stall-name-input"
+                        <input id="add-collection-name-input"
                                class="form-control text-input"
-                               placeholder="Stall name">
+                               placeholder="Collection name">
                     </div>
                 </div>
             </div>
 
             <!--Modal footer-->
             <div class="modal-footer">
-                <button id="add-stall-button"
+                <button id="add-collection-button"
                         type="button"
                         class="btn btn-primary"
                         data-dismiss="modal"
@@ -76,9 +76,9 @@
     </div>
 </div>
 
-<!--Rename Stall Modal-->
+<!--Rename Collection Modal-->
 <div class="modal fade"
-     id="rename-stall-modal"
+     id="rename-collection-modal"
      tabindex="-1"
      role="dialog">
     <div class="modal-dialog"
@@ -86,7 +86,7 @@
         <div class="modal-content">
             <!--Modal header-->
             <div class="modal-header">
-                <h5 class="modal-title">Rename stall</h5>
+                <h5 class="modal-title">Rename collection</h5>
                 <button type="button"
                         class="close"
                         data-dismiss="modal"
@@ -98,21 +98,21 @@
             <!--Modal body-->
             <div class="modal-body">
                 <input type="hidden"
-                       id="rename-stall-id">
+                       id="rename-collection-id">
                 <div class="form-group row">
-                    <label for="rename-stall-name-input"
+                    <label for="rename-collection-name-input"
                            class="col-sm-3 col-form-label">Name</label>
                     <div class="col-sm-9">
-                        <input id="rename-stall-name-input"
+                        <input id="rename-collection-name-input"
                                class="form-control text-input"
-                               placeholder="Stall name">
+                               placeholder="Collection name">
                     </div>
                 </div>
             </div>
 
             <!--Modal footer-->
             <div class="modal-footer">
-                <button id="rename-stall-button"
+                <button id="rename-collection-button"
                         type="button"
                         class="btn btn-primary"
                         data-dismiss="modal"
@@ -123,9 +123,9 @@
     </div>
 </div>
 
-<!--Discontinue stall modal-->
+<!--Discontinue collection modal-->
 <div class="modal fade"
-     id="delete-stall-modal"
+     id="delete-collection-modal"
      tabindex="-1"
      role="dialog">
     <div class="modal-dialog"
@@ -134,8 +134,8 @@
             <!--Modal header-->
             <div class="modal-header">
                 <h5 class="modal-title text-danger">Are you sure you want to discontinue
-                    <span class="delete-stall-name">this
-                    stall</span>?
+                    <span class="delete-collection-name">this
+                    collection</span>?
                 </h5>
                 <button type="button"
                         class="close"
@@ -148,13 +148,13 @@
             <!--Modal body-->
             <div class="modal-body">
                 <input type="hidden"
-                       id="delete-stall-id">
-                <p>The products that belong to this stall will also be discontinued. This cannot be undone.</p>
+                       id="delete-collection-id">
+                <p>The products that belong to this collection will also be discontinued. This cannot be undone.</p>
             </div>
 
             <!--Modal footer-->
             <div class="modal-footer">
-                <button id="delete-stall-button"
+                <button id="delete-collection-button"
                         type="button"
                         class="btn btn-danger"
                         data-dismiss="modal">Discontinue
@@ -190,7 +190,7 @@
             <div class="modal-body p-0">
 
                 <input type="hidden"
-                       id="add-product-stall-id">
+                       id="add-product-collection-id">
 
                 <!--Singular Product-->
                 <div id="add-singular-product-card"
@@ -982,7 +982,7 @@
         <div class="modal-content">
             <!--Modal header-->
             <div class="modal-header">
-                <h5 class="modal-title"><span id="sales-modal-stall-name">Stall</span> Sales</h5>
+                <h5 class="modal-title"><span id="sales-modal-collection-name">Collection</span> Sales</h5>
                 <button id="generate-sales-detail-report-button"
                         class="btn btn-outline-primary">Generate Report
                 </button>
@@ -1130,7 +1130,7 @@
     </div>
 </div>
 
-<!--Discontinue stall modal-->
+<!--Discontinue collection modal-->
 <div class="modal fade"
      id="delete-bank-account-modal"
      tabindex="-1"
@@ -1205,7 +1205,7 @@
         xhr.send(JSON.stringify({query: object.query}));
     }
 
-    var refreshStalls;
+    var refreshCollections;
     var refreshProducts;
     var refreshStockInventory;
     var refreshOrders;

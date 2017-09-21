@@ -1,7 +1,7 @@
 import React from 'react'
 import {
-    fillOutDiscontinueStallModal,
-    fillOutRenameStallModal,
+    fillOutDiscontinueCollectionModal,
+    fillOutRenameCollectionModal,
     fillOutAddProductModal,
     fillOutModifyProductModal,
     fillOutDiscontinueProductModal
@@ -12,26 +12,26 @@ class Products extends React.Component {
         super(props)
     }
 
-    static selectStallState() {
+    static selectCollectionState() {
         return (
             <div className="container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center">
-                <h3 className="text-muted">Select a stall to see its products</h3>
+                <h3 className="text-muted">Select a collection to see its products</h3>
             </div>
         )
     }
 
     render() {
-        const activeStall = this.props.activeStall;
+        const activeCollection = this.props.activeCollection;
 
-        if (activeStall === null) {
-            return Products.selectStallState()
+        if (activeCollection === null) {
+            return Products.selectCollectionState()
         }
 
         return (
             <div id="products"
                  className="bg-white d-flex flex-column">
-                <ProductListHeader activeStall={activeStall}/>
-                <ProductList activeStall={activeStall}/>
+                <ProductListHeader activeCollection={activeCollection}/>
+                <ProductList activeCollection={activeCollection}/>
             </div>
         )
     }
@@ -40,29 +40,29 @@ class Products extends React.Component {
 function ProductListHeader(props) {
     return (
         <div className="container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center">
-            <h4 id="active-stall-name"
-                className="mr-auto mb-0">{props.activeStall.name}</h4>
+            <h4 id="active-collection-name"
+                className="mr-auto mb-0">{props.activeCollection.name}</h4>
             <div>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"
                         data-target="#add-product-modal"
                         onClick={() => {
-                            fillOutAddProductModal(props.activeStall)
+                            fillOutAddProductModal(props.activeCollection)
                         }}>Add product
                 </button>
                 <button className="btn btn-sm btn-outline-primary mr-1"
                         data-toggle="modal"
-                        data-target="#rename-stall-modal"
+                        data-target="#rename-collection-modal"
                         onClick={() => {
-                            fillOutRenameStallModal(props.activeStall)
-                        }}>Rename stall
+                            fillOutRenameCollectionModal(props.activeCollection)
+                        }}>Rename collection
                 </button>
                 <button className="btn btn-sm btn-outline-danger"
                         data-toggle="modal"
-                        data-target="#delete-stall-modal"
+                        data-target="#delete-collection-modal"
                         onClick={() => {
-                            fillOutDiscontinueStallModal(props.activeStall)
-                        }}>Discontinue stall
+                            fillOutDiscontinueCollectionModal(props.activeCollection)
+                        }}>Discontinue collection
                 </button>
             </div>
         </div>
@@ -82,16 +82,16 @@ class ProductList extends React.Component {
         )
     }
 
-    static emptyState(activeStall) {
+    static emptyState(activeCollection) {
         return (
             <div className="container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white">
-                <h3>There are no products on this stall.</h3>
-                <p className="text-faded">Products added to this stall will show up here.</p>
+                <h3>There are no products on this collection.</h3>
+                <p className="text-faded">Products added to this collection will show up here.</p>
                 <button className="btn btn-outline-primary"
                         data-toggle="modal"
                         data-target="#add-product-modal"
                         onClick={() => {
-                            fillOutAddProductModal(activeStall)
+                            fillOutAddProductModal(activeCollection)
                         }}>Add a product
                 </button>
             </div>
@@ -99,14 +99,14 @@ class ProductList extends React.Component {
     }
 
     render() {
-        const products = this.props.activeStall.products;
+        const products = this.props.activeCollection.products;
 
         if (products === null) {
             return ProductList.loadingState();
         }
 
         if (products.length === 0) {
-            return ProductList.emptyState(this.props.activeStall);
+            return ProductList.emptyState(this.props.activeCollection);
         }
 
         const productCards = products.map(product => {

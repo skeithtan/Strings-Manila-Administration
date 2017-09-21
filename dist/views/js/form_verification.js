@@ -3,13 +3,13 @@
 $(function () {
 
     addValidation({
-        inputs: $("#add-stall-modal").find(".text-input"),
-        button: $("#add-stall-button")
+        inputs: $("#add-collection-modal").find(".text-input"),
+        button: $("#add-collection-button")
     });
 
     addValidation({
-        inputs: $("#rename-stall-modal").find(".text-input"),
-        button: $("#rename-stall-button")
+        inputs: $("#rename-collection-modal").find(".text-input"),
+        button: $("#rename-collection-button")
     });
 
     addValidation({

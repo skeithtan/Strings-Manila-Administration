@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.authorizeXHR = exports.fillOutDeleteBankAccount = exports.fillOutModifyBankAccountDetails = exports.fillOutSalesModal = exports.fillOutOrderModal = exports.fillOutRenameStallModal = exports.fillOutDiscontinueStallModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
+exports.authorizeXHR = exports.fillOutDeleteBankAccount = exports.fillOutModifyBankAccountDetails = exports.fillOutSalesModal = exports.fillOutOrderModal = exports.fillOutRenameCollectionModal = exports.fillOutDiscontinueCollectionModal = exports.fillOutAddProductModal = exports.fillOutModifyProductModal = exports.fillOutDiscontinueProductModal = exports.fillOutRestockModal = exports.fillOutSingularProductModal = exports.fillOutTieredProductModal = undefined;
 
 var _random = require('./random');
 
@@ -23,13 +23,13 @@ var modalHide = 'hidden.bs.modal';
 
 $(function () {
     //Entity Management
-    //Stalls
-    $('#add-stall-button').click(onAddStallButtonClick);
-    $('#rename-stall-button').click(onRenameStallButtonClick);
-    $('#delete-stall-button').click(onDeleteStallButtonClick);
-    $('#add-stall-modal').on(modalHide, function () {
-        $('#add-stall-name-input').val('');
-        $('#add-stall-button').attr('disabled', 'true');
+    //Collections
+    $('#add-collection-button').click(onAddCollectionButtonClick);
+    $('#rename-collection-button').click(onRenameCollectionButtonClick);
+    $('#delete-collection-button').click(onDeleteCollectionButtonClick);
+    $('#add-collection-modal').on(modalHide, function () {
+        $('#add-collection-name-input').val('');
+        $('#add-collection-button').attr('disabled', 'true');
     });
 
     //Products
@@ -75,84 +75,84 @@ $(function () {
     });
 });
 
-//MARK: - Stalls
-function onAddStallButtonClick() {
-    var stallName = $('#add-stall-name-input').val();
+//MARK: - Collections
+function onAddCollectionButtonClick() {
+    var collectionName = $('#add-collection-name-input').val();
 
     $.post({
-        url: baseURL + '/stalls/',
+        url: baseURL + '/collections/',
         data: {
-            name: stallName
+            name: collectionName
         },
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
                 title: "Added",
-                message: "Successfully added stall."
+                message: "Successfully added collection."
             });
 
-            refreshStalls();
+            refreshCollections();
         },
         error: function error(response) {
             console.log(response);
             iziToast.error({
                 title: "Error",
-                message: "Unable to add stall."
+                message: "Unable to add collection."
             });
         }
     });
 }
 
-function onRenameStallButtonClick() {
-    var stallNameInput = $('#rename-stall-name-input');
-    var stallName = stallNameInput.val();
-    var stallID = $('#rename-stall-id').val();
-    stallNameInput.val('');
+function onRenameCollectionButtonClick() {
+    var collectionNameInput = $('#rename-collection-name-input');
+    var collectionName = collectionNameInput.val();
+    var collectionID = $('#rename-collection-id').val();
+    collectionNameInput.val('');
 
     $.ajax({
-        url: baseURL + '/stalls/' + stallID + '/',
+        url: baseURL + '/collections/' + collectionID + '/',
         method: 'PUT',
         data: {
-            name: stallName
+            name: collectionName
         },
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
                 title: 'Renamed',
-                message: 'Successfully renamed stall.'
+                message: 'Successfully renamed collection.'
             });
 
-            refreshStalls();
+            refreshCollections();
         },
         error: function error(response) {
             console.log(response);
             iziToast.error({
                 title: 'Error',
                 id: 'uploading-image-toast',
-                message: 'Unable to rename stall.'
+                message: 'Unable to rename collection.'
             });
         }
     });
 }
 
-function onDeleteStallButtonClick() {
-    var stallID = $('#delete-stall-id').val();
+function onDeleteCollectionButtonClick() {
+    var collectionID = $('#delete-collection-id').val();
     $.ajax({
-        url: baseURL + '/stalls/' + stallID + '/',
+        url: baseURL + '/collections/' + collectionID + '/',
         method: 'DELETE',
         beforeSend: authorizeXHR,
         success: function success() {
             iziToast.success({
                 title: 'Discontinued',
-                message: 'Stall is now discontinued.'
+                message: 'Collection is now discontinued.'
             });
-            refreshStalls();
+            refreshCollections();
         },
         error: function error(response) {
             console.log(response);
             iziToast.error({
                 title: 'Error',
-                message: 'Unable to discontinue stall.'
+                message: 'Unable to discontinue collection.'
             });
         }
     });
@@ -160,15 +160,15 @@ function onDeleteStallButtonClick() {
 
 //Fill outs
 
-function fillOutRenameStallModal(activeStall) {
-    $('#rename-stall-id').val(activeStall.id);
-    $('#rename-stall-name-input').val(activeStall.name);
-    $('#rename-stall-button').attr('disabled', false); //Form is already filled out, do not disable submit button
+function fillOutRenameCollectionModal(activeCollection) {
+    $('#rename-collection-id').val(activeCollection.id);
+    $('#rename-collection-name-input').val(activeCollection.name);
+    $('#rename-collection-button').attr('disabled', false); //Form is already filled out, do not disable submit button
 }
 
-function fillOutDiscontinueStallModal(activeStall) {
-    $('#delete-stall-id').val(activeStall.id);
-    $('span.delete-stall-name').text(activeStall.name);
+function fillOutDiscontinueCollectionModal(activeCollection) {
+    $('#delete-collection-id').val(activeCollection.id);
+    $('span.delete-collection-name').text(activeCollection.name);
 }
 
 //MARK: - Products
@@ -248,10 +248,10 @@ function hideUploadingToast(id) {
     iziToast.hide({}, document.getElementById(id));
 }
 
-function submitAddProduct(product, stallID, image) {
+function submitAddProduct(product, collectionID, image) {
     function submit(product) {
         $.ajax({
-            url: baseURL + '/stalls/' + stallID + '/products/',
+            url: baseURL + '/collections/' + collectionID + '/products/',
             method: 'POST',
             data: JSON.stringify(product),
             contentType: 'application/json; charset=utf-8',
@@ -369,7 +369,7 @@ function uploadImage(data) {
 function onAddSingularProductButtonClick() {
     var name = $('#add-singular-product-name-input').val();
     var imageInput = $('#add-singular-product-image-input')[0].files;
-    var stallID = $('#add-product-stall-id').val();
+    var collectionID = $('#add-product-collection-id').val();
 
     var product = {
         name: name,
@@ -382,9 +382,9 @@ function onAddSingularProductButtonClick() {
 
     if (imageInput.length) {
         var image = imageInput[0];
-        submitAddProduct(product, stallID, image);
+        submitAddProduct(product, collectionID, image);
     } else {
-        submitAddProduct(product, stallID, null);
+        submitAddProduct(product, collectionID, null);
     }
 }
 
@@ -396,7 +396,7 @@ function onAddTieredProductButtonClick() {
     };
 
     var imageInput = $('#add-tiered-product-image-input')[0].files;
-    var stallID = $('#add-product-stall-id').val();
+    var collectionID = $('#add-product-collection-id').val();
 
     $('#tiers-set').find('.tier-row').each(function (index, item) {
         var tierRow = $(item);
@@ -410,9 +410,9 @@ function onAddTieredProductButtonClick() {
 
     if (imageInput.length) {
         var image = imageInput[0];
-        submitAddProduct(product, stallID, image);
+        submitAddProduct(product, collectionID, image);
     } else {
-        submitAddProduct(product, stallID, null);
+        submitAddProduct(product, collectionID, null);
     }
 }
 
@@ -553,8 +553,8 @@ function fillOutModifyProductModal(product) {
     }
 }
 
-function fillOutAddProductModal(activeStall) {
-    $('#add-product-stall-id').val(activeStall.id);
+function fillOutAddProductModal(activeCollection) {
+    $('#add-product-collection-id').val(activeCollection.id);
 }
 
 function fillOutDiscontinueProductModal(product) {
@@ -903,10 +903,10 @@ function fillOutOrderModal(orderID) {
 }
 
 //MARK: - Sales
-function fillOutSalesModal(stallSales) {
-    $('#sales-modal-stall-name').text(stallSales.name);
-    $('#sales-modal-total-quantity').text(stallSales.quantity);
-    $('#sales-modal-total-sales').text("₱" + stallSales.sales);
+function fillOutSalesModal(collectionSales) {
+    $('#sales-modal-collection-name').text(collectionSales.name);
+    $('#sales-modal-total-quantity').text(collectionSales.quantity);
+    $('#sales-modal-total-sales').text("₱" + collectionSales.sales);
 
     var tableBody = $('#sales-modal-table-body');
     var template = $('#sales-row-template').clone();
@@ -917,10 +917,10 @@ function fillOutSalesModal(stallSales) {
     generateReportButton.off();
     generateReportButton.click(function () {
         var ipcRenderer = _electron2.default.ipcRenderer;
-        ipcRenderer.send('generate-sales-detail-report', stallSales);
+        ipcRenderer.send('generate-sales-detail-report', collectionSales);
     });
 
-    stallSales.product_sales.forEach(function (productSale) {
+    collectionSales.product_sales.forEach(function (productSale) {
         productSale.tier_sales.forEach(function (tierSale) {
             var clone = $('#sales-row-template').clone();
             clone.removeAttr('id');
@@ -1056,8 +1056,8 @@ exports.fillOutRestockModal = fillOutRestockModal;
 exports.fillOutDiscontinueProductModal = fillOutDiscontinueProductModal;
 exports.fillOutModifyProductModal = fillOutModifyProductModal;
 exports.fillOutAddProductModal = fillOutAddProductModal;
-exports.fillOutDiscontinueStallModal = fillOutDiscontinueStallModal;
-exports.fillOutRenameStallModal = fillOutRenameStallModal;
+exports.fillOutDiscontinueCollectionModal = fillOutDiscontinueCollectionModal;
+exports.fillOutRenameCollectionModal = fillOutRenameCollectionModal;
 exports.fillOutOrderModal = fillOutOrderModal;
 exports.fillOutSalesModal = fillOutSalesModal;
 exports.fillOutModifyBankAccountDetails = fillOutModifyBankAccountDetails;

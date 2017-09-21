@@ -1,12 +1,12 @@
 import React from 'react';
-import Stalls from './stalls';
+import Collections from './collections';
 import Products from './products';
 
 //Fetch data
-function fetchStalls(completionHandler) {
+function fetchCollections(completionHandler) {
     graphQL({
         query: `{
-                    stalls {
+                    collections {
                         id
                         name
                     }
@@ -15,10 +15,10 @@ function fetchStalls(completionHandler) {
     });
 }
 
-function fetchProducts(stallID, completionHandler) {
+function fetchProducts(collectionID, completionHandler) {
     graphQL({
         query: `{
-                  stall(id:${stallID}){
+                  collection(id:${collectionID}){
                     activeProducts {
                       id
                       name
@@ -41,34 +41,34 @@ class EntityManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeStall: null,
-            stalls: null,
+            activeCollection: null,
+            collections: null,
             products: null
         };
 
-        refreshStalls = () => {
-            fetchStalls(result => {
+        refreshCollections = () => {
+            fetchCollections(result => {
                 this.setState({
-                    stalls: result.stalls
+                    collections: result.collections
                 });
 
-                //Update activeStall too
-                const activeStall = this.state.activeStall;
+                //Update activeCollection too
+                const activeCollection = this.state.activeCollection;
 
-                if (activeStall !== null) {
-                    //Get the product because the stalls don't come with them
-                    const products = activeStall.products;
+                if (activeCollection !== null) {
+                    //Get the product because the collections don't come with them
+                    const products = activeCollection.products;
 
                     this.setState({
-                        activeStall: null  //In case it is deleted
+                        activeCollection: null  //In case it is deleted
                     });
 
-                    result.stalls.forEach(stall => {
-                        if (stall.id === activeStall.id) {
-                            //Add the product to the new stall
-                            stall.products = products;
+                    result.collections.forEach(collection => {
+                        if (collection.id === activeCollection.id) {
+                            //Add the product to the new collection
+                            collection.products = products;
                             this.setState({
-                                activeStall: stall //Make it active
+                                activeCollection: collection //Make it active
                             })
                         }
                     })
@@ -76,25 +76,25 @@ class EntityManagement extends React.Component {
             });
         };
 
-        refreshStalls();
+        refreshCollections();
 
-        this.setActiveStall = this.setActiveStall.bind(this);
+        this.setActiveCollection = this.setActiveCollection.bind(this);
     }
 
-    setActiveStall(stall) {
-        stall.products = null;
+    setActiveCollection(collection) {
+        collection.products = null;
 
         this.setState({
-            activeStall: stall
+            activeCollection: collection
         });
 
         refreshProducts = () => {
-            fetchProducts(stall.id, result => {
-                let activeStall = this.state.activeStall;
-                activeStall.products = result.stall.activeProducts;
+            fetchProducts(collection.id, result => {
+                let activeCollection = this.state.activeCollection;
+                activeCollection.products = result.collection.activeProducts;
 
                 this.setState({
-                    activeStall: activeStall
+                    activeCollection: activeCollection
                 })
             });
         };
@@ -106,10 +106,10 @@ class EntityManagement extends React.Component {
         return (
             <div id="entity-management-frame"
                  className="container-fluid d-flex flex-row m-0 p-0 h-100 w-100">
-                <Stalls stalls={this.state.stalls}
-                        activeStall={this.state.activeStall}
-                        setActiveStall={this.setActiveStall}/>
-                <Products activeStall={this.state.activeStall}/>
+                <Collections collections={this.state.collections}
+                        activeCollection={this.state.activeCollection}
+                        setActiveCollection={this.setActiveCollection}/>
+                <Products activeCollection={this.state.activeCollection}/>
             </div>
         );
     }

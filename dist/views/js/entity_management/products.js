@@ -32,30 +32,30 @@ var Products = function (_React$Component) {
     _createClass(Products, [{
         key: "render",
         value: function render() {
-            var activeStall = this.props.activeStall;
+            var activeCollection = this.props.activeCollection;
 
-            if (activeStall === null) {
-                return Products.selectStallState();
+            if (activeCollection === null) {
+                return Products.selectCollectionState();
             }
 
             return _react2.default.createElement(
                 "div",
                 { id: "products",
                     className: "bg-white d-flex flex-column" },
-                _react2.default.createElement(ProductListHeader, { activeStall: activeStall }),
-                _react2.default.createElement(ProductList, { activeStall: activeStall })
+                _react2.default.createElement(ProductListHeader, { activeCollection: activeCollection }),
+                _react2.default.createElement(ProductList, { activeCollection: activeCollection })
             );
         }
     }], [{
-        key: "selectStallState",
-        value: function selectStallState() {
+        key: "selectCollectionState",
+        value: function selectCollectionState() {
             return _react2.default.createElement(
                 "div",
                 { className: "container-fluid text-center bg-light h-100 d-flex flex-column justify-content-center align-items-center" },
                 _react2.default.createElement(
                     "h3",
                     { className: "text-muted" },
-                    "Select a stall to see its products"
+                    "Select a collection to see its products"
                 )
             );
         }
@@ -70,9 +70,9 @@ function ProductListHeader(props) {
         { className: "container-fluid d-flex flex-row p-3 pt-5 bg-light page-head align-items-center" },
         _react2.default.createElement(
             "h4",
-            { id: "active-stall-name",
+            { id: "active-collection-name",
                 className: "mr-auto mb-0" },
-            props.activeStall.name
+            props.activeCollection.name
         ),
         _react2.default.createElement(
             "div",
@@ -83,7 +83,7 @@ function ProductListHeader(props) {
                     "data-toggle": "modal",
                     "data-target": "#add-product-modal",
                     onClick: function onClick() {
-                        (0, _modals.fillOutAddProductModal)(props.activeStall);
+                        (0, _modals.fillOutAddProductModal)(props.activeCollection);
                     } },
                 "Add product"
             ),
@@ -91,21 +91,21 @@ function ProductListHeader(props) {
                 "button",
                 { className: "btn btn-sm btn-outline-primary mr-1",
                     "data-toggle": "modal",
-                    "data-target": "#rename-stall-modal",
+                    "data-target": "#rename-collection-modal",
                     onClick: function onClick() {
-                        (0, _modals.fillOutRenameStallModal)(props.activeStall);
+                        (0, _modals.fillOutRenameCollectionModal)(props.activeCollection);
                     } },
-                "Rename stall"
+                "Rename collection"
             ),
             _react2.default.createElement(
                 "button",
                 { className: "btn btn-sm btn-outline-danger",
                     "data-toggle": "modal",
-                    "data-target": "#delete-stall-modal",
+                    "data-target": "#delete-collection-modal",
                     onClick: function onClick() {
-                        (0, _modals.fillOutDiscontinueStallModal)(props.activeStall);
+                        (0, _modals.fillOutDiscontinueCollectionModal)(props.activeCollection);
                     } },
-                "Discontinue stall"
+                "Discontinue collection"
             )
         )
     );
@@ -123,14 +123,14 @@ var ProductList = function (_React$Component2) {
     _createClass(ProductList, [{
         key: "render",
         value: function render() {
-            var products = this.props.activeStall.products;
+            var products = this.props.activeCollection.products;
 
             if (products === null) {
                 return ProductList.loadingState();
             }
 
             if (products.length === 0) {
-                return ProductList.emptyState(this.props.activeStall);
+                return ProductList.emptyState(this.props.activeCollection);
             }
 
             var productCards = products.map(function (product) {
@@ -164,19 +164,19 @@ var ProductList = function (_React$Component2) {
         }
     }, {
         key: "emptyState",
-        value: function emptyState(activeStall) {
+        value: function emptyState(activeCollection) {
             return _react2.default.createElement(
                 "div",
                 { className: "container-fluid d-flex flex-column justify-content-center align-items-center h-100 bg-white" },
                 _react2.default.createElement(
                     "h3",
                     null,
-                    "There are no products on this stall."
+                    "There are no products on this collection."
                 ),
                 _react2.default.createElement(
                     "p",
                     { className: "text-faded" },
-                    "Products added to this stall will show up here."
+                    "Products added to this collection will show up here."
                 ),
                 _react2.default.createElement(
                     "button",
@@ -184,7 +184,7 @@ var ProductList = function (_React$Component2) {
                         "data-toggle": "modal",
                         "data-target": "#add-product-modal",
                         onClick: function onClick() {
-                            (0, _modals.fillOutAddProductModal)(activeStall);
+                            (0, _modals.fillOutAddProductModal)(activeCollection);
                         } },
                     "Add a product"
                 )

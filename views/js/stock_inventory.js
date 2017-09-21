@@ -12,7 +12,7 @@ function fetchStocks(completionHandler) {
                     productDescription {
                       isSingular
                       name
-                      stall {
+                      collection {
                         name
                       }
                     }
@@ -234,7 +234,7 @@ class StockTable extends React.Component {
                     <tr>
                         <th>Product Name</th>
                         <th>Tier</th>
-                        <th>Stall</th>
+                        <th>Collection</th>
                         <th>Quantity</th>
                     </tr>
                     </thead>
@@ -275,7 +275,7 @@ class StockRow extends React.Component {
                 onClick={this.props.onStockRowClick}>
                 <td>{tier.productDescription.name}</td>
                 <td className={isSingular ? "text-muted" : ""}>{isSingular ? <small>N/A</small> : tier.name}</td>
-                <td>{tier.productDescription.stall.name}</td>
+                <td>{tier.productDescription.collection.name}</td>
                 <td><b>{tier.quantity}</b></td>
             </tr>
         );

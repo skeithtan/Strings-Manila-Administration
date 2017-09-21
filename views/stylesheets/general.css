@@ -248,14 +248,14 @@ table.page-table tbody {
 
 /* Entity Management */
 
-#stalls {
+#collections {
     max-width    : 300px;
     min-width    : 300px;
     border-right : 1px solid rgba(0, 0, 0, .125);
     z-index      : 2;
 }
 
-#stalls .list-group .list-group-item {
+#collections .list-group .list-group-item {
     border-radius : 0 !important;
     border-right  : 0;
     border-left   : 0;
@@ -265,14 +265,14 @@ table.page-table tbody {
     flex-grow : 1;
 }
 
-#stall-list-header,
+#collection-list-header,
 #product-list-header {
     border-bottom : 1px solid rgba(0, 0, 0, .125);
     min-height    : 90px;
     max-height    : 90px;
 }
 
-#stall-list,
+#collection-list,
 #product-list {
     overflow-y : scroll !important;
     height     : 100%;
@@ -303,7 +303,7 @@ table.page-table tbody {
     display : none !important;
 }
 
-#active-stall-name {
+#active-collection-name {
     text-overflow : ellipsis;
     white-space   : nowrap;
     max-width     : 60%;
