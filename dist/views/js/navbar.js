@@ -14,9 +14,9 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _entity_management = require('./entity_management/entity_management');
+var _products_management = require('./products_management/products_management');
 
-var _entity_management2 = _interopRequireDefault(_entity_management);
+var _products_management2 = _interopRequireDefault(_products_management);
 
 var _stock_inventory = require('./stock_inventory');
 
@@ -49,7 +49,11 @@ function currentTab() {
 var navbarItems = [{
     name: "Products",
     isActive: false,
-    tab: _react2.default.createElement(_entity_management2.default, null)
+    tab: _react2.default.createElement(_products_management2.default, null)
+}, {
+    name: "Materials",
+    isActive: false,
+    tab: null
 }, {
     name: "Inventory",
     isActive: false,

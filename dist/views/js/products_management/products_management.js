@@ -136,4 +136,4 @@ var EntityManagement = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = EntityManagement;
-//# sourceMappingURL=entity_management.js.map
+//# sourceMappingURL=products_management.js.map

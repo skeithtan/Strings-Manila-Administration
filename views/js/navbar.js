@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import EntityManagement from './entity_management/entity_management';
+import EntityManagement from './products_management/products_management';
 import StockInventory from './stock_inventory';
 import Orders from './orders';
 import Sales from './sales';
@@ -15,6 +15,11 @@ const navbarItems = [
         name: "Products",
         isActive: false,
         tab: <EntityManagement/>
+    },
+    {
+        name: "Materials",
+        isActive: false,
+        tab: null
     },
     {
         name: "Inventory",
