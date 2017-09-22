@@ -10,7 +10,7 @@ function fillOutClass(className, text) {
 ipc.on('message', (event, sales) => {
     console.log(sales);
     fillOutClass('.date-generated', sales.lastFetch);
-    fillOutClass('.stall-name', sales.name);
+    fillOutClass('.collection-name', sales.name);
 
     $('#total-quantity').text(sales.quantity);
     $('#total-sales').text("₱" + sales.sales);
